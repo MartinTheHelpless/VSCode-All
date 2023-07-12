@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="DasLogoWhite.png">
+    <title>Dašák Main</title>
+</head>
+
 <style>
     body {
         margin: 0;
@@ -8,7 +17,8 @@
     }
 
     .container {
-        width: 70%;
+        width: 64%;
+        padding-inline: 3%;
         margin-inline: auto;
         border: 2px solid lime;
     }
@@ -46,7 +56,7 @@
     .midNavText p {
         margin: 0;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        margin-inline: clamp(3px, 2vw, 10px);
+        margin-inline: clamp(4px, 2vw, 10px);
         line-height: 1.2;
     }
 
@@ -55,6 +65,7 @@
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         margin-inline: clamp(3px, 2vw, 10px);
         line-height: 1.2;
+        display: none;
     }
 
     .leftNavLogo {
@@ -67,41 +78,8 @@
     }
 
     .container .slideshow {
-        width: 90%;
-        margin: 1% 5%;
-    }
-
-    .burger:hover+.dropMenu {
-        display: block;
-    }
-
-    .dropMenu {
-        height: 100%;
-        min-width: 15%;
-        background-color: rgb(24, 120, 175);
-        display: none;
-        padding-top: clamp(50px, 16vw, 80px);
-        z-index: 1;
-    }
-
-    li {
-        list-style: none;
-        padding-block: 8px;
-    }
-
-    .arrowImg {
-        width: 23px;
-    }
-
-    .references {
-        color: white;
-        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        font-size: clamp(20px, 4vw, 23px);
-        text-decoration: none;
-    }
-
-    .references:hover {
-        color: black;
+        max-width: 100%;
+        margin-top: 2%;
     }
 
     .fillNavDiv {
@@ -111,7 +89,7 @@
     }
 
     @media only screen and (max-width: 330px) {
-        .freeDiv {
+        .midNavText {
             display: none;
         }
 
@@ -136,14 +114,6 @@
         }
     }
 </style>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="DasLogoWhite.png">
-    <title>Dašák Main</title>
-</head>
 
 <body>
 

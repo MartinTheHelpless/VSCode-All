@@ -1,29 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Nav Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="DasLogoWhite.png">
+    <title>Dašák Main</title>
 </head>
-<body style="margin: 0; padding: 0;">
-    
-    <div class="topNav" style=" position: fixed ;height: min-content; width: 100%; display: flex    ;background: linear-gradient(90deg, rgb(47, 47, 198), rgb(168, 27, 27));">
-    <div class="img" style="flex-grow: 1;">  
-        <img src="images/DasLogoWhite.png" alt="" style="max-height: 47px; width: 6vh; max-width: 47px; margin: 5px;">
-    </div>
-    <div style="flex-grow: 1; max-height: 50px;">
-        <p style="margin: 5px; color: white; line-height: 1.5;">Gymnázium Pardubice<br>
-           Dašická 1083
-        </p>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 64%;
+        padding-inline: 3%;
+        margin-inline: auto;
+        border: 2px solid lime;
+    }
+
+    .topNav {
+        border-bottom: 2px solid black;
+        position: fixed;
+        background: linear-gradient(90deg, rgb(47, 47, 198), rgb(168, 27, 27));
+        display: flex;
+        width: 100%;
+        max-height: min-content;
+        margin: 0;
+        padding: 5px;
+        z-index: 3;
+    }
+
+    .topNav div {
+        color: white;
+        flex-grow: 1;
+        display: grid;
+        justify-content: center;
+        margin-block: auto;
+    }
+
+    .burger {
+        max-width: fit-content;
+        margin-inline: clamp(10px, 1vw, 18px);
+    }
+
+    .midNavText {
+        max-width: max-content;
+        font-size: 15px;
+    }
+
+    .midNavText p {
+        margin: 0;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        margin-inline: clamp(4px, 2vw, 10px);
+        line-height: 1.2;
+    }
+
+    .freeDiv p {
+        margin: 0;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        margin-inline: clamp(3px, 2vw, 10px);
+        line-height: 1.2;
+        display: none;
+    }
+
+    .leftNavLogo {
+        margin-inline: clamp(5px, 1vw, 10px);
+        max-width: fit-content;
+    }
+
+    .topNav img {
+        max-height: clamp(30px, 10vw, 45px);
+    }
+
+    .container .slideshow {
+        max-width: 100%;
+        margin-top: 2%;
+    }
+
+    .fillNavDiv {
+        width: 100%;
+        height: 0px;
+        padding-top: clamp(45px, 10px + 10vw, 55px);
+    }
+
+    @media only screen and (max-width: 330px) {
+        .midNavText {
+            display: none;
+        }
+
+        .leftNavLogo {
+            max-width: none;
+        }
+
+        .burger {
+            max-width: none;
+        }
+
+        .freeDiv p {
+            display: block;
+        }
+
+        .midNavText p {
+            display: none;
+        }
+
+        .fillNavDiv {
+            padding-top: 40px;
+        }
+    }
+</style>
+
+<body>
+
+    <div class="topNav">
+
+        <div class="leftNavLogo">
+            <img src="DasLogoWhite.png">
+        </div>
+
+        <div class="midNavText">
+            <p>Gymnázium, Pardubice,<br>Dašická 1083</p>
+        </div>
+
+        <div class="freeDiv">
+            <p>Dašák</p>
+        </div>
+
+        <div class="burger">
+            <img src="menuButton.png">
+        </div>
+
     </div>
 
-    <div style="max-height: 50px;width: max-content; "> 
-        <div style="width: 3.5vw;  min-width: 50px; margin-inline: 1vw; margin-block: 16%; height: 1vh; background-color: white; border-radius: 50px;"></div>
-        <div style="width: 3.5vw;  min-width: 50px; margin-inline: 1vw; margin-block: 16%; height: 1vh; background-color: white; border-radius: 50px;"></div>
-        <div style="width: 3.5vw;  min-width: 50px; margin-inline: 1vw; margin-block: 16%; height: 1vh; background-color: white; border-radius: 50px;"></div>
-    </div> 
+    <div class="fillNavDiv"></div>
+
+    <div class="container">
+
+
+        <img class="slideshow" src="*">
+        <p>*</p>
+        <p>*</p>
 
     </div>
 
 </body>
+
 </html>
