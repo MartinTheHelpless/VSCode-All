@@ -50,7 +50,25 @@
     "numeric": "cpp",
     "random": "cpp",
     "graph.cpp": "c",
-    "iterator.cpp": "c"
+    "iterator.cpp": "c",
+    "bitset": "cpp",
+    "chrono": "cpp",
+    "__bit_reference": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "condition_variable": "cpp",
+    "ctime": "cpp",
+    "optional": "cpp",
+    "ratio": "cpp",
+    "mutex": "cpp",
+    "semaphore": "cpp",
+    "shared_mutex": "cpp",
+    "sstream": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "__nullptr": "cpp"
   },
   "cmake.configureOnOpen": false
 }

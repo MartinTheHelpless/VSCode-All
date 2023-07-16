@@ -1,0 +1,6 @@
+touch * > create a new file with name *
+cat * > read * file
+nano * > graphical interface to read and edit txt files
+grep * > search for * in files
+mousepad * > create a file and display it in GUI
+gedit * > GUI for text file editing

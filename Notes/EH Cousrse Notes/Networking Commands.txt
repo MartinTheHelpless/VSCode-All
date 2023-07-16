@@ -1,0 +1,5 @@
+ip a > similar to ifconfig, newer command, colored result
+ip n > similar to arp -a > shows ip address and associated MAC address
+ip r > similar to route > shows routing table
+iwconfig > wireless connection info
+netstat > shows open ports
