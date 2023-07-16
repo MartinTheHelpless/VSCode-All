@@ -22,7 +22,7 @@
 
     .topNav {
       position: fixed;
-      background: linear-gradient(90deg, rgb(47, 47, 198), rgb(168, 27, 27));
+      background: linear-gradient(180deg, rgb(47, 47, 198), rgb(193, 193, 204));
       display: flex;
       width: 100%;
       height: clamp(40px, 10px + 10vw, 55px);
@@ -202,6 +202,31 @@
     @media only screen and (max-width: 912px) {
       .dropMenu {
         width: 110vw;
+      }
+
+      .skola:hover {
+        .detailSkola {
+          top: 0;
+          right: 0;
+        }
+      }
+      .odkazy:hover {
+        .detailOdkazy {
+          top: 0;
+          right: 0;
+        }
+      }
+      .dokumenty:hover {
+        .detailDokumenty {
+          top: 0;
+          right: 0;
+        }
+      }
+      .kontakty:hover {
+        .detailKontakty {
+          top: 0;
+          right: 0;
+        }
       }
     }
   </style>
