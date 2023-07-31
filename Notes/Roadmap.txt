@@ -1,0 +1,9 @@
+To do / watch list:
+    Professor Messer - network playlists 1 and 2
+    SSH explained video
+    SSL explained video
+    Wireshark introduction video
+    Packet analysys video
+    TryHackMe courses
+    Scripting in cybersecurity videos
+    SQL injections research and videos
