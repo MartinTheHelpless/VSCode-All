@@ -7,3 +7,4 @@ To do / watch list:
     TryHackMe courses
     Scripting in cybersecurity videos
     SQL injections research and videos
+    Proxy Chain my traffic trought TOR at least
