@@ -8,3 +8,6 @@ To do / watch list:
     Scripting in cybersecurity videos
     SQL injections research and videos
     Proxy Chain my traffic trought TOR at least
+    Hands on training - TryHackMe / HackTheBox
+    Build a home lab
+    NETWORKING IS IMPORTANT
