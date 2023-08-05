@@ -10,7 +10,7 @@ There should be a table of contents as well with coresponding page numbers:
     - DNS, all web traffic and functionality
     - Packet analysys
     - Proxies and their use / Proxy chains
-    - Deeper Firewall explanaition
+    - Deeper Firewall explanation
     - Security protocols
     - Public key encryptions
     - Basics of cryptography
@@ -20,4 +20,4 @@ There should be a table of contents as well with coresponding page numbers:
     - Finding vulnerabilities
     - Tools for indentifying vulnerabilities ( metasploit, ...)
     - Exploits ( historical, present, how they function ) and how to exploit (there was a dirty cow exploit )
-    - 
+    - Viruses, their types, common viruses ( how to make one and more research )

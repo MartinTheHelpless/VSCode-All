@@ -1,7 +1,7 @@
 1. Preferably use external bluetooth adapter
 2. lusb - list usb devices connected
 3. sudo hciconfig - basically ifconfig for bluetooth (possibly have to do "hciconfig hci0 up" to actiave bl adapter)
-4. hcitool scan - discover and show loacl bluetooth devices
+4. hcitool scan - discover and show local bluetooth devices
 5. hcitool inq - get information about near bluetooth devices
 6. look at signils.com site to see what type of device is shown by its address
 7. use "spooftooth" - command that can spoof a bluetooth device

@@ -1,0 +1,105 @@
+Advanced Persistent Threat & description & & & \\ 
+Advanced Threat Protection & description & & & \\ 
+Adware & description & & & \\ 
+Anti-Botnet & description & & & \\ 
+Antivirus & description & & & \\ 
+Attack Vector & description & & & \\ 
+Authentication & description & & & \\ 
+BYOD & description & & & \\ 
+Backdoor & description & & & \\ 
+Banker Trojan & description & & & \\ 
+Blacklist & description & & & \\ 
+Blue Teaming & description & & & \\ 
+Botnet & description & & & \\ 
+Brute Force Attack & description & & & \\ 
+Business Continuity Plan & description & & & \\ 
+CAPTCHA & description & & & \\ 
+CTF & description & & & \\ 
+Clickjacking & description & & & \\ 
+Clientless & description & & & \\ 
+Cloud & description & & & \\ 
+Critical Infrastructure & description & & & \\ 
+Cryptography & description & & & \\ 
+Cryptojacking & description & & & \\ 
+Cyber Attack & description & & & \\ 
+Cyberbullying & description & & & \\ 
+DDOS & description & & & \\ 
+DOS & description & & & \\ 
+Data Breach & description & & & \\ 
+Data Integrity & description & & & \\ 
+Data Loss Prevention & description & & & \\ 
+Decryption & description & & & \\ 
+Deepfake & description & & & \\ 
+Domain & description & & & \\ 
+Encryption & description & & & \\ 
+Exploit & description & & & \\ 
+Fileless Malware & description & & & \\ 
+Firewall & description & & & \\ 
+Gateway & description & & & \\ 
+Greylist & description & & & \\ 
+Honeypot & description & & & \\ 
+IPs & description & & & \\ 
+Identity & description & & & \\ 
+Infect & description & & & \\ 
+Infrastructure & description & & & \\ 
+Insider Threat & description & & & \\ 
+Intrusion & description & & & \\ 
+Intrusion Prevention System & description & & & \\ 
+IoT & description & & & \\ 
+Key & description & & & \\ 
+Keylogger & description & & & \\ 
+Log & description & & & \\ 
+MAC Address & description & & & \\ 
+Malvertising & description & & & \\ 
+Malware & description & & & \\ 
+Man In The Middle & description & & & \\ 
+Map & description & & & \\ 
+Mapping & description & & & \\ 
+Metasploit & description & & & \\ 
+Mimecast & description & & & \\ 
+Network & description & & & \\ 
+Nmap & description & & & \\ 
+Packer & description & & & \\ 
+Patch & description & & & \\ 
+Pen-Testing & description & & & \\ 
+Personal Identifiable Information & description & & & \\ 
+Phishing & description & & & \\ 
+Ping & description & & & \\ 
+Port & description & & & \\ 
+Probe & description & & & \\ 
+Protocol & description & & & \\ 
+Proxy & description & & & \\ 
+Ransomware & description & & & \\ 
+Recon & description & & & \\ 
+Red Teaming & description & & & \\ 
+Risktool & description & & & \\ 
+Rootkit & description & & & \\ 
+Router & description & & & \\ 
+SECaaS & description & & & \\ 
+Sandbox & description & & & \\ 
+Scan & description & & & \\ 
+Scareware & description & & & \\ 
+Script & description & & & \\ 
+Secure Socket Layer & description & & & \\ 
+Security Incident Response & description & & & \\ 
+Security Operations Center & description & & & \\ 
+Sniffing & description & & & \\ 
+Snort & description & & & \\ 
+Social Engineering & description & & & \\ 
+Spam & description & & & \\ 
+Spear Phishing & description & & & \\ 
+Spoofing & description & & & \\ 
+Spyware & description & & & \\ 
+TOR & description & & & \\ 
+Threat Hunting & description & & & \\ 
+Traffic & description & & & \\ 
+Trojan Horse & description & & & \\ 
+VPN & description & & & \\ 
+Virus & description & & & \\ 
+Vulnerability & description & & & \\ 
+Web Application Firewall & description & & & \\ 
+Whitelist & description & & & \\ 
+Wireshark & description & & & \\ 
+Worm & description & & & \\ 
+Zero-Day Exploit & description & & & \\ 
+Zero-touch Deployment & description & & & \\ 
