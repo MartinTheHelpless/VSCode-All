@@ -1,8 +1,8 @@
 
 Keywords and terms for cybersec ( Names of apps, exploits, basic knowledge, guidlines for personal notes )
 There should be a table of contents as well with coresponding page numbers:
-    - Table of contents - 1
-    - Common terms, definitions and explanaitions if necessary. - page 2 trough 5 (light descriptions)
+        - Table of contents - 1
+        - Common terms, definitions and explanaitions if necessary. - page 2 trough 5 (light descriptions)
     - Networks, Ports, port numbers and their use, SSL, SSH, Telnet explained all 
     - Common protocols (FTP, UDP, HTTP, HTTPS) and their ports
     - Basic intrusion trough ports ( examples )
