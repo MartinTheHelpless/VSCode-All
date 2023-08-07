@@ -7,12 +7,13 @@ There should be a table of contents as well with coresponding page numbers:
         a. Network infrastructure component overview
         b. Routing and its components ( IP, MAC, Default Gateway, DNS, LAN, WAN, Ethernet, ... )
         c. Common protocols (FTP, UDP, HTTP, HTTPS) and their ports  
-        d. Web servers and what happens when you connect to a website
-        e. Common network architectures
-        f. Packet description and details    
-        g. Data centers, Software Defined Networks
-        h. Intrusion Detection Systems
-        i. Firewall response to malicious packets and how it detects them
+        d. telnet protocol connection, ssh connection and ftp connection into remote host, SMBclient
+        e. Web servers and what happens when you connect to a website
+        f. Common network architectures
+        g. Packet description and details    
+        h. Data centers, Software Defined Networks
+        i. Intrusion Detection Systems
+        j. Firewall response to malicious packets and how it detects them
     - Basic intrusion trough ports ( examples )
     - Spoofing with details
     - DNS, all web traffic and functionality
@@ -29,3 +30,7 @@ There should be a table of contents as well with coresponding page numbers:
     - Tools for indentifying vulnerabilities ( metasploit, ...)
     - Exploits ( historical, present, how they function ) and how to exploit (there was a dirty cow exploit )
     - Viruses, their types, common viruses ( how to make one and more research )
+
+    Terms to research:
+    redis server + redis-cli commands
+    
