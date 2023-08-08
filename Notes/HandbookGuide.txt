@@ -36,4 +36,4 @@ There should be a table of contents as well with coresponding page numbers:
     ffuf
     smbclient
     wpscan (wordpress scan)
-    
+    netstat
