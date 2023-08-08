@@ -29,3 +29,8 @@ There should be a table of contents as well with coresponding page numbers:
     - Tools for indentifying vulnerabilities ( metasploit, ...)
     - Exploits ( historical, present, how they function ) and how to exploit (there was a dirty cow exploit )
     - Viruses, their types, common viruses ( how to make one and more research )
+
+    Terms to research:
+    ffuf
+    smbclient
+    wpscan (wordpress scan)
