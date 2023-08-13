@@ -6,7 +6,8 @@ There should be a table of contents as well with coresponding page numbers:
     - Networks, Ports, port numbers and their use, SSL, SSH, Telnet explained all 
         a. Network infrastructure component overview
         b. Routing and its components ( IP, MAC, Default Gateway, DNS, LAN, WAN, Ethernet, ... )
-        c. Common protocols (FTP, UDP, HTTP, HTTPS) and their ports  
+        c. Common protocols (FTP, UDP, HTTP, HTTPS)
+        C. Ports  
         d. telnet protocol connection, ssh connection and ftp connection into remote host, SMBclient
         e. Web servers and what happens when you connect to a website
         f. Common network architectures
