@@ -8,10 +8,7 @@ There should be a table of contents as well with coresponding page numbers:
         b. Routing and its components ( IP, MAC, Default Gateway, DNS, LAN, WAN, Ethernet, ... )
         c. Common protocols (FTP, UDP, HTTP, HTTPS)
         C. Ports  
-        d. telnet protocol connection, ssh connection and ftp connection into remote host, SMBclient
-        e. Web servers and what happens when you connect to a website
         f. Common network architectures
-        g. Packet description and details    
         h. Data centers, Software Defined Networks
         i. Intrusion Detection Systems
         j. Firewall response to malicious packets and how it detects them
