@@ -10,7 +10,7 @@ private:
     int balance;
 
 public:
-    Node(int value, Node *left, Node *right);
+    Node(int value, Node *lSubNode, Node *rSubNode);
     int getValue();
     void addLeftSubTree(Node *node);
     void addRightSubTree(Node *node);

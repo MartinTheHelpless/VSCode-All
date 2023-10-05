@@ -14,19 +14,57 @@ Odevzdávejte pouze zdrojové a hlavičkové kódy.[]*/
 
 #include "Tree.h"
 
+void sortVector(std::vector<int> *vect);
+
 int main(int argc, char const *argv[])
 {
     std::vector<int> avlVector = {20, 10, 5, 13, 18, 25, 26, 27, 28, 12};
 
-    Tree *test = new Tree();
+    sortVector(&avlVector);
 
-    for (int i = 0; i < avlVector.size(); i++)
-    {
-        Node *newNode = new Node(avlVector[i], NULL, NULL);
-        test->addNode(newNode);
-    }
+    for (int i = 0; i < avlVector.size() - 1; i++)
+        if (avlVector[i] > avlVector[i + 1])
+        {
+            std::cout << "Vector is not sorted properly !!!" << std::endl;
+            return 1;
+        }
 
-    test->sortAVLTree();
+    Tree *tree = new Tree(&avlVector);
+
+    std::cout << "Tree finished" << std::endl;
 
     return 0;
+}
+
+void sortVector(std::vector<int> *vect)
+{
+    // Vector is sorted here, to make the tree creation easier. Could be in the tree.h module
+    // but I decidet it would be okay like this
+
+    int size = (*vect).size();
+
+    int valueArray[size];
+
+    for (int i = size - 1; i >= 0; i--)
+    {
+        valueArray[i] = (*vect)[i];
+        (*vect).pop_back();
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        int min = INT_MAX;
+        int position;
+        for (int o = 0; o < size; o++)
+        {
+            if (valueArray[o] < min)
+            {
+                min = valueArray[o];
+                position = o;
+            }
+        }
+        (*vect).push_back(min);
+        valueArray[position] = INT_MAX;
+    }
+    size = (*vect).size();
 }

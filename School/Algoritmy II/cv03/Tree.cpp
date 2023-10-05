@@ -6,11 +6,13 @@ class Tree
 {
 private:
     std::vector<Node *> nodes;
-    Node *topNode;
+    Node *rootNode;
+    int totalLevels;
 
 public:
-    Tree();
+    Tree(std::vector<int> *vect);
     void printTree();
     void addNode(Node *node);
-    void sortAVLTree();
+    Node *getNextNode(std::vector<int> *vect, int start, int end);
+    void treeFromVector(std::vector<int> *vect, int start, int end);
 };
