@@ -9,12 +9,17 @@ private:
     int totalLevels;
     std::vector<int> usedValues;
 
+    Node *getNextNode(double start, double end, std::vector<int> *vect);
+
 public:
     Tree(std::vector<int> *vect);
     void printTree(std::string prefix, Node *node, bool isLeft);
-    void addNode(Node *node);
-    Node *getNextNode(double start, double end, std::vector<int> *vect);
+    void setLevels(Node *node, int maxLevel);
+    void addNode(int value);
+    void displayTreeLevels();
+    Node *getNodeByValue(int val);
     void treeFromVector(double start, double end, std::vector<int> *vect);
-    int isBalanced();
+    int getMaxLevel();
+    void isBalanced();
     void displayTree();
 };

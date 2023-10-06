@@ -4,6 +4,8 @@
 Tree::Tree(std::vector<int> *vect)
 {
     this->treeFromVector(0, vect->size(), vect);
+
+    this->rootNode->setLevel(this->totalLevels);
 }
 
 void Tree::printTree(std::string prefix, Node *node, bool isLeft)
@@ -24,13 +26,80 @@ void Tree::printTree(std::string prefix, Node *node, bool isLeft)
     }
 }
 
+void Tree::displayTreeLevels()
+{
+    for (int i = this->totalLevels; i > 0; i--)
+    {
+        std::cout << "\nTree nodes on " << i << ". level : " << std::endl;
+        for (int o = 0; o < this->nodes.size(); o++)
+        {
+            if (this->nodes[o]->getLevel() == i)
+                std::cout << "-- " << this->nodes[o]->getValue() << " --";
+        }
+    }
+}
+
 void Tree::displayTree()
 {
     printTree("", this->rootNode, false);
 }
 
-void Tree::addNode(Node *node)
+void Tree::setLevels(Node *node, int maxLevel)
 {
+    node->setLevel(maxLevel);
+
+    if (node->getLSubNode() != NULL)
+        setLevels(node->getLSubNode(), maxLevel - 1);
+
+    if (node->getRSubNode() != NULL)
+        setLevels(node->getRSubNode(), maxLevel - 1);
+}
+
+void Tree::addNode(int value)
+{
+
+    Node *tmpNode = this->rootNode;
+
+    if (this->getNodeByValue(value) == NULL)
+    {
+        while (true)
+        {
+            if (tmpNode->getValue() > value && tmpNode->getLSubNode() == NULL)
+            {
+                Node *AddedNode = new Node(value, NULL, NULL);
+                this->nodes.push_back(AddedNode);
+                this->usedValues.push_back(value);
+                tmpNode->addLeftSubTree(AddedNode);
+                for (int i = 1; this->nodes.size() >= pow(2, i); i++)
+                    this->totalLevels = i + 1;
+                break;
+            }
+            else if (tmpNode->getValue() > value && tmpNode->getLSubNode() != NULL)
+            {
+                tmpNode = tmpNode->getLSubNode();
+            }
+            else if (tmpNode->getValue() < value && tmpNode->getRSubNode() == NULL)
+            {
+                Node *AddedNode = new Node(value, NULL, NULL);
+                this->nodes.push_back(AddedNode);
+                this->usedValues.push_back(value);
+                tmpNode->addRightSubTree(AddedNode);
+                for (int i = 1; this->nodes.size() >= pow(2, i); i++)
+                    this->totalLevels = i + 1;
+                break;
+                break;
+            }
+            else if (tmpNode->getValue() < value && tmpNode->getRSubNode() != NULL)
+            {
+                tmpNode = tmpNode->getRSubNode();
+            }
+        }
+        this->setLevels(this->rootNode, this->totalLevels);
+
+        this->isBalanced();
+    }
+    else
+        std::cout << "This node is already present in the tree." << std::endl;
 }
 
 Node *Tree::getNextNode(double start, double end, std::vector<int> *vect)
@@ -64,10 +133,28 @@ Node *Tree::getNextNode(double start, double end, std::vector<int> *vect)
         return NULL;
 }
 
+Node *Tree::getNodeByValue(int val)
+{
+
+    Node *tmp = this->rootNode;
+    while (tmp != NULL)
+    {
+        if (val > tmp->getValue())
+            tmp = tmp->getRSubNode();
+        else if (val < tmp->getValue())
+            tmp = tmp->getLSubNode();
+        else
+            return tmp;
+    }
+
+    std::cout << "This value is not in the tree yet." << std::endl;
+    return NULL;
+}
+
 void Tree::treeFromVector(double start, double end, std::vector<int> *vect)
 {
 
-    for (int i = 1; (end + 1) >= pow(2, i); i++)
+    for (int i = 1; end >= pow(2, i); i++)
         this->totalLevels = i + 1;
 
     int values[(*vect).size()];
@@ -86,19 +173,24 @@ void Tree::treeFromVector(double start, double end, std::vector<int> *vect)
     this->rootNode->addRightSubTree(getNextNode(tmpVal, end, vect));
 }
 
-int Tree::isBalanced()
+int Tree::getMaxLevel()
+{
+    return this->totalLevels;
+}
+
+void Tree::isBalanced()
 {
 
+    this->rootNode->setBalance(this->rootNode->calculateBalance());
+
+    bool balanced = true;
+
     for (int i = 0; i < this->nodes.size(); i++)
-    {
         if (abs(this->nodes[i]->getBalance()) > 1)
         {
-            std::cout << "This tree is not properly balanced." << std::endl;
-            return 1;
+            std::cout << "Imbalance on node: " << this->nodes[i]->getValue() << " --- balance factor: " << this->nodes[i]->getBalance() << std::endl;
+            balanced = false;
         }
-    }
 
-    std::cout << "This tree is properly balanced." << std::endl;
-
-    return 0;
+    balanced ? std::cout << "Tree is properly balanced. " << std::endl : std::cout << "";
 }

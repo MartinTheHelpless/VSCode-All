@@ -10,6 +10,7 @@ private:
     Node *lSubNode;
     Node *rSubNode;
     int balance;
+    int nodeLevel;
 
 public:
     Node(int value);
@@ -18,7 +19,11 @@ public:
     Node *getLSubNode();
     int maxDepth(Node *node);
     int getValue();
+    void setLevel(int level);
+    int getLevel();
+    void setBalance(int balance);
     int getBalance();
+    int calculateBalance();
     void addLeftSubTree(Node *node);
     void addRightSubTree(Node *node);
 };

@@ -33,7 +33,21 @@ int main(int argc, char const *argv[])
 
     std::cout << "Tree finished" << std::endl;
 
+    tree->setLevels(tree->getNodeByValue(20), tree->getMaxLevel());
+
     tree->isBalanced();
+
+    tree->displayTreeLevels();
+
+    std::cout << "\n\n";
+
+    std::cout << "Adding node 24" << std::endl;
+
+    tree->addNode(24);
+
+    std::cout << "Adding node 15" << std::endl;
+
+    tree->addNode(15);
 
     tree->displayTree();
 

@@ -28,6 +28,16 @@ int Node::getValue()
     return this->value;
 }
 
+void Node::setLevel(int level)
+{
+    this->nodeLevel = level;
+}
+
+int Node::getLevel()
+{
+    return this->nodeLevel;
+}
+
 void Node::addLeftSubTree(Node *node)
 {
     this->lSubNode = node;
@@ -38,13 +48,23 @@ void Node::addRightSubTree(Node *node)
     this->rSubNode = node;
 }
 
-int Node::getBalance()
+void Node::setBalance(int balance)
+{
+    this->balance = balance;
+}
+
+int Node::calculateBalance()
 {
 
     int lDepth = maxDepth(this->lSubNode);
     int rDepth = maxDepth(this->rSubNode);
 
     return lDepth - rDepth;
+}
+
+int Node::getBalance()
+{
+    return this->balance;
 }
 
 int Node::maxDepth(Node *node)
@@ -56,6 +76,8 @@ int Node::maxDepth(Node *node)
 
         int lDepth = maxDepth(node->lSubNode);
         int rDepth = maxDepth(node->rSubNode);
+
+        node->setBalance(lDepth - rDepth);
 
         /* use the larger one */
         if (lDepth > rDepth)
