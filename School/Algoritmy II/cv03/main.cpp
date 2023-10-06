@@ -33,6 +33,10 @@ int main(int argc, char const *argv[])
 
     std::cout << "Tree finished" << std::endl;
 
+    tree->isBalanced();
+
+    tree->displayTree();
+
     return 0;
 }
 
