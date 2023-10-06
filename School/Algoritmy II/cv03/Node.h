@@ -1,29 +1,21 @@
 #pragma once
-#include "Node.cpp"
+#include <math.h>
 #include <iostream>
+#include <vector>
 
-Node::Node(int value, Node *lSubNode, Node *rSubNode)
+class Node
 {
-    this->value = value;
-    this->lSubNode = lSubNode;
-    this->rSubNode = rSubNode;
-}
+private:
+    int value;
+    Node *lSubNode;
+    Node *rSubNode;
+    // int balance;
 
-int Node::getValue()
-{
-    return this->value;
-}
-
-void Node::addLeftSubTree(Node *node)
-{
-    this->lSubNode = node;
-}
-
-void Node::addRightSubTree(Node *node)
-{
-    this->rSubNode = node;
-}
-
-void Node::countBalance()
-{
-}
+public:
+    Node(int value);
+    Node(int value, Node *lSubNode, Node *rSubNode);
+    int getValue();
+    void addLeftSubTree(Node *node);
+    void addRightSubTree(Node *node);
+    void countBalance();
+};

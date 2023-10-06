@@ -12,7 +12,7 @@ Hotovou práci po kontrole zasílejte na adresu : radovan.recka.st@vsb.cz
 Do předmětu zprávy uveďte : ALGC07_3[]
 Odevzdávejte pouze zdrojové a hlavičkové kódy.[]*/
 
-#include "Tree.h"
+#include "Tree.cpp"
 
 void sortVector(std::vector<int> *vect);
 
