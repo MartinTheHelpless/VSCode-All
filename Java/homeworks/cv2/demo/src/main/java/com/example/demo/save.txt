@@ -1,0 +1,127 @@
+package com.example.demo;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+
+public class HelloApplication extends Application implements EventHandler<ActionEvent> {
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    int ballSize = 17;
+
+    Button button;
+
+    @Override
+    public void start(Stage stage) {
+        stage.setTitle("Pong!");
+
+        stage.setResizable(false);
+
+        Pane root = new Pane();
+
+        Scene scene = new Scene(root, 854, 516);
+
+        scene.setFill(Color.BLACK);
+
+        game(stage, scene, root);
+
+    }
+
+
+    public void SetRectPosition(Pane root, Rectangle rect, double x, double y) {
+
+        rect.setLayoutY(y);
+        rect.setLayoutX(x);
+
+    }
+
+    public void DrawRectangleOnPane(Pane root, Rectangle rect, double x, double y) {
+
+        root.getChildren().add(rect);
+        rect.setLayoutY(y);
+        rect.setLayoutX(x);
+
+    }
+
+    public void DrawRectangleOnPane(Pane root, Rectangle rect, double x, double y, Color color) {
+
+        rect.setFill(color);
+        root.getChildren().add(rect);
+        rect.setLayoutY(y);
+        rect.setLayoutX(x);
+
+    }
+
+    @Override
+    public void handle(ActionEvent actionEvent) {
+        if (actionEvent.getSource() == button) {
+
+            System.out.println("You clicked a button!");
+
+        }
+    }
+
+    private void game(Stage stage, Scene scene, Pane root) {
+
+
+        Point2D ballBase = new Point2D(scene.getWidth() / 2, scene.getHeight() / 2);
+
+        Rectangle topBoundary = new Rectangle(scene.getWidth(), scene.getHeight() / 100 * 5);
+        Rectangle botBoundary = new Rectangle(scene.getWidth(), scene.getHeight() / 100 * 5);
+
+        DrawRectangleOnPane(root, topBoundary, 0, 0, Color.WHITE);
+        DrawRectangleOnPane(root, botBoundary, 0, scene.getHeight() - botBoundary.getHeight(), Color.WHITE);
+
+        Ball ball = new Ball(root, ballBase, ballSize, Color.WHITE);
+
+        ball.SetPosition(root, ballBase.getX(), ballBase.getY());
+
+        Player p1 = new Player(root, Color.WHITE, new Point2D(scene.getWidth() / 100 * 5, scene.getHeight() / 2 - scene.getHeight() / 100 * 5));
+        Player p2 = new Player(root, Color.WHITE, new Point2D(scene.getWidth() - scene.getWidth() / 100 * 7, scene.getHeight() / 2 - scene.getHeight() / 100 * 5));
+
+        boolean gamePlay = true;
+
+         stage.setScene(scene);
+         stage.show();
+
+        while (gamePlay){
+
+            if (ball.positionX <= 0 || ball.positionX >= scene.getWidth()) {
+                gamePlay = false;
+                if (ball.positionX <= 0) p2.pts += 1;
+                else p1.pts += 1;
+                break;
+            } else {
+
+                if (ball.positionY <= topBoundary.getHeight() || ball.positionY >= scene.getHeight() - botBoundary.getHeight())
+                    ball.dirY *= (-1);
+
+                if (ball.positionX <= p1.position.getX() + p1.paddle.getWidth() && ball.positionX >= p1.position.getX() && (p1.position.getY() <= ball.positionY + ball.size && p1.position.getY() + p1.paddle.getHeight() >= ball.positionY))
+                    ball.dirX *= (-1);
+                else if (ball.positionX + ball.size >= p2.position.getX() && ball.positionX + ball.size <= p2.position.getX() + p2.paddle.getWidth() && (p2.position.getY() <= ball.positionY + ball.size && p2.position.getY() + p2.paddle.getHeight() >= ball.positionY))
+                    ball.dirX *= (-1);
+
+                ball.SetPosition(root, ball.positionX+=ball.dirX, ball.positionY+=ball.dirY);
+
+                stage.setScene(scene);
+                stage.show();
+
+            }
+            break;
+        }
+
+
+    }
+
+}
