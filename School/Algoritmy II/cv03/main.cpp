@@ -18,7 +18,7 @@ void sortVector(std::vector<int> *vect);
 
 int main(int argc, char const *argv[])
 {
-    std::vector<int> avlVector = {20, 10, 5, 13, 18, 25, 26, 27, 28, 12};
+    std::vector<int> avlVector = {20, 10, 5, 14, 18, 25, 27, 28, 29, 12};
 
     sortVector(&avlVector);
 
@@ -41,24 +41,38 @@ int main(int argc, char const *argv[])
 
     std::cout << "\n\n";
 
-    std::cout << "Adding node 24" << std::endl;
+    tree->displayTree();
 
-    tree->addNode(24);
-
-    std::cout << "Adding node 15" << std::endl;
-
-    tree->addNode(15);
+    tree->addNode(13);
 
     tree->displayTree();
+
+    tree->isBalanced();
+
+    tree->balanceTree();
+
+    tree->displayTree();
+
+    tree->isBalanced();
+
+    while (true)
+    {
+        int nodeVal;
+        std::cout << "Input a value to add to the tree" << std::endl;
+        std::cin >> nodeVal;
+        tree->addNode(nodeVal);
+        tree->displayTree();
+
+        tree->isBalanced();
+        tree->balanceTree();
+        tree->displayTree();
+    }
 
     return 0;
 }
 
 void sortVector(std::vector<int> *vect)
 {
-    // Vector is sorted here, to make the tree creation easier. Could be in the tree.h module
-    // but I decidet it would be okay like this
-
     int size = (*vect).size();
 
     int valueArray[size];
@@ -84,5 +98,4 @@ void sortVector(std::vector<int> *vect)
         (*vect).push_back(min);
         valueArray[position] = INT_MAX;
     }
-    size = (*vect).size();
 }

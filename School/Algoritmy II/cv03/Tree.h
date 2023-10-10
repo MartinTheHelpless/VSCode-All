@@ -8,6 +8,7 @@ private:
     Node *rootNode;
     int totalLevels;
     std::vector<int> usedValues;
+    std::vector<int> sortedValues;
 
     Node *getNextNode(double start, double end, std::vector<int> *vect);
 
@@ -22,4 +23,5 @@ public:
     int getMaxLevel();
     void isBalanced();
     void displayTree();
+    void balanceTree();
 };

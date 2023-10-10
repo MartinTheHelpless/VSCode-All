@@ -194,3 +194,66 @@ void Tree::isBalanced()
 
     balanced ? std::cout << "Tree is properly balanced. " << std::endl : std::cout << "";
 }
+
+void Tree::balanceTree()
+{
+    for (int i = 1; i <= this->totalLevels; i++)
+    {
+        for (int o = 0; o < this->nodes.size(); o++)
+        {
+            if (this->nodes[o]->getLevel() == i && this->nodes[o]->getBalance() > 1)
+            {
+
+                Node *tmpNode = this->rootNode;
+
+                while (tmpNode->getLSubNode()->getValue() != this->nodes[o]->getValue() && tmpNode->getRSubNode()->getValue() != this->nodes[o]->getValue())
+                {
+                    if (this->nodes[o]->getValue() > tmpNode->getValue())
+                        tmpNode = tmpNode->getRSubNode();
+                    else
+                        tmpNode = tmpNode->getLSubNode();
+                }
+
+                if (tmpNode->getRSubNode()->getValue() == this->nodes[o]->getValue())
+                {
+                    tmpNode->addRightSubTree(this->nodes[o]->getLSubNode());
+                    this->nodes[o]->getLSubNode()->addRightSubTree(this->nodes[o]);
+                    this->nodes[o]->addLeftSubTree(NULL);
+                }
+                else if (tmpNode->getLSubNode()->getValue() == this->nodes[o]->getValue())
+                {
+                    tmpNode->addLeftSubTree(this->nodes[o]->getLSubNode());
+                    this->nodes[o]->getLSubNode()->addRightSubTree(this->nodes[o]);
+                    this->nodes[o]->addLeftSubTree(NULL);
+                }
+            }
+            else if (this->nodes[o]->getLevel() == i && this->nodes[o]->getBalance() < -1)
+            {
+                Node *tmpNode = this->rootNode;
+
+                while (tmpNode->getLSubNode()->getValue() != this->nodes[o]->getValue() && tmpNode->getRSubNode()->getValue() != this->nodes[o]->getValue())
+                {
+                    if (this->nodes[o]->getValue() > tmpNode->getValue())
+                        tmpNode = tmpNode->getRSubNode();
+                    else
+                        tmpNode = tmpNode->getLSubNode();
+                }
+
+                if (tmpNode->getRSubNode()->getValue() == this->nodes[o]->getValue())
+                {
+                    tmpNode->addRightSubTree(this->nodes[o]->getRSubNode());
+                    this->nodes[o]->getRSubNode()->addLeftSubTree(this->nodes[o]);
+                    this->nodes[o]->addRightSubTree(NULL);
+                }
+                else if (tmpNode->getLSubNode()->getValue() == this->nodes[o]->getValue())
+                {
+                    tmpNode->addLeftSubTree(this->nodes[o]->getRSubNode());
+                    this->nodes[o]->getRSubNode()->addLeftSubTree(this->nodes[o]);
+                    this->nodes[o]->addRightSubTree(NULL);
+                }
+            }
+            this->rootNode->setBalance(this->rootNode->calculateBalance());
+            this->setLevels(this->rootNode, this->totalLevels);
+        }
+    }
+}
