@@ -14,10 +14,7 @@ int Heap::size()
 
 bool Heap::is_empty()
 {
-    if (this->values.size() == 0)
-        return true;
-    else
-        return false;
+    return (this->values.size() > 0 ? false : true);
 }
 
 void Heap::print()
