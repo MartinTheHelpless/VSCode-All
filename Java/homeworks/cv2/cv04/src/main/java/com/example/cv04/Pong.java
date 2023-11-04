@@ -18,22 +18,29 @@ public class Pong extends Application {
     final int SCORE_FONT = 45;
     final double BALL_SIZE = 15;
     int ball_speed = 0;
+    int gameMode = 0;
     boolean play = false;
 
     private final Pane root = new Pane();
 
-    private final Player p1 = new Player(root, "Player One", PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 1);
+    Player p1;
 
-    private final Player p2 = new Player(root, "Player Two", PADDLE_HEIGHT, PADDLE_WIDTH, WINDOW_WIDTH - 2 * PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 2);
+    Player p2;
 
     Text startText = new Text(WINDOW_WIDTH / 2 - 219, WINDOW_HEIGHT / 2 - 50, "Press ENTER to play");
     Text colorHint = new Text(WINDOW_WIDTH / 2 - 300, WINDOW_HEIGHT / 2 + 70, "Tab and Backspace to change paddle colors");
 
     private final Ball ball = new Ball((int) BALL_SIZE, Color.WHITE);
 
-    private Pane createContent() {
+    private Pane createGame() {
+
 
         root.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        Player p1 = new Player(root, "Player One", PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 1);
+
+        Player p2 = new Player(root, "Player Two", PADDLE_HEIGHT, PADDLE_WIDTH, WINDOW_WIDTH - 2 * PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 2);
+
 
         root.getChildren().add(p1);
 
@@ -49,6 +56,37 @@ public class Pong extends Application {
         root.getChildren().add(colorHint);
 
         root.getChildren().add(ball);
+
+        if (gameMode == 1 ){
+            AnimationTimer timer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    try {
+                        Thread.sleep(10);
+                        update();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            timer.start();
+        }
+
+
+
+        return root;
+    }
+
+    private Pane createMenu() {
+
+        root.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        Player p1 = new Player(root, "Player One", PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 1);
+
+        Player p2 = new Player(root, "Player Two", PADDLE_HEIGHT, PADDLE_WIDTH, WINDOW_WIDTH - 2 * PADDLE_WIDTH, WINDOW_HEIGHT / 2 - PADDLE_HEIGHT / 2, Color.WHITE, SCORE_FONT, 2);
+
+
+        root.getChildren().add(new Text(WINDOW_WIDTH / 4 * 1, WINDOW_HEIGHT / 4, "Play Game"));
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -148,67 +186,75 @@ public class Pong extends Application {
 
         stage.setTitle("Pong!");
 
-        Scene scene = new Scene(createContent());
+        Scene scene = new Scene(createMenu());
 
-        scene.setFill(Color.BLACK);
+        switch (gameMode) {
 
-        scene.setOnKeyPressed(e -> {
+            case 0:
+                break;
 
-            Thread keys2;
-            keys2 = new Thread(() -> {
-                switch (e.getCode()) {
-                    case W:
-                        p1.moveUp();
-                        break;
-                    case S:
-                        p1.moveDown();
-                        break;
-                    case UP:
-                        p2.moveUp();
-                        break;
-                    case DOWN:
-                        p2.moveDown();
-                        break;
-                    case TAB:
-                        changePaddleColor(p1);
-                        break;
-                    case BACK_SPACE:
-                        changePaddleColor(p2);
-                        break;
-                    case ENTER:
-                        ball_speed = 5;
-                        play = true;
-                        startText.setFill(Color.BLACK);
-                        colorHint.setFill(Color.BLACK);
-                        p1.scoreTab.setFill(Color.BLACK);
-                        p2.scoreTab.setFill(Color.BLACK);
-                        break;
-                }
-            });
-            keys2.start();
-        });
+            case 1:
+                scene.setFill(Color.BLACK);
 
-        scene.setOnKeyReleased(e -> {
+                scene.setOnKeyPressed(e -> {
 
-            Thread keys1;
-            keys1 = new Thread(() -> {
-                switch (e.getCode()) {
-                    case W:
-                        p1.moveU = false;
-                        break;
-                    case S:
-                        p1.moveDwn = false;
-                        break;
-                    case UP:
-                        p2.moveU = false;
-                        break;
-                    case DOWN:
-                        p2.moveDwn = false;
-                        break;
-                }
-            });
-            keys1.start();
-        });
+                    Thread keys2;
+                    keys2 = new Thread(() -> {
+                        switch (e.getCode()) {
+                            case W:
+                                p1.moveUp();
+                                break;
+                            case S:
+                                p1.moveDown();
+                                break;
+                            case UP:
+                                p2.moveUp();
+                                break;
+                            case DOWN:
+                                p2.moveDown();
+                                break;
+                            case TAB:
+                                changePaddleColor(p1);
+                                break;
+                            case BACK_SPACE:
+                                changePaddleColor(p2);
+                                break;
+                            case ENTER:
+                                ball_speed = 5;
+                                play = true;
+                                startText.setFill(Color.BLACK);
+                                colorHint.setFill(Color.BLACK);
+                                p1.scoreTab.setFill(Color.BLACK);
+                                p2.scoreTab.setFill(Color.BLACK);
+                                break;
+                        }
+                    });
+                    keys2.start();
+                });
+
+                scene.setOnKeyReleased(e -> {
+
+                    Thread keys1;
+                    keys1 = new Thread(() -> {
+                        switch (e.getCode()) {
+                            case W:
+                                p1.moveU = false;
+                                break;
+                            case S:
+                                p1.moveDwn = false;
+                                break;
+                            case UP:
+                                p2.moveU = false;
+                                break;
+                            case DOWN:
+                                p2.moveDwn = false;
+                                break;
+                        }
+                    });
+                    keys1.start();
+                });
+                break;
+        }
 
         stage.setScene(scene);
         stage.show();

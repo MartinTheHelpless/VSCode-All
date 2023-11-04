@@ -68,7 +68,7 @@ public class Player extends Rectangle {
                         throw new RuntimeException(e);
                     }
                     if (getTranslateY() <= 0) {
-                        setTranslateY(0);
+                        setTranslateY(5);
                         moveU = false;
                     }
                 }

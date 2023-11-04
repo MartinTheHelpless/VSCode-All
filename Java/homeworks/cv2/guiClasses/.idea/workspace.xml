@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e3763f1-dc88-407a-a457-2437d6589761" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/Pong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/HelloApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/HelloController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../cv04/src/main/resources/com/example/cv04/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../cv04/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../cv04/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/Pong.java" beforeDir="false" afterPath="$PROJECT_DIR$/../cv04/src/main/java/com/example/cv04/Pong.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/src/main/java/com/example/spaceinvaders/HelloApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spaceInvaders/src/main/java/module-info.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
