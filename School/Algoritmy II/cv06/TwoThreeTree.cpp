@@ -78,6 +78,9 @@ void TwoThreeTree::insert(int value)
 
             int moveValue;
 
+            if (tmpNode->val2 > value)
+                moveValue = tmpNode->val2;
+
             if (tmpNode->val2 < value)
             {
                 moveValue = tmpNode->val2;
