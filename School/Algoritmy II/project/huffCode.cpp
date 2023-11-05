@@ -130,16 +130,33 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
 
     char c;
 
+    unsigned char currentByte = 0;
+    int bitOffset = 7;
+
     while ((*input) >> c)
     {
         for (int i = 0; i < 8; i++)
         {
             if (this->valueMap[int(c)][i] == 0 || this->valueMap[int(c)][i] == 1)
             {
-                (*output) << this->valueMap[int(c)][i];
+                if (this->valueMap[int(c)][i] == 1)
+                    currentByte |= (1 << bitOffset);
+
+                bitOffset--;
+                if (bitOffset < 0)
+                {
+                    (*output).put(currentByte);
+                    currentByte = 0;
+                    bitOffset = 7;
+                }
             }
             else
                 break;
         }
+    }
+
+    if (bitOffset != 7)
+    {
+        (*output).put(currentByte);
     }
 }

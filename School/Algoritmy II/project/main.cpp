@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    char mode = 'c'; //(*argv)[1];
+    char mode = 'c'; // argv[1][0];
 
     std::string inFile = "example.txt"; // argv[2];
 
