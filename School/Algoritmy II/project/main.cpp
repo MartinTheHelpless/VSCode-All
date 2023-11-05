@@ -24,13 +24,18 @@ int main(int argc, char const *argv[])
     case 'c':
     {
         std::ifstream input;
+        std::ofstream output;
+        output.open(outFile, std::ios::out | std::ios::binary);
         input.open(inFile, std::ios::in);
 
         huffCode *test = new huffCode(&input);
 
         Node *root = test->getRootNode();
 
+        test->createOutput(&input, &output);
+
         input.close();
+        output.close();
         break;
     }
 

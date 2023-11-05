@@ -3,6 +3,7 @@
 
 huffCode::huffCode(std::ifstream *input)
 {
+
     char c;
     (*input) >> std::noskipws;
 
@@ -16,6 +17,12 @@ huffCode::huffCode(std::ifstream *input)
     (*input).seekg(0, std::ios::beg);
 
     createTree();
+
+    int treeDepth = getTreeDepth(this->root) - 1;
+
+    int valueMap[256][treeDepth];
+
+    mapTree(this->root, "");
 }
 
 void huffCode::createTree()
@@ -96,5 +103,43 @@ int huffCode::getTreeDepth(Node *node)
             return 1 + r;
         else
             return 1 + l;
+    }
+}
+
+void huffCode::mapTree(Node *node, std::string dirs)
+{
+
+    if (node->getLChild() == nullptr && node->getRChild() == nullptr)
+    {
+        int pos = int(node->getCrs()[0]);
+
+        for (int i = 0; i < 8; i++)
+            this->valueMap[pos][i] = (dirs[i] == '0' || dirs[i] == '1' ? dirs[i] - '0' : 6);
+    }
+    else
+    {
+        if (node->getLChild() != nullptr)
+            mapTree(node->getLChild(), dirs + "0");
+        if (node->getRChild() != nullptr)
+            mapTree(node->getRChild(), dirs + "1");
+    }
+}
+
+void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
+{
+
+    char c;
+
+    while ((*input) >> c)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            if (this->valueMap[int(c)][i] == 0 || this->valueMap[int(c)][i] == 1)
+            {
+                (*output) << this->valueMap[int(c)][i];
+            }
+            else
+                break;
+        }
     }
 }
