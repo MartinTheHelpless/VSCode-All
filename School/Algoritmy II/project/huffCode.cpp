@@ -130,6 +130,8 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
 
     char c;
 
+    int bytes = 0;
+
     unsigned char currentByte = 0;
     int bitOffset = 7;
 
@@ -145,6 +147,7 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
                 bitOffset--;
                 if (bitOffset < 0)
                 {
+                    bytes++;
                     (*output).put(currentByte);
                     currentByte = 0;
                     bitOffset = 7;
@@ -158,5 +161,14 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
     if (bitOffset != 7)
     {
         (*output).put(currentByte);
+        bytes++;
     }
+
+    int inBytes = 0;
+
+    for (int i = 0; i < 256; i++)
+        inBytes += this->frequencies[i];
+
+    std::cout << std::setprecision(3);
+    std::cout << "Original file size: " << inBytes * 8 << "B\nCompressed file size: " << bytes * 8 << "b.\nCompression ratio: " << double(bytes) / double(inBytes) * 100 << "%." << std::endl;
 }
