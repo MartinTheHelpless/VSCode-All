@@ -1,24 +1,8 @@
 #pragma once
 #include "huffCode.h"
 
-huffCode::huffCode(std::ifstream *input)
+huffCode::huffCode()
 {
-
-    char c;
-    (*input) >> std::noskipws;
-
-    for (int i = 0; i < 256; i++)
-        this->frequencies[i] = 0;
-
-    while ((*input) >> c)
-        this->frequencies[int(c)]++;
-
-    (*input).clear(); // clear fail and eof bits
-    (*input).seekg(0, std::ios::beg);
-
-    createTree();
-
-    mapTree(this->root, "");
 }
 
 void huffCode::createTree()
@@ -121,8 +105,25 @@ void huffCode::mapTree(Node *node, std::string dirs)
     }
 }
 
-void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
+void huffCode::compress(std::ifstream *input, std::ofstream *output)
 {
+
+    char c;
+    (*input) >> std::noskipws;
+
+    for (int i = 0; i < 256; i++)
+        this->frequencies[i] = 0;
+
+    while ((*input) >> c)
+        this->frequencies[int(c)]++;
+
+    (*input).clear();
+    (*input).seekg(0, std::ios::beg);
+
+    createTree();
+
+    mapTree(this->root, "");
+
     // compressed data insertion:
 
     int bytes = 1;
@@ -135,8 +136,6 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
     }
 
     (*output).put(char(0));
-
-    char c;
 
     unsigned char currentByte = 0;
     int bitOffset = 7;
@@ -182,6 +181,8 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
 void huffCode::decompress(std::ifstream *input, std::ofstream *output)
 {
 
+    (*input) >> std::noskipws;
+
     for (int i = 0; i < 256; i++)
         this->frequencies[i] = 0;
 
@@ -189,20 +190,51 @@ void huffCode::decompress(std::ifstream *input, std::ofstream *output)
 
     (*input) >> check;
 
+    int origLength = 0;
+
     while (check != 0)
     {
         int tmp = int(check);
         (*input) >> check;
         this->frequencies[tmp] = int(check);
+        origLength += int(check);
         (*input) >> check;
     }
 
     createTree();
 
-    int origLength = 0;
+    std::string decomp = "";
 
-    for (int i = 0; i < 256; i++)
-        origLength += this->frequencies[i];
+    for (int i = 0; (*input) >> check; i++)
+        decomp.append(std::string(sizeof(char), check));
 
-    std::cout << origLength << std::endl;
+    Node *navNode = this->root;
+
+    for (int i = 0; origLength != 0; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            // get bit from string
+
+            bool bit = (decomp[i] >> (7 - j)) & 1;
+
+            // move in a tree according to the bit
+
+            if (bit)
+                navNode = navNode->getRChild();
+            else
+                navNode = navNode->getLChild();
+
+            // check if the node is leaf node
+
+            if (navNode->getLChild() == nullptr && navNode->getRChild() == nullptr)
+            {
+                (*output).put(navNode->getCrs()[0]);
+                navNode = this->root;
+                origLength--;
+                if (origLength == 0)
+                    break;
+            }
+        }
+    }
 }

@@ -12,11 +12,11 @@ private:
     Node *root;
 
 public:
-    huffCode(std::ifstream *input);
+    huffCode();
     void createTree();
     Node *getRootNode();
     int getTreeDepth(Node *node);
     void mapTree(Node *node, std::string dirs);
-    void createOutput(std::ifstream *input, std::ofstream *output);
+    void compress(std::ifstream *input, std::ofstream *output);
     void decompress(std::ifstream *input, std::ofstream *output);
 };

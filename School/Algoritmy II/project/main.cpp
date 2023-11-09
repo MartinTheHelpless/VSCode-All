@@ -9,41 +9,41 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    char mode = 'c'; // argv[1][0];
+    char mode = 'd'; // argv[1][0];
 
     std::string inFile = "example.txt"; // argv[2];
 
     std::string outFile = "compressed.huff"; // argv[3];
 
+    std::ifstream input;
+    std::ofstream output;
+
     switch (mode)
     {
     case 'd':
     {
-        break;
-    }
-    case 'c':
-    {
-        std::ifstream input;
-        std::ofstream output;
-        output.open(outFile, std::ios::out | std::ios::binary);
-        input.open(inFile, std::ios::in);
-
-        huffCode *test = new huffCode(&input);
-
-        Node *root = test->getRootNode();
-
-        test->createOutput(&input, &output);
-
-        input.close();
-        output.close();
+        huffCode *test = new huffCode();
 
         input.open(outFile, std::ios::in);
         output.open("decompressed.txt", std::ios::out);
 
         test->decompress(&input, &output);
 
-        input.close();
-        output.close();
+        std::cout << "Succesful decompression." << std::endl;
+
+        break;
+    }
+    case 'c':
+    {
+        output.open(outFile, std::ios::out | std::ios::binary);
+        input.open(inFile, std::ios::in);
+
+        huffCode *test = new huffCode();
+
+        test->compress(&input, &output);
+
+        std::cout << "Succesful compression." << std::endl;
+
         break;
     }
 
@@ -53,7 +53,8 @@ int main(int argc, char const *argv[])
         break;
     }
 
-    std::cout << "Succesful execution." << std::endl;
+    input.close();
+    output.close();
 
     return 0;
 }
