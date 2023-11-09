@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
 
     std::string inFile = "example.txt"; // argv[2];
 
-    std::string outFile = "output.huff"; // argv[3];
+    std::string outFile = "compressed.huff"; // argv[3];
 
     switch (mode)
     {
@@ -36,6 +36,14 @@ int main(int argc, char const *argv[])
 
         input.close();
         output.close();
+
+        input.open(outFile, std::ios::in);
+        output.open("decompressed.txt", std::ios::out);
+
+        test->decompress(&input, &output);
+
+        input.close();
+        output.close();
         break;
     }
 
@@ -44,6 +52,8 @@ int main(int argc, char const *argv[])
         return 1;
         break;
     }
+
+    std::cout << "Succesful execution." << std::endl;
 
     return 0;
 }

@@ -18,10 +18,6 @@ huffCode::huffCode(std::ifstream *input)
 
     createTree();
 
-    int treeDepth = getTreeDepth(this->root) - 1;
-
-    int valueMap[256][treeDepth];
-
     mapTree(this->root, "");
 }
 
@@ -127,10 +123,20 @@ void huffCode::mapTree(Node *node, std::string dirs)
 
 void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
 {
+    // compressed data insertion:
+
+    int bytes = 1;
+
+    for (int i = 0; i < this->root->getCrs().length(); i++)
+    {
+        (*output).put(this->root->getCrs()[i]);
+        (*output).put(char(this->frequencies[int(this->root->getCrs()[i])]));
+        bytes++;
+    }
+
+    (*output).put(char(0));
 
     char c;
-
-    int bytes = 0;
 
     unsigned char currentByte = 0;
     int bitOffset = 7;
@@ -170,5 +176,33 @@ void huffCode::createOutput(std::ifstream *input, std::ofstream *output)
         inBytes += this->frequencies[i];
 
     std::cout << std::setprecision(3);
-    std::cout << "Original file size: " << inBytes * 8 << "B\nCompressed file size: " << bytes * 8 << "b.\nCompression ratio: " << double(bytes) / double(inBytes) * 100 << "%." << std::endl;
+    std::cout << "Original file size: " << inBytes * 8 << "b\nCompressed file size: " << bytes * 8 << "b.\nCompression ratio: " << double(bytes) / double(inBytes) * 100 << "%." << std::endl;
+}
+
+void huffCode::decompress(std::ifstream *input, std::ofstream *output)
+{
+
+    for (int i = 0; i < 256; i++)
+        this->frequencies[i] = 0;
+
+    char check;
+
+    (*input) >> check;
+
+    while (check != 0)
+    {
+        int tmp = int(check);
+        (*input) >> check;
+        this->frequencies[tmp] = int(check);
+        (*input) >> check;
+    }
+
+    createTree();
+
+    int origLength = 0;
+
+    for (int i = 0; i < 256; i++)
+        origLength += this->frequencies[i];
+
+    std::cout << origLength << std::endl;
 }

@@ -32,9 +32,7 @@ std::vector<int> twoSum(std::vector<int> &nums, int target)
     {
         int complement = target - nums[i];
         if (numMap.count(complement) && numMap[complement] != i)
-        {
             return {i, numMap[complement]};
-        }
     }
 
     return {}; // No solution found

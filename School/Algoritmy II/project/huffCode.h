@@ -18,4 +18,5 @@ public:
     int getTreeDepth(Node *node);
     void mapTree(Node *node, std::string dirs);
     void createOutput(std::ifstream *input, std::ofstream *output);
+    void decompress(std::ifstream *input, std::ofstream *output);
 };
