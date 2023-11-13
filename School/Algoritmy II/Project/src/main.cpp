@@ -9,11 +9,11 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    char mode = 'd'; // argv[1][0];
+    char mode = argv[1][0];
 
-    std::string inFile = "example.txt"; // argv[2];
+    std::string inFile = argv[2];
 
-    std::string outFile = "compressed.huff"; // argv[3];
+    std::string outFile = argv[3];
 
     std::ifstream input;
     std::ofstream output;
@@ -24,8 +24,8 @@ int main(int argc, char const *argv[])
     {
         huffCode *test = new huffCode();
 
-        input.open(outFile, std::ios::in);
-        output.open("decompressed.txt", std::ios::out);
+        input.open(inFile, std::ios::in);
+        output.open(outFile, std::ios::out);
 
         test->decompress(&input, &output);
 

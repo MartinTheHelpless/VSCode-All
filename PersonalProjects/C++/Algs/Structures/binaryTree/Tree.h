@@ -1,4 +1,4 @@
-#include "Node.cpp"
+#include "PersonalProjects\C++\Algs\Structures\Node\Node.h"
 #include <vector>
 
 class Tree

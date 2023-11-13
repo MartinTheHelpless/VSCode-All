@@ -1,4 +1,5 @@
-#include "Tree.cpp"
+#include "PersonalProjects\C++\Algs\Structures\Node\Node.h"
+#include "PersonalProjects\C++\Algs\Structures\binaryTree\Tree.cpp"
 
 void vectSort(std::vector<int> *vect);
 

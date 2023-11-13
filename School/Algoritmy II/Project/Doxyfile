@@ -1,0 +1,30 @@
+# Project information
+PROJECT_NAME           = "ALG II Project"
+PROJECT_AUTHOR         = "Martin Burian"
+PROJECT_BRIEF          = "Huffman Coding implementation"
+PROJECT_NUMBER         = "1.0"
+OUTPUT_DIRECTORY       = docs
+
+INPUT                  = src
+
+RECURSIVE              = NO
+
+FILE_PATTERNS          = *.cpp *.h
+
+DOXYFILE_ENCODING      = UTF-8
+
+ALLOW_UNICODE_NAMES    = NO
+
+OUTPUT_LANGUAGE        = English
+
+BRIEF_MEMBER_DESC      = YES
+
+REPEAT_BRIEF           = YES
+
+FULL_PATH_NAMES        = YES
+
+MULTILINE_CPP_IS_BRIEF = NO
+
+GENERATE_LATEX         = YES
+
+GENERATE_HTML          = YES
