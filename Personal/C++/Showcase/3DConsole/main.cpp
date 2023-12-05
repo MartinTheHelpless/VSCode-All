@@ -10,8 +10,8 @@
 int nScreenWidth = 170;
 int nScreenHeight = 40;
 
-int nMapHeight = 16;
-int nMapWidth = 16;
+int nMapHeight = 32;
+int nMapWidth = 32;
 
 float fPlayerX = 1.0f;        // Starting position X
 float fPlayerY = 1.0f;        // Starting position Y
@@ -55,22 +55,22 @@ int main()
     */
 
     //          Normal Map
-    map += L"################";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"#..............#";
-    map += L"##############!#";
+    map += L"#..............................#";
+    map += L"###..........##########.########";
+    map += L"#.#.########.#.#####..#.#......#";
+    map += L"#.#........#.#.................#";
+    map += L"#.########.#.###########.#######";
+    map += L"#..........#...........#.......#";
+    map += L"#####.######.#########.#########";
+    map += L"#.###........#..#..............#";
+    map += L"#......####.....#####.########.#";
+    map += L"#..###########..#.##..#.##...#.#";
+    map += L"#.............#.#.##..#....###.#";
+    map += L"#..##########.#.#.#..#####.....#";
+    map += L"#.............#.#.........##...#";
+    map += L"#..############....#####..##.###";
+    map += L"#...............#......##.##...#";
+    map += L"##############################!#";
 
     auto tp1 = std::chrono::system_clock::now();
     auto tp2 = std::chrono::system_clock::now();
@@ -220,12 +220,14 @@ int main()
 
         swprintf_s(((wchar_t *)(screen)), 40, L"X=%3.2f, Y=%3.2f, A=%3.2f FPS=%3.2f ", fPlayerX, fPlayerY, fPlayerA, 1.0f / fElapsedTime);
 
+        /*
         for (int nx = 0; nx < nMapWidth; nx++)
             for (int ny = 0; ny < nMapWidth; ny++)
             {
                 screen[(ny + 1) * nScreenWidth + nx] = map[ny * nMapWidth + nx];
             }
         screen[((int)fPlayerX + 1) * nScreenWidth + (int)fPlayerY] = 'P';
+        */
 
         // Display Frame
         WriteConsoleOutputCharacter(hConsole, screen, nScreenWidth * nScreenHeight, {0, 0}, &dwBytesWritten);

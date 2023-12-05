@@ -33,7 +33,7 @@ void addToText(std::string *text, std::string *addText, int newLine)
     else if (newLine == 2)
     {
         int a = consoleWidth - (*text).size() % consoleWidth;
-        for (int i = 0; i < a + consoleWidth / 3; i++)
+        for (int i = 0; i < a + (consoleWidth / 2) - (((*addText).size()) / 2) - 2; i++)
             (*text) += ' ';
         (*text) += (*addText);
     }
@@ -94,11 +94,15 @@ int main(int argc, char const *argv[])
     while (word)
     {
         for (int i = 0; i < 5; i++)
-            print("Starting in: " + std::to_string(5 - i)), sleep(1), print(clearConsole);
+        {
+            std::string starting = "";
+            addToText(&starting, new std::string("Starting in: " + std::to_string(5 - i)), 2);
+            print(starting), sleep(1), print(clearConsole);
+        }
 
         word = true;
 
-        int number = 35; // rand() % 35;
+        int number = rand() % 35;
 
         std::string tmp = texts[number];
 
@@ -116,6 +120,7 @@ int main(int argc, char const *argv[])
 
             int t = 0;
 
+            addToText(&printed, new std::string(" "), 1);
             addToText(&printed, new std::string("Waiting for - "), 1);
 
             printed += texts[number][progress];
@@ -132,29 +137,32 @@ int main(int argc, char const *argv[])
                 {
                     std::string results;
                     print(clearConsole);
-                    addToText(&results, new std::string("Congratulations.Your stats: "), 2);
-                    addToText(&results, new std::string("Misinputs: "), 2);
-                    results += std::to_string(mistakes);
+                    addToText(&results, new std::string("Congratulations. Your stats: "), 2);
+
+                    addToText(&results, new std::string("Written text length: "), 2);
+                    results += std::to_string(tmp.size());
 
                     addToText(&results, new std::string("Total keys pressed: "), 2);
                     results += std::to_string(mistakes + tmp.size());
 
-                    addToText(&results, new std::string("Text length: "), 2);
-                    results += std::to_string(tmp.size());
-
                     addToText(&results, new std::string("Typing speed: "), 2);
                     std::chrono::duration<double> elapsed_seconds = std::chrono::system_clock::now() - time_start;
                     double tme = std::chrono::duration<double>(elapsed_seconds).count();
+                    results += std::to_string((int)(((texts[number].size() / 5) / tme) * 60)) + " WPM";
 
-                    results += std::to_string((int)(((texts[number].size() / 5) / tme) * 60));
-                    results += " WPM";
+                    addToText(&results, new std::string("Misinputs: "), 2);
+                    results += std::to_string(mistakes);
 
                     addToText(&results, new std::string("Accuracy: "), 2);
                     results += std::to_string((int)(((float)tmp.size() / (mistakes + tmp.size())) * 100)) + " %";
 
                     addToText(&results, new std::string("Press any key to continue"), 2);
                     print(results);
-                    ch = _getch();
+                    while (_getch() != 13)
+                    {
+                        /* code */
+                    }
+
                     break;
                 }
             }

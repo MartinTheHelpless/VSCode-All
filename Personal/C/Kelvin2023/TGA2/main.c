@@ -3,10 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
-#include <string.h>
 
-// Height of each character.
-const int FONT_ROW_HEIGHT = 34;
+const int IMG_HEIGHT = 34;
 
 typedef unsigned char byte;
 
@@ -39,8 +37,6 @@ typedef struct
     int height;
 } Image;
 
-// Loads an image from the given `path`.
-// If loading fails, return false.
 bool image_load(Image *image, const char *path)
 {
     FILE *file = fopen(path, "rb");
@@ -63,7 +59,6 @@ bool image_load(Image *image, const char *path)
     return true;
 }
 
-// Free the memory of the given image.
 void image_free(Image *image)
 {
     free(image->pixels);
@@ -85,42 +80,66 @@ RGBPixel *load_pixels(TGAHeader header, FILE *file)
 int main(int argc, char const *argv[])
 {
 
-    RGBPixel *array[26];
-    int w = 0;
-    int h = 0;
+    FILE *letters[26];
 
-    for (int i = 0; i < 26; i++) // Load all letters
+    if (argc == 4)
     {
-
-        char fnt[6] = "font/";
-        char end[5] = ".tga";
-
-        char cr[1] = {(char)(65 + i)};
-
-        strcat(fnt, cr);
-
-        FILE *file = fopen(fnt, "rb");
-        assert(file);
-
-        TGAHeader header = {};
-        assert(fread(&header, sizeof(TGAHeader), 1, file) == 1);
-
-        int width = 0;
-        int height = 0;
-
-        memcpy(&width, header.width, 2);
-        memcpy(&height, header.height, 2);
-
-        array[i] = load_pixels(header, file);
-
-        fclose(fnt);
+        printf("Wrong parameters");
+        return 1;
     }
 
-    FILE *file = fopen("img2.tga" /* argv[1] */, "rb");
-    assert(file);
+    FILE *img = fopen("img1.tga", "rb");
+    assert(img);
+
+    if (img == NULL)
+    {
+        printf("Could not load image");
+        return 1;
+    }
+
+    for (int i = 0; i < 26; i++)
+    {
+
+        char fnt[100];
+        strcpy(fnt, "font/");
+        char cr[2] = {(char)(65 + i), '\0'};
+        strcat(fnt, cr);
+        strcat(fnt, ".tga");
+
+        letters[i] = fopen(fnt, "rb");
+
+        if (letters[i] == NULL)
+        {
+            printf("Could not load font file %s\n", fnt);
+            return 1;
+        }
+    }
+
+    char tmp[100];
+
+    fgets(tmp, 100, stdin);
+
+    int top = atoi(strtok(tmp, " "));
+
+    int bottom = atoi(strtok(NULL, "\0"));
+
+    int total = top + bottom;
+
+    printf("top: %d\nbottom:%d\ntop + bottom: %d\n", top, bottom, total);
+
+    char **str = (char **)malloc(total * sizeof(char *));
+
+    for (size_t i = 0; i < top + bottom; i++)
+    {
+        fgets(tmp, 100, stdin);
+        str[i] = strdup(tmp);
+    }
+
+    FILE *output = fopen("output.tga", "wb");
+    assert(output);
 
     TGAHeader header = {};
-    assert(fread(&header, sizeof(TGAHeader), 1, file) == 1);
+    assert(fread(&header, sizeof(TGAHeader), 1, img) == 1);
 
     int width = 0;
     int height = 0;
@@ -128,16 +147,27 @@ int main(int argc, char const *argv[])
     memcpy(&width, header.width, 2);
     memcpy(&height, header.height, 2);
 
-    RGBPixel *pixels = load_pixels(header, file);
+    fwrite(&header, sizeof(TGAHeader), 1, output);
 
-    FILE *output = fopen("output.tga", "wb");
+    Image outImg;
 
-    printf("%d", pixels[40].blue);
+    outImg.header = header;
+    outImg.height = height;
+    outImg.width = width;
+    outImg.pixels = load_pixels(header, img);
+
+    fwrite(outImg.pixels, sizeof(RGBPixel), outImg.width * outImg.height, output);
+
+    // Free allocated memory
+    fclose(output);
+    fclose(img);
+
+    for (size_t i = 0; i < top + bottom; i++)
+        free(str[i]);
+    free(str);
 
     for (int i = 0; i < 26; i++)
-        free(array[i]);
-
-    free(pixels);
+        fclose(letters[i]);
 
     return 0;
 }
