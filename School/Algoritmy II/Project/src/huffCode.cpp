@@ -1,16 +1,29 @@
-#pragma once
+// huffCode.cpp
+
 #include "huffCode.h"
 
+/**
+ * @brief Default constructor for the huffCode class.
+ */
 huffCode::huffCode()
 {
+    // No initialization needed in this constructor
 }
 
+/**
+ * @brief Create the Huffman tree based on character frequencies.
+ *
+ * This function constructs the Huffman tree using the frequencies of characters in the input data.
+ * It builds the tree bottom-up, starting from individual nodes for each character and combining them
+ * until a single root node is formed.
+ */
 void huffCode::createTree()
 {
     int maxCount = 0;
     int nodeCount = 0;
     int totalCount = 0;
 
+    // Calculate total frequency and find the maximum frequency
     for (int i = 0; i < 256; i++)
     {
         totalCount += this->frequencies[i];
@@ -24,6 +37,7 @@ void huffCode::createTree()
 
     int position = 0;
 
+    // Create nodes for each character with a frequency greater than 0
     for (int i = 1; i < maxCount + 1; i++)
         for (int j = 0; j < 256; j++)
             if (this->frequencies[j] == i)
@@ -31,6 +45,7 @@ void huffCode::createTree()
 
     Node *tmp = nullptr;
 
+    // Combine nodes to create the Huffman tree
     for (int i = 1; i < totalCount + 1; i++)
         for (int j = 0; j < nodeCount; j++)
             if (nodeBook[j]->getValue() == i)
@@ -53,6 +68,7 @@ void huffCode::createTree()
 
     int tmpVal = 0;
 
+    // Find the root of the Huffman tree
     for (int i = 0; i < nodeCount; i++)
 
         if (tmpVal < nodeBook[i]->getValue())
@@ -64,21 +80,32 @@ void huffCode::createTree()
     this->root = tmp;
 }
 
+/**
+ * @brief Get the root node of the Huffman tree.
+ * @return Pointer to the root node.
+ */
 Node *huffCode::getRootNode()
 {
     return this->root;
 }
 
+/**
+ * @brief Get the depth of a node in the Huffman tree.
+ * @param node Pointer to the node.
+ * @return Depth of the node in the tree.
+ */
 int huffCode::getTreeDepth(Node *node)
 {
     if (node->getLChild() == nullptr && node->getRChild() == nullptr)
         return 1;
     else
     {
+        // Recursively calculate the depth of the left and right children
         int l = getTreeDepth(node->getLChild());
 
         int r = getTreeDepth(node->getRChild());
 
+        // Return the maximum depth among the left and right subtrees
         if (r > l)
             return 1 + r;
         else
@@ -86,11 +113,20 @@ int huffCode::getTreeDepth(Node *node)
     }
 }
 
+/**
+ * @brief Map the Huffman tree and store binary representation in valueMap.
+ * @param node Pointer to the current node.
+ * @param dirs String representing the binary directions.
+ *
+ * This function traverses the Huffman tree and maps the binary representation of each leaf node
+ * to its corresponding character in the valueMap array.
+ */
 void huffCode::mapTree(Node *node, std::string dirs)
 {
 
     if (node->getLChild() == nullptr && node->getRChild() == nullptr)
     {
+        // Map the binary representation of the leaf node to its character
         int pos = int(node->getCrs()[0]);
 
         for (int i = 0; i < 8; i++)
@@ -98,6 +134,7 @@ void huffCode::mapTree(Node *node, std::string dirs)
     }
     else
     {
+        // Recursively map the left and right subtrees
         if (node->getLChild() != nullptr)
             mapTree(node->getLChild(), dirs + "0");
         if (node->getRChild() != nullptr)
@@ -105,6 +142,13 @@ void huffCode::mapTree(Node *node, std::string dirs)
     }
 }
 
+/**
+ * @brief Compress the input file using Huffman coding.
+ * @param input Pointer to the input file stream.
+ * @param output Pointer to the output file stream.
+ *
+ * This function compresses the input file using Huffman coding and writes the compressed data to the output stream.
+ */
 void huffCode::compress(std::ifstream *input, std::ofstream *output)
 {
 
@@ -114,6 +158,7 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
     for (int i = 0; i < 256; i++)
         this->frequencies[i] = 0;
 
+    // Calculate character frequencies
     while ((*input) >> c)
         this->frequencies[int(c)]++;
 
@@ -124,10 +169,11 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
 
     mapTree(this->root, "");
 
-    // compressed data insertion:
+    // Compressed data insertion:
 
     int bytes = 1;
 
+    // Write the Huffman tree structure to the output stream
     for (int i = 0; i < this->root->getCrs().length(); i++)
     {
         (*output).put(this->root->getCrs()[i]);
@@ -140,6 +186,7 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
     unsigned char currentByte = 0;
     int bitOffset = 7;
 
+    // Compress the actual data using the Huffman tree
     while ((*input) >> c)
     {
         for (int i = 0; i < 8; i++)
@@ -171,6 +218,7 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
 
     int inBytes = 0;
 
+    // Calculate original and compressed file sizes for compression ratio
     for (int i = 0; i < 256; i++)
         inBytes += this->frequencies[i];
 
@@ -178,6 +226,13 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
     std::cout << "Original file size: " << inBytes * 8 << "b\nCompressed file size: " << bytes * 8 << "b.\nCompression ratio: " << double(bytes) / double(inBytes) * 100 << "%." << std::endl;
 }
 
+/**
+ * @brief Decompress the input file using Huffman coding.
+ * @param input Pointer to the input file stream.
+ * @param output Pointer to the output file stream.
+ *
+ * This function decompresses the input file using Huffman coding and writes the decompressed data to the output stream.
+ */
 void huffCode::decompress(std::ifstream *input, std::ofstream *output)
 {
 
@@ -192,6 +247,7 @@ void huffCode::decompress(std::ifstream *input, std::ofstream *output)
 
     int origLength = 0;
 
+    // Read the Huffman tree structure from the input stream
     while (check != 0)
     {
         int tmp = int(check);
@@ -205,27 +261,29 @@ void huffCode::decompress(std::ifstream *input, std::ofstream *output)
 
     std::string decomp = "";
 
+    // Read the compressed data from the input stream
     for (int i = 0; (*input) >> check; i++)
         decomp.append(std::string(sizeof(char), check));
 
     Node *navNode = this->root;
 
+    // Decompress the data using the Huffman tree
     for (int i = 0; origLength != 0; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            // get bit from string
+            // Get bit from string
 
             bool bit = (decomp[i] >> (7 - j)) & 1;
 
-            // move in a tree according to the bit
+            // Move in the tree according to the bit
 
             if (bit)
                 navNode = navNode->getRChild();
             else
                 navNode = navNode->getLChild();
 
-            // check if the node is leaf node
+            // Check if the node is a leaf node
 
             if (navNode->getLChild() == nullptr && navNode->getRChild() == nullptr)
             {
