@@ -20,8 +20,8 @@ int main(int argc, char const *argv[])
 
     char mode = 'c'; // argv[1][0]; // Extract the mode from command-line arguments
 
-    std::string inFile = "input.txt";   // argv[2];  // Input file path
-    std::string outFile = "output.txt"; // argv[3]; // Output file path
+    std::string inFile = "input.txt";    // argv[2];  // Input file path
+    std::string outFile = "output.huff"; // argv[3]; // Output file path
 
     std::ifstream input;
     std::ofstream output;

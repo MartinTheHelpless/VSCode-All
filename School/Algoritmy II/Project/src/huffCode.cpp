@@ -174,14 +174,14 @@ void huffCode::compress(std::ifstream *input, std::ofstream *output)
     int bytes = 1;
 
     // Write the Huffman tree structure to the output stream
-    for (int i = 0; i < this->root->getCrs().length(); i++)
+    /*for (int i = 0; i < this->root->getCrs().length(); i++)
     {
         (*output).put(this->root->getCrs()[i]);
         (*output).put(char(this->frequencies[int(this->root->getCrs()[i])]));
         bytes++;
     }
 
-    (*output).put(char(0));
+    (*output).put(char(0));*/
 
     unsigned char currentByte = 0;
     int bitOffset = 7;
