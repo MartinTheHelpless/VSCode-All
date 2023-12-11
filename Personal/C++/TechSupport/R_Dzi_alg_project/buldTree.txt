@@ -1,0 +1,104 @@
+// Construct an array of Node pointers for each character
+    Node *nodes[256]; // Assuming ASCII characters
+
+    for (int i = 0; i < 256; ++i)
+    {
+        nodes[i] = nullptr;
+    }
+
+    // Create nodes for characters with non-zero frequency
+    for (const auto &pair : freqMap)
+    {
+        nodes[(int)static_cast<unsigned char>(pair.first)] = new Node(pair.first, pair.second);
+    }
+
+    // Build the Huffman tree
+    while (true)
+    {
+        // Find the two nodes with the smallest frequencies
+        int freq = INT_MAX;
+
+        int oneI = -1;
+        int twoI = -1;
+
+        for (int i = 0; i < 255; ++i)
+        {
+            if (nodes[i] != nullptr && nodes[i]->freq < freq)
+            {
+                freq = nodes[i]->freq;
+                oneI = i;
+            }
+        }
+
+        freq = INT_MAX;
+
+        for (int i = 0; i < 255; ++i)
+        {
+            if (nodes[i] != nullptr && nodes[i]->freq < freq && oneI != i)
+            {
+                freq = nodes[i]->freq;
+                twoI = i;
+            }
+        }
+
+        // If there's only one node left, it's the root of the Huffman tree
+        if (twoI == -1)
+        {
+            return nodes[oneI];
+        }
+
+        // Create a new internal node with the sum of frequencies
+        Node *merged = new Node('$', nodes[oneI]->freq + nodes[twoI]->freq);
+        merged->left = nodes[oneI];
+        merged->right = nodes[twoI];
+
+        // Set the merged node as the firstMin position, and remove the secondMin node
+        nodes[oneI] = merged;
+        nodes[twoI] = nullptr;
+    }
+
+
+
+
+
+
+
+
+    
+    // Compress the data
+    string compressedData = compress(data, root);
+
+    // Convert the string of 1's and 0's to integers
+    vector<int> compressedIntegers;
+    for (int bit : compressedData)
+    {
+        compressedIntegers.push_back(bit - '0');
+    }
+
+    // Write the compressed data to the file
+    char buffer = 0;
+    int bitsInBuffer = 0;
+    int offset = 7;
+
+    for (int bit : compressedIntegers)
+    {
+        buffer |= (bit << offset);
+        bitsInBuffer++;
+        offset--;
+
+        if (bitsInBuffer == CHAR_BIT)
+        {
+            outFile.put(buffer);
+            bitsInBuffer = 0;
+            offset = 7;
+        }
+    }
+
+    // Write any remaining bits in the buffer
+    if (bitsInBuffer > 0)
+    {
+        buffer <<= (CHAR_BIT - bitsInBuffer);
+        outFile.put(buffer);
+    }
+
+    outFile.close();

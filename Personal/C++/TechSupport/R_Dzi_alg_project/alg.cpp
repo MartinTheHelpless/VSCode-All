@@ -1,20 +1,22 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <unordered_map>
 #include <stdexcept>
 #include <bitset>
 #include <vector>
 #include <climits>
+#include <algorithm>
 using namespace std;
 
 struct Node
 {
     char data;
-    unsigned int freq;
+    int freq;
     Node *left, *right;
 
-    Node(char data, unsigned freq) : data(data), freq(freq), left(nullptr), right(nullptr) {}
+    Node(char data, int freq) : data(data), freq(freq), left(nullptr), right(nullptr) {}
 
     ~Node()
     {
@@ -23,13 +25,8 @@ struct Node
     }
 };
 
-Node *buildHuffmanTree(const unordered_map<char, unsigned> &freqMap);
-void getHuffmanCodes(Node *root, const string &currentCode, unordered_map<char, string> &codes);
-void writeTreeToFile(ofstream &outFile, Node *root);
-void readTreeFromFile(ifstream &inFile, Node *&root);
-string compress(const string &data, const unordered_map<char, string> &codes);
-void compressAndWriteToFile(const string &data, const unordered_map<char, string> &codes, const string &fileName, Node *root);
-string decompress(const string &compressedData, Node *root);
+Node *buildHuffmanTree(unordered_map<char, unsigned> *freqMap, string *returned);
+void compressAndWriteToFile(ifstream *inFile, ofstream *outFile, Node *root, string *frequencies);
 
 string readCompressedData(ifstream &inFile)
 {
@@ -57,7 +54,7 @@ string readCompressedData(ifstream &inFile)
 
 streampos getFileSize(const string &fileName)
 {
-    ifstream inFile(fileName, ios::binary);
+    ifstream inFile(fileName, ios::in);
     if (!inFile.is_open())
     {
         cerr << "Error opening file for reading." << endl;
@@ -82,13 +79,17 @@ streampos getFileSize(const string &fileName)
     return fileSize;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
+
+    int argc = 4;
+    const char *argv[4] = {" ", "D", "output.txt", "result.txt"};
+
     // Check if the correct number of arguments is provided
     if (argc != 4)
     {
-        cerr << "Incorrect number of arguments.\nEnter in the format: 'name of the program' 'C or D' 'input_file' 'output_file'." << endl;
-        return 1;
+        // cerr << "Incorrect number of arguments.\nEnter in the format: 'name of the program' 'C or D' 'input_file' 'output_file'." << endl;
+        // return 1;
     }
 
     // Check if the second argument is 'C' for compression or 'D' for decompression
@@ -96,6 +97,9 @@ int main(int argc, char *argv[])
     {
         // Compression
         ifstream source(argv[2]);
+
+        source >> noskipws;
+
         if (!source.is_open())
         {
             cerr << "Error opening " << argv[2] << " file for reading." << endl;
@@ -106,11 +110,15 @@ int main(int argc, char *argv[])
         buffer << source.rdbuf(); // Read the entire file into the stringstream
 
         // Close the file
-        source.close();
 
         // Extract the content of the stringstream into a string
         string data = buffer.str();
+
+        int size = data.length();
+
         string fileName = argv[3];
+
+        source.seekg(0, ios::beg);
 
         // Compression
         unordered_map<char, unsigned> freqMap;
@@ -119,12 +127,28 @@ int main(int argc, char *argv[])
             freqMap[ch]++;
         }
 
-        Node *root = buildHuffmanTree(freqMap);
+        string treeResult = "";
 
+        Node *root = buildHuffmanTree(&freqMap, &treeResult);
+
+        /*
         unordered_map<char, string> codes;
         getHuffmanCodes(root, "", codes);
+        */
 
-        compressAndWriteToFile(data, codes, fileName, root);
+        ofstream outFile(fileName, ios::out);
+
+        outFile << size;
+
+        std::cout << treeResult << std::endl;
+
+        outFile << treeResult;
+
+        outFile.put('\0');
+
+        compressAndWriteToFile(&source, &outFile, root, &treeResult);
+
+        outFile.close();
 
         // Free memory
         delete root;
@@ -142,50 +166,112 @@ int main(int argc, char *argv[])
         }
         double compressionRatio = static_cast<double>(out) / static_cast<double>(in);
         cout << "Compression ratio: " << compressionRatio << endl;
-        ;
     }
     else if (argv[1][0] == 'D')
     {
+
         // Decompression
-        ifstream inFile;
-        inFile.open("output.txt", ios::in);
+        ifstream inFile(argv[2], ios::binary);
+
+        inFile >> noskipws;
+
+        int originalSize;
+
+        inFile >> originalSize;
+
+        /*ifstream inFile;
+        inFile.open("output.txt", ios::in);*/
+
         if (!inFile.is_open())
         {
-            cerr << "Error opening new file for reading." << endl;
+            cerr << "Error opening file for reading." << endl;
             return 1;
         }
 
-        // Read the size of the original data
-        size_t originalSize;
-        inFile.read(reinterpret_cast<char *>(&originalSize), sizeof(originalSize));
+        string treeString = "";
 
-        // Read the Huffman tree from the file
-        Node *decompressionRoot = nullptr;
-        readTreeFromFile(inFile, decompressionRoot);
+        char c;
 
-        // Read the compressed data from the file
-        string compressedData = readCompressedData(inFile);
-        inFile.close();
+        inFile >> c;
 
-        // Decompress the data
-        string decompressedData = decompress(compressedData, decompressionRoot);
-
-        // Output the decompressed data
-        string outputFileName = argv[3];
-        ofstream outputFile(outputFileName);
-        if (!outputFile.is_open())
+        while (c != 0)
         {
-            cerr << "Error opening " << outputFileName << " for writing." << endl;
-            return 1;
+            treeString += c;
+            inFile >> c;
         }
 
-        outputFile << decompressedData;
+        std::cout << treeString << std::endl;
+
+        Node *nodes[treeString.length()];
+
+        int index = treeString.length() - 1;
+
+        Node *connectable = new Node((char)treeString[index--], 0);
+
+        while (index >= 0)
+        {
+
+            Node *temp = new Node((char)treeString[index], 0);
+
+            index--;
+
+            Node *tmp = new Node('$', 0);
+
+            tmp->right = connectable;
+            tmp->left = temp;
+
+            connectable = tmp;
+        }
+
+        Node *root = connectable;
+
+        string decompressedData;
+        Node *currentNode = root;
+
+        ofstream outFile(argv[3], ios::out);
+
+        outFile << noskipws;
+
+        char byte;
+
+        while (originalSize > 0)
+        {
+
+            inFile >> byte;
+
+            for (int j = 0; j < 8; j++)
+            {
+                // Get bit from string
+
+                bool bit = (byte >> (7 - j)) & 1;
+
+                // Move in the tree according to the bit
+
+                if (bit)
+                    currentNode = currentNode->right;
+                else
+                    currentNode = currentNode->left;
+
+                // Check if the node is a leaf node
+
+                if (currentNode->left == nullptr && currentNode->right == nullptr)
+                {
+                    outFile.put(currentNode->data);
+                    originalSize--;
+                    currentNode = root;
+                    if (originalSize <= 0)
+                        break;
+                }
+            }
+        }
 
         // Close the output file
-        outputFile.close();
+        outFile.close();
+
+        std::cout << "Successful decompression" << std::endl;
 
         // Free memory for the decompression tree
-        delete decompressionRoot;
+        delete root;
     }
     else
     {
@@ -196,196 +282,95 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-Node *buildHuffmanTree(const unordered_map<char, unsigned> &freqMap)
+Node *buildHuffmanTree(unordered_map<char, unsigned> *freqMap, string *returned)
 {
-    // Construct an array of Node pointers for each character
-    Node *nodes[256]; // Assuming ASCII characters
 
-    for (int i = 0; i < 256; ++i)
+    std::vector<std::pair<char, int>> charVector((*freqMap).begin(), (*freqMap).end());
+
+    // Sort the vector based on integer values in descending order
+    std::sort(charVector.begin(), charVector.end(),
+              [](const auto &a, const auto &b)
+              {
+                  return a.second > b.second;
+              });
+
+    std::string result;
+    for (const auto &pair : charVector)
     {
-        nodes[i] = nullptr;
+        result += pair.first;
     }
 
-    // Create nodes for characters with non-zero frequency
-    for (const auto &pair : freqMap)
+    (*returned) = result;
+
+    Node *nodes[result.length()];
+
+    int index = result.length() - 1;
+
+    Node *connectable = new Node(result[index], (*freqMap)[(char)(result[index])]);
+
+    index--;
+
+    while (index >= 0)
     {
-        nodes[static_cast<unsigned char>(pair.first)] = new Node(pair.first, pair.second);
+
+        Node *temp = new Node((char)result[index], (*freqMap)[(char)(result[index])]);
+
+        index--;
+
+        Node *tmp = new Node('$', 0);
+
+        tmp->right = connectable;
+        tmp->left = temp;
+
+        connectable = tmp;
     }
 
-    // Build the Huffman tree
-    while (true)
+    return connectable;
+}
+
+void compressAndWriteToFile(ifstream *inFile, ofstream *outFile, Node *root, string *frequencies)
+{
+    char buffer = 0;
+    int bitsInBuffer = 0;
+    int offset = 7;
+
+    unsigned char c;
+
+    while ((*inFile) >> c)
     {
-        // Find the two nodes with the smallest frequencies
-        int firstMin = -1, secondMin = -1;
-        for (int i = 0; i < 256; ++i)
+        for (int i = 0; (*frequencies)[i] != c; i++)
         {
-            if (nodes[i] != nullptr)
+            buffer |= (1 << offset);
+            bitsInBuffer++;
+            offset--;
+
+            if (bitsInBuffer == CHAR_BIT)
             {
-                if (firstMin == -1 || nodes[i]->freq < nodes[firstMin]->freq)
-                {
-                    secondMin = firstMin;
-                    firstMin = i;
-                }
-                else if (secondMin == -1 || nodes[i]->freq < nodes[secondMin]->freq)
-                {
-                    secondMin = i;
-                }
+                (*outFile).put(buffer);
+                bitsInBuffer = 0;
+                offset = 7;
             }
         }
 
-        // If there's only one node left, it's the root of the Huffman tree
-        if (secondMin == -1)
-        {
-            return nodes[firstMin];
-        }
+        // No need to check if bitsInBuffer == CHAR_BIT here
 
-        // Create a new internal node with the sum of frequencies
-        Node *merged = new Node('$', nodes[firstMin]->freq + nodes[secondMin]->freq);
-        merged->left = nodes[firstMin];
-        merged->right = nodes[secondMin];
-
-        // Set the merged node as the firstMin position, and remove the secondMin node
-        nodes[firstMin] = merged;
-        nodes[secondMin] = nullptr;
-    }
-}
-
-void getHuffmanCodes(Node *root, const string &currentCode, unordered_map<char, string> &codes)
-{
-    if (root == nullptr)
-    {
-        return;
-    }
-
-    if (root->data != '$')
-    {
-        codes[root->data] = currentCode;
-    }
-
-    getHuffmanCodes(root->left, currentCode + "0", codes);
-    getHuffmanCodes(root->right, currentCode + "1", codes);
-}
-
-void writeTreeToFile(ofstream &outFile, Node *root)
-{
-    if (root == nullptr)
-    {
-        return;
-    }
-
-    if (root->data == '$')
-    {
-        outFile << 'I'; // Internal node
-        writeTreeToFile(outFile, root->left);
-        writeTreeToFile(outFile, root->right);
-    }
-    else
-    {
-        outFile << 'L' << root->data; // Leaf node
-    }
-}
-
-void readTreeFromFile(ifstream &inFile, Node *&root)
-{
-    char nodeType;
-    inFile.get(nodeType);
-
-    if (nodeType == 'I')
-    {
-        root = new Node('$', 0);
-        readTreeFromFile(inFile, root->left);
-        readTreeFromFile(inFile, root->right);
-    }
-    else if (nodeType == 'L')
-    {
-        root = new Node('$', 0);
-        inFile.get(root->data);
-    }
-}
-
-string compress(const string &data, const unordered_map<char, string> &codes)
-{
-    string compressedData;
-    for (char ch : data)
-    {
-        compressedData += codes.at(ch);
-    }
-    cout << compressedData << endl;
-    return compressedData;
-}
-
-void compressAndWriteToFile(const string &data, const unordered_map<char, string> &codes, const string &fileName, Node *root)
-{
-    ofstream outFile(fileName, ios::binary);
-
-    // Write the size of the original data (for decompression)
-    size_t originalSize = data.size();
-    outFile.write(reinterpret_cast<char *>(&originalSize), sizeof(originalSize));
-
-    // Write the Huffman tree information to the file
-    writeTreeToFile(outFile, root);
-
-    // Compress the data
-    string compressedData = compress(data, codes);
-
-    // Convert the string of 1's and 0's to integers
-    vector<int> compressedIntegers;
-    for (char bit : compressedData)
-    {
-        compressedIntegers.push_back(bit - '0');
-    }
-
-    // Write the compressed data to the file
-    int buffer = 0;
-    int bitsInBuffer = 0;
-    int offset = 31;
-
-    for (int bit : compressedIntegers)
-    {
-        buffer |= (bit << offset);
+        buffer &= ~(1 << offset); // Clear the bit at the specified offset
         bitsInBuffer++;
         offset--;
 
-        if (offset == 0)
+        if (bitsInBuffer == CHAR_BIT)
         {
-            outFile.put(buffer);
+            (*outFile).put(buffer);
             bitsInBuffer = 0;
-            offset = 31;
+            offset = 7;
         }
     }
 
-    // Write any remaining bits in the buffer
     if (bitsInBuffer > 0)
     {
-        buffer <<= (CHAR_BIT - bitsInBuffer);
-        outFile.write(reinterpret_cast<char *>(&buffer), sizeof(buffer));
+        buffer <<= offset + 1; // Shift the remaining bits to the most significant positions
+        (*outFile).put(buffer);
     }
 
-    outFile.close();
-}
-
-string decompress(const string &compressedData, Node *root)
-{
-    string decompressedData;
-    Node *current = root;
-
-    for (char bit : compressedData)
-    {
-        if (bit == '0')
-        {
-            current = current->left;
-        }
-        else
-        {
-            current = current->right;
-        }
-
-        if (current->data != '$')
-        {
-            decompressedData += current->data;
-            current = root;
-        }
-    }
-
-    return decompressedData;
+    (*outFile).close();
 }
