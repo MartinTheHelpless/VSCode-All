@@ -83,7 +83,7 @@ int main()
 {
 
     int argc = 4;
-    const char *argv[4] = {" ", "D", "output.txt", "result.txt"};
+    const char *argv[4] = {"nazec", "D", "result.txt", "output.txt"};
 
     // Check if the correct number of arguments is provided
     if (argc != 4)
@@ -200,7 +200,7 @@ int main()
             inFile >> c;
         }
 
-        std::cout << treeString << std::endl;
+        treeString += '|';
 
         Node *nodes[treeString.length()];
 
@@ -234,7 +234,11 @@ int main()
 
         char byte;
 
-        while (originalSize > 0)
+        string tmp = "";
+
+        int check = originalSize;
+
+        while (check > 0)
         {
 
             inFile >> byte;
@@ -243,25 +247,35 @@ int main()
             {
                 // Get bit from string
 
-                bool bit = (byte >> (7 - j)) & 1;
+                int bit = (byte >> (7 - j)) & 1;
 
-                // Move in the tree according to the bit
+                if (bit == 1)
+                    tmp += "1";
+                else if (bit == 0)
+                {
+                    tmp += "0";
+                    check--;
+                }
+            }
+        }
 
-                if (bit)
-                    currentNode = currentNode->right;
-                else
-                    currentNode = currentNode->left;
+        tmp += '\0';
 
-                // Check if the node is a leaf node
+        cout << tmp << endl;
 
-                if (currentNode->left == nullptr && currentNode->right == nullptr)
+        for (int i = 0; tmp[i] != 0 && originalSize > 0; i++)
+        {
+            if (tmp[i] == '1')
+                currentNode = currentNode->right;
+            else if (tmp[i] == '0')
+            {
+                currentNode = currentNode->left;
+                if (currentNode != nullptr)
                 {
                     outFile.put(currentNode->data);
                     originalSize--;
-                    currentNode = root;
-                    if (originalSize <= 0)
-                        break;
                 }
+                currentNode = root;
             }
         }
 
@@ -302,6 +316,8 @@ Node *buildHuffmanTree(unordered_map<char, unsigned> *freqMap, string *returned)
 
     (*returned) = result;
 
+    result += '|';
+
     Node *nodes[result.length()];
 
     int index = result.length() - 1;
@@ -336,27 +352,34 @@ void compressAndWriteToFile(ifstream *inFile, ofstream *outFile, Node *root, str
 
     unsigned char c;
 
+    string tmp = "";
+
     while ((*inFile) >> c)
     {
         for (int i = 0; (*frequencies)[i] != c; i++)
+            tmp += "1";
+
+        tmp += "0";
+    }
+
+    tmp += '\0';
+
+    cout << tmp << endl;
+
+    for (int i = 0; tmp[i] != 0; i++)
+    {
+        if (tmp[i] == '1')
         {
             buffer |= (1 << offset);
             bitsInBuffer++;
             offset--;
-
-            if (bitsInBuffer == CHAR_BIT)
-            {
-                (*outFile).put(buffer);
-                bitsInBuffer = 0;
-                offset = 7;
-            }
         }
-
-        // No need to check if bitsInBuffer == CHAR_BIT here
-
-        buffer &= ~(1 << offset); // Clear the bit at the specified offset
-        bitsInBuffer++;
-        offset--;
+        else if (tmp[i] == '0')
+        {
+            buffer &= ~(1 << offset); // Clear the bit at the specified offset
+            bitsInBuffer++;
+            offset--;
+        }
 
         if (bitsInBuffer == CHAR_BIT)
         {
@@ -368,7 +391,12 @@ void compressAndWriteToFile(ifstream *inFile, ofstream *outFile, Node *root, str
 
     if (bitsInBuffer > 0)
     {
-        buffer <<= offset + 1; // Shift the remaining bits to the most significant positions
+        while (offset > 0)
+        {
+            buffer &= ~(1 << offset);
+            offset--;
+        }
+
         (*outFile).put(buffer);
     }
 
