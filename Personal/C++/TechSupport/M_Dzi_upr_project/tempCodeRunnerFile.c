@@ -1,1 +1,1 @@
-/*
+(int)(WINDOW_WIDTH * 0.6)
