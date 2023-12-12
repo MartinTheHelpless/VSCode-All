@@ -83,7 +83,7 @@ int main()
 {
 
     int argc = 4;
-    const char *argv[4] = {"nazec", "D", "result.txt", "output.txt"};
+    const char *argv[4] = {"nazec", "C", "input.txt", "output.txt"};
 
     // Check if the correct number of arguments is provided
     if (argc != 4)
