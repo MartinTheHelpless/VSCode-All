@@ -391,10 +391,32 @@ int main(int argc, char const *argv[])
                     }
                 }
 
-                if (enemies[ENEMY_COUNT_X - 1].rect.x + ENEMY_SIZE + 5 >= WINDOW_WIDTH - SIDE_MARGIN)
-                    move = -1;
-                else if (enemies[0].rect.x - 5 <= SIDE_MARGIN)
-                    move = 1;
+                bool drop = false;
+
+                if (move == -1)
+                {
+                    for (int i = 0; i < ENEMY_COUNT_X; i++)
+                        if (enemies[i].health > 0 && enemies[i].rect.x - 5 <= SIDE_MARGIN)
+                        {
+                            move = 1;
+                            drop = true;
+                            break;
+                        }
+                }
+                else
+                {
+                    for (int i = ENEMY_COUNT_X - 1; i >= 0; i--)
+                        if (enemies[i].rect.x + ENEMY_SIZE + 5 >= WINDOW_WIDTH - SIDE_MARGIN && enemies[i].health > 0)
+                        {
+                            move = -1;
+                            drop = true;
+                            break;
+                        }
+                }
+
+                if (drop)
+                    for (int i = 0; i < 5 * ENEMY_COUNT_X; i++)
+                        enemies[i].rect.y += 5;
 
                 for (int i = 0; i < 5 * ENEMY_COUNT_X; i++)
                     enemies[i].rect.x += 5 * move;
@@ -449,12 +471,8 @@ int main(int argc, char const *argv[])
         enemyShotCount = finalShots;
 
         for (int i = 0; i < 3; i++)
-        {
             if (barriers[i].state <= 3)
-            {
                 SDL_RenderCopy(rend, barrier[barriers[i].state], NULL, &barriers[i].rect);
-            }
-        }
 
         SDL_RenderCopy(rend, imageTexture, NULL, &(p1->rect));
         SDL_RenderPresent(rend);
