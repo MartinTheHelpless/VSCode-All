@@ -1,0 +1,191 @@
+                    if (blockType == 6 && shift.x < BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
+                    {
+                        shift.x += BLOCK_SIZE;
+                    }
+                    else if (blockType == 5) // if the block is a line[4][4]
+                    {
+                        switch (rotation)
+                        {
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2 BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < -BLOCK_SIZE + 2 BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
+                    else if (blockType == 3)
+                    {
+                        switch (rotation)
+                        {
+
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
+                            {
+                                shift.x += BLOCK_SIZE;
+                            }
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
+                    else if (blockType == 4)
+                    {
+
+                        switch (rotation)
+                        {
+
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
+                            {
+                                shift.x += BLOCK_SIZE;
+                            }
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
+                    else if (blockType == 2)
+                    {
+
+                        switch (rotation)
+                        {
+
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
+                            {
+                                shift.x += BLOCK_SIZE;
+                            }
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
+                    else if (blockType == 1)
+                    {
+
+                        switch (rotation)
+                        {
+
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2  + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
+                            {
+                                shift.x += BLOCK_SIZE;
+                            }
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
+                    else if (blockType == 0)
+                    {
+
+                        switch (rotation)
+                        {
+
+                        case 0:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 1:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        case 2:
+                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
+                            {
+                                shift.x += BLOCK_SIZE;
+                            }
+                            break;
+
+                        case 3:
+                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
+                                shift.x += BLOCK_SIZE;
+                            break;
+
+                        default:
+                            break;
+                        }
+                    }
