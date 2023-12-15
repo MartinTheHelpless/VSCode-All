@@ -24,38 +24,134 @@ const int BLOCK_SIZE = WINDOW_WIDTH / 14;
 
 const int BORDER_MARGIN = WINDOW_WIDTH / 28;
 
-void drawThreeBlock(SDL_Renderer *rend, int blockType, int rotation, int xShift, int yShift, char block[3][3]);
+const int BOARD_WIDTH = 10;
+const int BOARD_HEIGHT = 20;
 
-void drawLineBlock(SDL_Renderer *rend, int rotation, int xShift, int yShift, char line[4][4]);
+char board[20][10] = {
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'}};
 
-void drawSquareBlock(SDL_Renderer *rend, int xShift, int yShift);
+char line[4][4][4] = {{{'.', 'c', '.', '.'},
+                       {'.', 'c', '.', '.'},
+                       {'.', 'c', '.', '.'},
+                       {'.', 'c', '.', '.'}},
+                      {{'.', '.', '.', '.'},
+                       {'.', '.', '.', '.'},
+                       {'c', 'c', 'c', 'c'},
+                       {'.', '.', '.', '.'}},
+                      {{'.', '.', 'c', '.'},
+                       {'.', '.', 'c', '.'},
+                       {'.', '.', 'c', '.'},
+                       {'.', '.', 'c', '.'}},
+                      {{'.', '.', '.', '.'},
+                       {'c', 'c', 'c', 'c'},
+                       {'.', '.', '.', '.'},
+                       {'.', '.', '.', '.'}}};
+
+char blocks[2][2] = {{'y', 'y'},
+                     {'y', 'y'}};
+
+char lSquig[4][3][3] = {{{'r', 'r', '.'},
+                         {'.', 'r', 'r'},
+                         {'.', '.', '.'}},
+                        {{'.', '.', 'r'},
+                         {'.', 'r', 'r'},
+                         {'.', 'r', '.'}},
+                        {{'.', '.', '.'},
+                         {'r', 'r', '.'},
+                         {'.', 'r', 'r'}},
+                        {{'.', 'r', '.'},
+                         {'r', 'r', '.'},
+                         {'r', '.', '.'}}};
+
+char rSquig[4][3][3] = {{{'.', 'g', 'g'},
+                         {'g', 'g', '.'},
+                         {'.', '.', '.'}},
+                        {{'.', 'g', '.'},
+                         {'.', 'g', 'g'},
+                         {'.', '.', 'g'}},
+                        {{'.', '.', '.'},
+                         {'.', 'g', 'g'},
+                         {'g', 'g', '.'}},
+                        {{'g', '.', '.'},
+                         {'g', 'g', '.'},
+                         {'.', 'g', '.'}}};
+
+char tBlock[4][3][3] = {{{'.', 'p', '.'},
+                         {'p', 'p', 'p'},
+                         {'.', '.', '.'}},
+                        {{'.', 'p', '.'},
+                         {'.', 'p', 'p'},
+                         {'.', 'p', '.'}},
+                        {{'.', '.', '.'},
+                         {'p', 'p', 'p'},
+                         {'.', 'p', '.'}},
+                        {{'.', 'p', '.'},
+                         {'p', 'p', '.'},
+                         {'.', 'p', '.'}}};
+
+char rLblock[4][3][3] = {{{'.', 'o', '.'},
+                          {'.', 'o', '.'},
+                          {'.', 'o', 'o'}},
+                         {{'.', '.', '.'},
+                          {'o', 'o', 'o'},
+                          {'o', '.', '.'}},
+                         {{'o', 'o', '.'},
+                          {'.', 'o', '.'},
+                          {'.', 'o', '.'}},
+                         {{'.', '.', 'o'},
+                          {'o', 'o', 'o'},
+                          {'.', '.', '.'}}};
+
+char lLblock[4][3][3] = {{{'.', 'b', '.'},
+                          {'.', 'b', '.'},
+                          {'b', 'b', '.'}},
+                         {{'b', '.', '.'},
+                          {'b', 'b', 'b'},
+                          {'.', '.', '.'}},
+                         {{'.', 'b', 'b'},
+                          {'.', 'b', '.'},
+                          {'.', 'b', '.'}},
+                         {{'.', '.', '.'},
+                          {'b', 'b', 'b'},
+                          {'.', '.', 'b'}}};
+
+void deleteThreeFromBoard(char three[3][3], int shiftX, int shiftY);
+
+void deleteLineFromBoard(char line[4][4], int shiftX, int shiftY);
+
+void deleteSquareFromBoard(int shiftX, int shiftY);
+
+void drawThreeOnBoard(char three[3][3], int shiftX, int shiftY);
+
+void drawLineOnBoard(char line[4][4], int shiftX, int shiftY);
+
+void drawSqareOnBoard(int shiftX, int shiftY);
+
+void drawBoard(SDL_Renderer *rend, int x, int y);
+
+void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock);
 
 int main(int argc, char const *argv[])
 {
-
-    char line[4][4] = {{'.', 'x', '.', '.'},
-                       {'.', 'x', '.', '.'},
-                       {'.', 'x', '.', '.'},
-                       {'.', 'x', '.', '.'}};
-
-    char block[2][2] = {{'x', 'x'},
-                        {'x', 'x'}};
-
-    char threes[5][3][3] = {{{'.', 'x', 'x'},
-                             {'x', 'x', '.'},
-                             {'.', '.', '.'}},
-                            {{'x', 'x', '.'},
-                             {'.', 'x', 'x'},
-                             {'.', '.', '.'}},
-                            {{'.', 'x', '.'},
-                             {'x', 'x', 'x'},
-                             {'.', '.', '.'}},
-                            {{'.', 'x', '.'},
-                             {'.', 'x', '.'},
-                             {'.', 'x', 'x'}},
-                            {{'.', 'x', '.'},
-                             {'.', 'x', '.'},
-                             {'x', 'x', '.'}}};
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -84,26 +180,9 @@ int main(int argc, char const *argv[])
     SDL_SetWindowIcon(window, tmpSurface);
     SDL_free(tmpSurface);
 
-    /*
-    tmpSurface = IMG_Load("src/imgs/RedBlock.png");
-    SDL_Texture *RedBlock = SDL_CreateTextureFromSurface(rend, tmpSurface);
-
-    tmpSurface = IMG_Load("src/imgs/BlueBlock.png");
-    SDL_Texture *BlueBlock = SDL_CreateTextureFromSurface(rend, tmpSurface);
-
-    tmpSurface = IMG_Load("src/imgs/GreenBlock.png");
-    SDL_Texture *GreenBlock = SDL_CreateTextureFromSurface(rend, tmpSurface);
-
-    tmpSurface = IMG_Load("src/imgs/OrangeBlock.png");
-    SDL_Texture *OrangeBlock = SDL_CreateTextureFromSurface(rend, tmpSurface);
-
-    tmpSurface = IMG_Load("src/imgs/PurpleBlock.png");
-    SDL_Texture *PurpleBlock = SDL_CreateTextureFromSurface(rend, tmpSurface);
-    */
-
     struct position shift;
-    shift.baseX = 1 + BLOCK_SIZE * 4 + BORDER_MARGIN;
-    shift.baseY = BORDER_MARGIN + 1;
+    shift.baseX = 4;
+    shift.baseY = 0;
     shift.x = shift.baseX;
     shift.y = shift.baseY;
 
@@ -117,7 +196,7 @@ int main(int argc, char const *argv[])
 
     Uint32 frameStart, frameTime;
 
-    SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN, BLOCK_SIZE * 10 + 4, BLOCK_SIZE * 20 + 1};
+    SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
     SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE, BORDER_MARGIN, BLOCK_SIZE * 2.5, BLOCK_SIZE * 2.5};
 
     while (!quit)
@@ -130,68 +209,43 @@ int main(int argc, char const *argv[])
         SDL_RenderDrawRect(rend, &border);
         SDL_RenderDrawRect(rend, &next);
 
-        if (nextBlock < 5)
+        switch (blockType)
         {
-            if (nextBlock == 0)
-                r = 43, g = 179, b = 16;
-            else if (nextBlock == 1)
-                r = 171, g = 12, b = 36;
-            else if (nextBlock == 2)
-                r = 86, g = 8, b = 138;
-            else if (nextBlock == 3)
-                r = 224, g = 123, b = 7;
-            else
-                r = 6, g = 64, b = 150;
+        case 0:
+            drawThreeOnBoard(lSquig[rotation], shift.x, shift.y);
+            break;
 
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (threes[nextBlock][i][j] == 'x')
-                    {
-                        SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                        SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
-                        SDL_RenderFillRect(rend, &tmp);
-                        SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                        SDL_RenderDrawRect(rend, &tmp);
-                    }
-                }
-            }
-        }
-        else if (nextBlock == 6)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    SDL_SetRenderDrawColor(rend, 191, 177, 21, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - 0.25 * BLOCK_SIZE) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
-                    SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                    SDL_RenderDrawRect(rend, &tmp);
-                }
-            }
-        }
-        else if (nextBlock == 5)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-                SDL_Rect tmp = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE + 2 * BLOCK_SIZE / 2, 1 + BORDER_MARGIN + (i + 0.5) * BLOCK_SIZE / 2, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
-                SDL_RenderFillRect(rend, &tmp);
-                SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                SDL_RenderDrawRect(rend, &tmp);
-            }
+        case 1:
+            drawThreeOnBoard(rSquig[rotation], shift.x, shift.y);
+            break;
+
+        case 2:
+            drawThreeOnBoard(tBlock[rotation], shift.x, shift.y);
+            break;
+
+        case 3:
+            drawThreeOnBoard(rLblock[rotation], shift.x, shift.y);
+            break;
+
+        case 4:
+            drawThreeOnBoard(lLblock[rotation], shift.x, shift.y);
+            break;
+
+        case 5:
+            drawSqareOnBoard(shift.x, shift.y);
+            break;
+
+        case 6:
+            drawLineOnBoard(line[rotation], shift.x, shift.y);
+            break;
+
+        default:
+            break;
         }
 
-        SDL_SetRenderDrawColor(rend, 171, 12, 36, 0);
+        drawBoard(rend, BORDER_MARGIN + 1, BORDER_MARGIN + 1);
 
-        if (blockType < 5)
-            drawThreeBlock(rend, blockType, rotation, shift.x, shift.y, threes[blockType]);
-        else if (blockType == 5)
-            drawLineBlock(rend, rotation, shift.x, shift.y, line);
-        else if (blockType == 6)
-            drawSquareBlock(rend, shift.x, shift.y);
+        drawNextBlockWindow(rend, nextBlock);
 
         while (SDL_PollEvent(&event))
             switch (event.type)
@@ -204,11 +258,81 @@ int main(int argc, char const *argv[])
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_q:
+
+                    switch (blockType)
+                    {
+                    case 0:
+                        deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 5:
+                        deleteSquareFromBoard(shift.x, shift.y);
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        break;
+
+                    default:
+                        break;
+                    }
+
                     rotation = (rotation + 3) % 4;
                     SDL_Log("Rotation: %d, Block type: %d", rotation, blockType);
                     break;
 
                 case SDLK_e:
+
+                    switch (blockType)
+                    {
+                    case 0:
+                        deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 5:
+                        deleteSquareFromBoard(shift.x, shift.y);
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        break;
+
+                    default:
+                        break;
+                    }
+
                     rotation = (rotation + 1) % 4;
                     SDL_Log("Rotation: %d, Block type: %d", rotation, blockType);
                     break;
@@ -219,405 +343,131 @@ int main(int argc, char const *argv[])
 
                 case SDLK_a:
                 {
-                    shift.x -= BLOCK_SIZE;
-                    if (blockType == 6 && shift.x < -BLOCK_SIZE + 4 + BORDER_MARGIN)
+                    switch (blockType)
                     {
-                        shift.x += BLOCK_SIZE;
+                    case 0:
+                        deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 5:
+                        deleteSquareFromBoard(shift.x, shift.y);
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        break;
+
+                    default:
+                        break;
                     }
-                    else if (blockType == 5) // if the block is a line[4][4]
-                    {
-                        switch (rotation)
-                        {
-                        case 0:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
 
-                        case 1:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < -3 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 3)
-                    {
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
-                            {
-                                shift.x += BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 4)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                            {
-                                shift.x += BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 2)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
-                            {
-                                shift.x += BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 1)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
-                            {
-                                shift.x += BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 0)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x < -2 * BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x < (-BLOCK_SIZE + 2 + BORDER_MARGIN))
-                            {
-                                shift.x += BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x < -BLOCK_SIZE + 2 + BORDER_MARGIN)
-                                shift.x += BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
+                    shift.x -= 1;
 
                     break;
                 }
 
                 case SDLK_d:
                 {
-                    shift.x += BLOCK_SIZE;
 
-                    if (blockType == 6 && shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
+                    switch (blockType)
                     {
-                        shift.x -= BLOCK_SIZE;
+                    case 0:
+                        deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 5:
+                        deleteSquareFromBoard(shift.x, shift.y);
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        break;
+
+                    default:
+                        break;
                     }
-                    else if (blockType == 5) // if the block is a line[4][4]
-                    {
-                        switch (rotation)
-                        {
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
 
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 6 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 6 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 3)
-                    {
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > (BLOCK_SIZE * 8 + 4 + BORDER_MARGIN))
-                            {
-                                shift.x -= BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 4)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > (BLOCK_SIZE * 7 + 4 + BORDER_MARGIN))
-                            {
-                                shift.x -= BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 2)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > (BLOCK_SIZE * 7 + 4 + BORDER_MARGIN))
-                            {
-                                shift.x -= BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 1)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > (BLOCK_SIZE * 7 + 4 + BORDER_MARGIN))
-                            {
-                                shift.x -= BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
-                    else if (blockType == 0)
-                    {
-
-                        switch (rotation)
-                        {
-
-                        case 0:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 1:
-                            if (shift.x > BLOCK_SIZE * 7 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        case 2:
-                            if (shift.x > (BLOCK_SIZE * 7 + 4 + BORDER_MARGIN))
-                            {
-                                shift.x -= BLOCK_SIZE;
-                            }
-                            break;
-
-                        case 3:
-                            if (shift.x > BLOCK_SIZE * 8 + 4 + BORDER_MARGIN)
-                                shift.x -= BLOCK_SIZE;
-                            break;
-
-                        default:
-                            break;
-                        }
-                    }
+                    shift.x += 1;
+                    shift.x >= 8 ? shift.x = 8 : shift.x;
 
                     break;
                 }
                 case SDLK_SPACE:
+
+                    switch (blockType)
+                    {
+                    case 0:
+                        deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        break;
+
+                    case 5:
+                        deleteSquareFromBoard(shift.x, shift.y);
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        break;
+
+                    default:
+                        break;
+                    }
+
+                    shift.x = shift.baseX;
+                    shift.y = shift.baseY;
+
                     rotation = 0;
                     blockType = nextBlock;
                     while (nextBlock == blockType)
                         nextBlock = rand() % 7;
+
                     break;
                 }
             default:
@@ -637,222 +487,229 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void drawThreeBlock(SDL_Renderer *rend, int blockType, int rotation, int xShift, int yShift, char block[3][3])
+void deleteThreeFromBoard(char three[3][3], int shiftX, int shiftY)
 {
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (three[i][j] != '.')
+                board[i + shiftY][j + shiftX] = '.';
+}
+
+void deleteLineFromBoard(char line[4][4], int shiftX, int shiftY)
+{
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (line[i][j] != '.')
+                board[i + shiftY][j + shiftX] = '.';
+}
+
+void deleteSquareFromBoard(int shiftX, int shiftY)
+{
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            board[i + shiftY][j + shiftX] = '.';
+}
+
+void drawThreeOnBoard(char three[3][3], int shiftX, int shiftY)
+{
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (three[i][j] != '.')
+                board[i + shiftY][j + shiftX] = three[i][j];
+}
+
+void drawLineOnBoard(char line[4][4], int shiftX, int shiftY)
+{
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (line[i][j] != '.')
+                board[i + shiftY][j + shiftX] = line[i][j];
+}
+
+void drawSqareOnBoard(int shiftX, int shiftY)
+{
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            board[i + shiftY][j + shiftX] = 'y';
+}
+
+void drawBoard(SDL_Renderer *rend, int x, int y)
+{
+
     int r, g, b;
 
-    if (blockType == 0)
-        r = 43, g = 179, b = 16;
-    else if (blockType == 1)
-        r = 171, g = 12, b = 36;
-    else if (blockType == 2)
-        r = 86, g = 8, b = 138;
-    else if (blockType == 3)
-        r = 224, g = 123, b = 7;
-    else
-        r = 6, g = 64, b = 150;
+    for (int i = 0; i < BOARD_HEIGHT; i++)
+    {
+        for (int j = 0; j < BOARD_WIDTH; j++)
+        {
+            switch (board[i][j])
+            {
+            case 'r':
+                r = 171, g = 12, b = 36;
+                break;
 
-    switch (rotation)
+            case 'g':
+                r = 43, g = 179, b = 16;
+                break;
+
+            case 'p':
+                r = 86, g = 8, b = 138;
+                break;
+
+            case 'o':
+                r = 224, g = 123, b = 7;
+                break;
+
+            case 'b':
+                r = 6, g = 64, b = 150;
+                break;
+
+            case 'y':
+                r = 191, g = 177, b = 21;
+                break;
+
+            case 'c':
+                r = 8, g = 138, b = 118;
+                break;
+
+            default:
+                r = 0, g = 0, b = 0;
+                break;
+            }
+
+            SDL_SetRenderDrawColor(rend, r, g, b, 0);
+            SDL_Rect rect = {x + j * BLOCK_SIZE, y + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE};
+            SDL_RenderFillRect(rend, &rect);
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+            SDL_RenderDrawRect(rend, &rect);
+        }
+    }
+}
+
+void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
+{
+
+    int r, g, b;
+
+    if (nextBlock == 0)
     {
-    case 0:
-    {
+        r = 43, g = 179, b = 16;
+
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
-                if (block[i][j] == 'x')
+            {
+                if (lSquig[0][i][j] == 'x')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {xShift + 1 + j * BLOCK_SIZE, 1 + i * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
                 }
+            }
         }
-        break;
     }
-
-    case 1:
+    else if (nextBlock == 1)
     {
-        int x = 0;
-        int y = 0;
-        for (int j = 2; j >= 0; j--)
+
+        r = 171, g = 12, b = 36;
+
+        for (int i = 0; i < 3; i++)
         {
-            for (int i = 0; i < 3; i++)
-                if (block[j][i] == 'x')
+            for (int j = 0; j < 3; j++)
+            {
+                if (rSquig[0][i][j] == 'x')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {xShift + 1 + y * BLOCK_SIZE, 1 + x * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
-                    x++;
                 }
-                else
-                    x++;
-            x = 0;
-            y++;
+            }
         }
-        break;
     }
-
-    case 2:
+    else if (nextBlock == 2)
     {
-        int x = 0;
-        int y = 0;
-        for (int j = 2; j >= 0; j--)
+
+        r = 86, g = 8, b = 138;
+
+        for (int i = 0; i < 3; i++)
         {
-            for (int i = 2; i >= 0; i--)
-                if (block[j][i] == 'x')
+            for (int j = 0; j < 3; j++)
+            {
+                if (tBlock[0][i][j] == 'x')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {xShift + 1 + x * BLOCK_SIZE, 1 + y * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
-                    x++;
                 }
-                else
-                    x++;
-            x = 0;
-            y++;
+            }
         }
-        break;
     }
-
-    case 3:
+    else if (nextBlock == 3)
     {
-        int x = 0;
-        int y = 0;
-        for (int j = 2; j >= 0; j--)
+        r = 171, g = 12, b = 36;
+        r = 86, g = 8, b = 138;
+        r = 224, g = 123, b = 7;
+
+        for (int i = 0; i < 3; i++)
         {
-            for (int i = 0; i < 3; i++)
-                if (block[i][j] == 'x')
+            for (int j = 0; j < 3; j++)
+            {
+                if (rLblock[0][i][j] == 'x')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {xShift + 1 + x * BLOCK_SIZE, 1 + y * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
-                    x++;
                 }
-                else
-                    x++;
-            x = 0;
-            y++;
+            }
         }
-        break;
     }
-    default:
-        break;
-    }
-}
-
-void drawLineBlock(SDL_Renderer *rend, int rotation, int xShift, int yShift, char line[4][4])
-{
-
-    switch (rotation % 4)
+    else if (nextBlock == 4)
     {
-    case 0:
+        r = 6, g = 64, b = 150;
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (lLblock[0][i][j] == 'x')
+                {
+                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_RenderFillRect(rend, &tmp);
+                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+                    SDL_RenderDrawRect(rend, &tmp);
+                }
+            }
+        }
+    }
+    else if (nextBlock == 5)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                SDL_SetRenderDrawColor(rend, 191, 177, 21, 0);
+                SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - 0.25 * BLOCK_SIZE) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                SDL_RenderFillRect(rend, &tmp);
+                SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+                SDL_RenderDrawRect(rend, &tmp);
+            }
+        }
+    }
+    else if (nextBlock == 6)
     {
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < 4; j++)
-                if (line[i][j] == 'x')
-                {
-                    SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-                    SDL_Rect tmp = {xShift + 1 + j * BLOCK_SIZE, 1 + i * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
-                    SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                    SDL_RenderDrawRect(rend, &tmp);
-                }
-        }
-        break;
-    }
-
-    case 1:
-    {
-        int x = 0;
-        int y = 0;
-        for (int j = 3; j >= 0; j--)
-        {
-            for (int i = 0; i < 4; i++)
-                if (line[j][i] == 'x')
-                {
-                    SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-                    SDL_Rect tmp = {xShift + 1 + y * BLOCK_SIZE, 1 + x * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
-                    SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                    SDL_RenderDrawRect(rend, &tmp);
-                    x++;
-                }
-                else
-                    x++;
-            x = 0;
-            y++;
-        }
-        break;
-    }
-
-    case 2:
-    {
-        int x = 0;
-        int y = 0;
-        for (int j = 3; j >= 0; j--)
-        {
-            for (int i = 3; i >= 0; i--)
-                if (line[j][i] == 'x')
-                {
-                    SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-                    SDL_Rect tmp = {xShift + 1 + x * BLOCK_SIZE, 1 + y * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
-                    SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                    SDL_RenderDrawRect(rend, &tmp);
-                    x++;
-                }
-                else
-                    x++;
-            x = 0;
-            y++;
-        }
-        break;
-    }
-
-    case 3:
-    {
-        int x = 0;
-        int y = 0;
-        for (int j = 3; j >= 0; j--)
-        {
-            for (int i = 0; i < 4; i++)
-                if (line[i][j] == 'x')
-                {
-                    SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-                    SDL_Rect tmp = {xShift + 1 + x * BLOCK_SIZE, 1 + y * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
-                    SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-                    SDL_RenderDrawRect(rend, &tmp);
-                    x++;
-                }
-                else
-                    x++;
-            x = 0;
-            y++;
-        }
-        break;
-    }
-    default:
-        break;
-    }
-}
-
-void drawSquareBlock(SDL_Renderer *rend, int xShift, int yShift)
-{
-    for (int i = 0; i < 2; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            SDL_SetRenderDrawColor(rend, 191, 177, 21, 0);
-            SDL_Rect tmp = {xShift + 1 + j * BLOCK_SIZE, 1 + i * BLOCK_SIZE + yShift, BLOCK_SIZE, BLOCK_SIZE};
+            SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
+            SDL_Rect tmp = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE + 2 * BLOCK_SIZE / 2, 1 + BORDER_MARGIN + (i + 0.5) * BLOCK_SIZE / 2, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
             SDL_RenderFillRect(rend, &tmp);
             SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
             SDL_RenderDrawRect(rend, &tmp);
