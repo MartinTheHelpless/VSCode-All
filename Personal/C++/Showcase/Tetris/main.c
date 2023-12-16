@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 
 #ifdef main
 #undef main
@@ -17,17 +19,19 @@ struct position
 const int TARGET_FPS = 60;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
 
-const int WINDOW_WIDTH = 420; // 14 : 22
-const int WINDOW_HEIGHT = 665;
+const int WINDOW_WIDTH = 420; // 14 : 24
+const int WINDOW_HEIGHT = 720;
 
 const int BLOCK_SIZE = WINDOW_WIDTH / 14;
 
 const int BORDER_MARGIN = WINDOW_WIDTH / 28;
 
 const int BOARD_WIDTH = 10;
-const int BOARD_HEIGHT = 20;
+const int BOARD_HEIGHT = 22;
 
-char board[20][10] = {
+char board[22][10] = {
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
+    {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
@@ -174,8 +178,6 @@ bool linePositionIsFinal(const char line[4][4], int shiftX, int shiftY);
 
 bool isThreeRotatable(const char three[3][3], int shiftX, int shiftY);
 
-bool isSquareRotatable(int shiftX, int shiftY);
-
 bool isLineRotatable(const char line[4][4], int shiftX, int shiftY);
 
 int main(int argc, char const *argv[])
@@ -204,6 +206,23 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
+    if (TTF_Init() != 0)
+    {
+        SDL_Log("Font could not be loaded.");
+        return 1;
+    }
+
+    TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
+
+    SDL_Color fontColor = {255, 255, 255};
+
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, "Score: ", fontColor);
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(rend, textSurface);
+    SDL_free(textSurface);
+
+    SDL_Surface *tmp;
+    SDL_Texture *scoreRes;
+
     SDL_Surface *tmpSurface = IMG_Load("src/imgs/TetrisIcon.png");
     SDL_SetWindowIcon(window, tmpSurface);
     SDL_free(tmpSurface);
@@ -220,12 +239,15 @@ int main(int argc, char const *argv[])
     int r, g, b;
     int dropDelay = 1000;
     int fps = 0;
+    int score = 0;
 
     bool quit = false;
     SDL_Event event;
 
     Uint32 frameStart, frameTime, lastDrop, lastPrint;
 
+    SDL_Rect scoreText = {WINDOW_WIDTH / 2 - BLOCK_SIZE * 4, BORDER_MARGIN / 2, BLOCK_SIZE * 4, BLOCK_SIZE};
+    SDL_Rect scRect = {WINDOW_WIDTH / 2, BORDER_MARGIN / 2, BLOCK_SIZE * 2, BLOCK_SIZE};
     SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
     SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * 2.5, BLOCK_SIZE * 2.5};
 
@@ -234,6 +256,15 @@ int main(int argc, char const *argv[])
         frameStart = SDL_GetTicks();
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderClear(rend);
+
+        char value[6];
+        sprintf(value, "%d", score);
+
+        tmp = TTF_RenderText_Solid(font, value, fontColor);
+        scoreRes = SDL_CreateTextureFromSurface(rend, tmp);
+
+        SDL_RenderCopy(rend, scoreRes, NULL, &scRect);
+        SDL_RenderCopy(rend, textTexture, NULL, &scoreText);
 
         SDL_SetRenderDrawColor(rend, 255, 255, 255, 0);
         SDL_RenderDrawRect(rend, &border);
@@ -1012,6 +1043,7 @@ int main(int argc, char const *argv[])
                 }
                 case SDLK_SPACE:
                 {
+
                     switch (blockType)
                     {
 
@@ -1022,6 +1054,12 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawThreeOnBoard(lSquig[rotation], shift.x, shift.y - 1);
+
+                        score += 35;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1034,10 +1072,16 @@ int main(int argc, char const *argv[])
                     case 1:
                         deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
 
+                        score += 35;
+
                         while (!threesPositionIsFinal(rSquig[rotation], shift.x, shift.y))
                             shift.y++;
 
                         drawThreeOnBoard(rSquig[rotation], shift.x, shift.y - 1);
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1053,6 +1097,12 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawThreeOnBoard(tBlock[rotation], shift.x, shift.y - 1);
+
+                        score += 35;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1068,6 +1118,12 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawThreeOnBoard(rLblock[rotation], shift.x, shift.y - 1);
+
+                        score += 20;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1083,6 +1139,12 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawThreeOnBoard(lLblock[rotation], shift.x, shift.y - 1);
+
+                        score += 20;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1098,6 +1160,12 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawSqareOnBoard(shift.x, shift.y - 1);
+
+                        score += 15;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
+
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
                         rotation = 0;
@@ -1113,6 +1181,11 @@ int main(int argc, char const *argv[])
                             shift.y++;
 
                         drawLineOnBoard(line[rotation], shift.x, shift.y - 1);
+
+                        score += 15;
+
+                        if (shift.y - 1 == shift.baseY)
+                            quit = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1142,6 +1215,7 @@ int main(int argc, char const *argv[])
                         }
                         if (rowFull)
                         {
+                            score += 100;
                             for (int a = 0; a < BOARD_WIDTH; a++)
                                 board[i][a] = '.';
 
@@ -1165,6 +1239,9 @@ int main(int argc, char const *argv[])
 
         SDL_RenderPresent(rend);
 
+        SDL_free(tmp);
+        SDL_free(scoreRes);
+
         if (SDL_GetTicks() - lastDrop > dropDelay)
         {
 
@@ -1181,6 +1258,12 @@ int main(int argc, char const *argv[])
                 {
 
                     drawThreeOnBoard(lSquig[rotation], shift.x, shift.y - 1);
+
+                    score += 35;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1197,8 +1280,13 @@ int main(int argc, char const *argv[])
 
                 if (threesPositionIsFinal(rSquig[rotation], shift.x, shift.y))
                 {
-
                     drawThreeOnBoard(rSquig[rotation], shift.x, shift.y - 1);
+
+                    score += 35;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1215,8 +1303,13 @@ int main(int argc, char const *argv[])
 
                 if (threesPositionIsFinal(tBlock[rotation], shift.x, shift.y))
                 {
-
                     drawThreeOnBoard(tBlock[rotation], shift.x, shift.y - 1);
+
+                    score += 35;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1233,8 +1326,13 @@ int main(int argc, char const *argv[])
 
                 if (threesPositionIsFinal(rLblock[rotation], shift.x, shift.y))
                 {
-
                     drawThreeOnBoard(rLblock[rotation], shift.x, shift.y - 1);
+
+                    score += 20;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1251,8 +1349,13 @@ int main(int argc, char const *argv[])
 
                 if (threesPositionIsFinal(lLblock[rotation], shift.x, shift.y))
                 {
-
                     drawThreeOnBoard(lLblock[rotation], shift.x, shift.y - 1);
+
+                    score += 20;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1269,8 +1372,13 @@ int main(int argc, char const *argv[])
 
                 if (squarePositionIsFinal(shift.x, shift.y))
                 {
-
                     drawSqareOnBoard(shift.x, shift.y - 1);
+
+                    score += 15;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
+
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
                     rotation = 0;
@@ -1287,8 +1395,12 @@ int main(int argc, char const *argv[])
 
                 if (linePositionIsFinal(line[rotation], shift.x, shift.y))
                 {
-
                     drawLineOnBoard(line[rotation], shift.x, shift.y - 1);
+
+                    score += 10;
+
+                    if (shift.y - 1 == shift.baseY)
+                        quit = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1317,6 +1429,7 @@ int main(int argc, char const *argv[])
                 }
                 if (rowFull)
                 {
+                    score += 100;
                     for (int a = 0; a < BOARD_WIDTH; a++)
                         board[i][a] = '.';
 
@@ -1350,9 +1463,14 @@ int main(int argc, char const *argv[])
         }*/
     }
 
+    SDL_Log("Game Over");
+    SDL_free(textTexture);
+    SDL_free(tmpSurface);
+    SDL_free(tmp);
+    SDL_free(scoreRes);
     SDL_DestroyWindow(window);
+    SDL_RenderClear(rend);
     SDL_DestroyRenderer(rend);
-
     return 0;
 }
 
@@ -1383,7 +1501,7 @@ void drawThreeOnBoard(const char three[3][3], int shiftX, int shiftY)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (three[i][j] != '.')
+            if (three[i][j] != '.' && i + shiftY >= 0)
                 board[i + shiftY][j + shiftX] = three[i][j];
 }
 
@@ -1631,7 +1749,7 @@ void removeThreeGhostPiece(const char three[3][3], int shiftX, int shiftY)
 
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (three[i][j] != '.')
+            if (three[i][j] != '.' && i + shiftY >= 0)
                 board[i + shiftY][j + shiftX] = '.';
 }
 
