@@ -17,8 +17,8 @@ struct position
 const int TARGET_FPS = 60;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
 
-const int WINDOW_WIDTH = 420; // 14 : 21
-const int WINDOW_HEIGHT = 630;
+const int WINDOW_WIDTH = 420; // 14 : 22
+const int WINDOW_HEIGHT = 665;
 
 const int BLOCK_SIZE = WINDOW_WIDTH / 14;
 
@@ -49,100 +49,100 @@ char board[20][10] = {
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'}};
 
-char line[4][4][4] = {{{'.', 'c', '.', '.'},
-                       {'.', 'c', '.', '.'},
-                       {'.', 'c', '.', '.'},
-                       {'.', 'c', '.', '.'}},
-                      {{'.', '.', '.', '.'},
-                       {'.', '.', '.', '.'},
-                       {'c', 'c', 'c', 'c'},
-                       {'.', '.', '.', '.'}},
-                      {{'.', '.', 'c', '.'},
-                       {'.', '.', 'c', '.'},
-                       {'.', '.', 'c', '.'},
-                       {'.', '.', 'c', '.'}},
-                      {{'.', '.', '.', '.'},
-                       {'c', 'c', 'c', 'c'},
-                       {'.', '.', '.', '.'},
-                       {'.', '.', '.', '.'}}};
+const char line[4][4][4] = {{{'.', 'c', '.', '.'},
+                             {'.', 'c', '.', '.'},
+                             {'.', 'c', '.', '.'},
+                             {'.', 'c', '.', '.'}},
+                            {{'.', '.', '.', '.'},
+                             {'.', '.', '.', '.'},
+                             {'c', 'c', 'c', 'c'},
+                             {'.', '.', '.', '.'}},
+                            {{'.', '.', 'c', '.'},
+                             {'.', '.', 'c', '.'},
+                             {'.', '.', 'c', '.'},
+                             {'.', '.', 'c', '.'}},
+                            {{'.', '.', '.', '.'},
+                             {'c', 'c', 'c', 'c'},
+                             {'.', '.', '.', '.'},
+                             {'.', '.', '.', '.'}}};
 
-char blocks[2][2] = {{'y', 'y'},
-                     {'y', 'y'}};
+const char blocks[2][2] = {{'y', 'y'},
+                           {'y', 'y'}};
 
-char lSquig[4][3][3] = {{{'r', 'r', '.'},
-                         {'.', 'r', 'r'},
-                         {'.', '.', '.'}},
-                        {{'.', '.', 'r'},
-                         {'.', 'r', 'r'},
-                         {'.', 'r', '.'}},
-                        {{'.', '.', '.'},
-                         {'r', 'r', '.'},
-                         {'.', 'r', 'r'}},
-                        {{'.', 'r', '.'},
-                         {'r', 'r', '.'},
-                         {'r', '.', '.'}}};
+const char lSquig[4][3][3] = {{{'r', 'r', '.'},
+                               {'.', 'r', 'r'},
+                               {'.', '.', '.'}},
+                              {{'.', '.', 'r'},
+                               {'.', 'r', 'r'},
+                               {'.', 'r', '.'}},
+                              {{'.', '.', '.'},
+                               {'r', 'r', '.'},
+                               {'.', 'r', 'r'}},
+                              {{'.', 'r', '.'},
+                               {'r', 'r', '.'},
+                               {'r', '.', '.'}}};
 
-char rSquig[4][3][3] = {{{'.', 'g', 'g'},
-                         {'g', 'g', '.'},
-                         {'.', '.', '.'}},
-                        {{'.', 'g', '.'},
-                         {'.', 'g', 'g'},
-                         {'.', '.', 'g'}},
-                        {{'.', '.', '.'},
-                         {'.', 'g', 'g'},
-                         {'g', 'g', '.'}},
-                        {{'g', '.', '.'},
-                         {'g', 'g', '.'},
-                         {'.', 'g', '.'}}};
+const char rSquig[4][3][3] = {{{'.', 'g', 'g'},
+                               {'g', 'g', '.'},
+                               {'.', '.', '.'}},
+                              {{'.', 'g', '.'},
+                               {'.', 'g', 'g'},
+                               {'.', '.', 'g'}},
+                              {{'.', '.', '.'},
+                               {'.', 'g', 'g'},
+                               {'g', 'g', '.'}},
+                              {{'g', '.', '.'},
+                               {'g', 'g', '.'},
+                               {'.', 'g', '.'}}};
 
-char tBlock[4][3][3] = {{{'.', 'p', '.'},
-                         {'p', 'p', 'p'},
-                         {'.', '.', '.'}},
-                        {{'.', 'p', '.'},
-                         {'.', 'p', 'p'},
-                         {'.', 'p', '.'}},
-                        {{'.', '.', '.'},
-                         {'p', 'p', 'p'},
-                         {'.', 'p', '.'}},
-                        {{'.', 'p', '.'},
-                         {'p', 'p', '.'},
-                         {'.', 'p', '.'}}};
+const char tBlock[4][3][3] = {{{'.', 'p', '.'},
+                               {'p', 'p', 'p'},
+                               {'.', '.', '.'}},
+                              {{'.', 'p', '.'},
+                               {'.', 'p', 'p'},
+                               {'.', 'p', '.'}},
+                              {{'.', '.', '.'},
+                               {'p', 'p', 'p'},
+                               {'.', 'p', '.'}},
+                              {{'.', 'p', '.'},
+                               {'p', 'p', '.'},
+                               {'.', 'p', '.'}}};
 
-char rLblock[4][3][3] = {{{'.', 'o', '.'},
-                          {'.', 'o', '.'},
-                          {'.', 'o', 'o'}},
-                         {{'.', '.', '.'},
-                          {'o', 'o', 'o'},
-                          {'o', '.', '.'}},
-                         {{'o', 'o', '.'},
-                          {'.', 'o', '.'},
-                          {'.', 'o', '.'}},
-                         {{'.', '.', 'o'},
-                          {'o', 'o', 'o'},
-                          {'.', '.', '.'}}};
+const char rLblock[4][3][3] = {{{'.', 'o', '.'},
+                                {'.', 'o', '.'},
+                                {'.', 'o', 'o'}},
+                               {{'.', '.', '.'},
+                                {'o', 'o', 'o'},
+                                {'o', '.', '.'}},
+                               {{'o', 'o', '.'},
+                                {'.', 'o', '.'},
+                                {'.', 'o', '.'}},
+                               {{'.', '.', 'o'},
+                                {'o', 'o', 'o'},
+                                {'.', '.', '.'}}};
 
-char lLblock[4][3][3] = {{{'.', 'b', '.'},
-                          {'.', 'b', '.'},
-                          {'b', 'b', '.'}},
-                         {{'b', '.', '.'},
-                          {'b', 'b', 'b'},
-                          {'.', '.', '.'}},
-                         {{'.', 'b', 'b'},
-                          {'.', 'b', '.'},
-                          {'.', 'b', '.'}},
-                         {{'.', '.', '.'},
-                          {'b', 'b', 'b'},
-                          {'.', '.', 'b'}}};
+const char lLblock[4][3][3] = {{{'.', 'b', '.'},
+                                {'.', 'b', '.'},
+                                {'b', 'b', '.'}},
+                               {{'b', '.', '.'},
+                                {'b', 'b', 'b'},
+                                {'.', '.', '.'}},
+                               {{'.', 'b', 'b'},
+                                {'.', 'b', '.'},
+                                {'.', 'b', '.'}},
+                               {{'.', '.', '.'},
+                                {'b', 'b', 'b'},
+                                {'.', '.', 'b'}}};
 
-void deleteThreeFromBoard(char three[3][3], int shiftX, int shiftY);
+void deleteThreeFromBoard(const char three[3][3], int shiftX, int shiftY);
 
-void deleteLineFromBoard(char line[4][4], int shiftX, int shiftY);
+void deleteLineFromBoard(const char line[4][4], int shiftX, int shiftY);
 
 void deleteSquareFromBoard(int shiftX, int shiftY);
 
-void drawThreeOnBoard(char three[3][3], int shiftX, int shiftY);
+void drawThreeOnBoard(const char three[3][3], int shiftX, int shiftY);
 
-void drawLineOnBoard(char line[4][4], int shiftX, int shiftY);
+void drawLineOnBoard(const char line[4][4], int shiftX, int shiftY);
 
 void drawSqareOnBoard(int shiftX, int shiftY);
 
@@ -150,15 +150,33 @@ void drawBoard(SDL_Renderer *rend, int x, int y);
 
 void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock);
 
-int checkThreeSideFree(char three[3][3], int side);
+void drawThreeGhostPiece(const char three[3][3], int shiftX, int shiftY);
 
-int checkLineSideFree(char line[4][4], int side);
+void drawSquareGhostPiece(int shiftX, int shiftY);
 
-bool threesPositionIsFinal(char three[3][3], int shiftX, int shiftY);
+void drawLineGhostPiece(const char line[4][4], int shiftX, int shiftY);
+
+void removeThreeGhostPiece(const char three[3][3], int shiftX, int shiftY);
+
+void removeSquareGhostPiece(int shiftX, int shiftY);
+
+void removeLineGhostPiece(const char line[4][4], int shiftX, int shiftY);
+
+int checkThreeSideFree(const char three[3][3], int side);
+
+int checkLineSideFree(const char line[4][4], int side);
+
+bool threesPositionIsFinal(const char three[3][3], int shiftX, int shiftY);
 
 bool squarePositionIsFinal(int shiftX, int shiftY);
 
-bool linePositionIsFinal(char line[4][4], int shiftX, int shiftY);
+bool linePositionIsFinal(const char line[4][4], int shiftX, int shiftY);
+
+bool isThreeRotatable(const char three[3][3], int shiftX, int shiftY);
+
+bool isSquareRotatable(int shiftX, int shiftY);
+
+bool isLineRotatable(const char line[4][4], int shiftX, int shiftY);
 
 int main(int argc, char const *argv[])
 {
@@ -201,14 +219,15 @@ int main(int argc, char const *argv[])
     int nextBlock = 1 + rand() % 6;
     int r, g, b;
     int dropDelay = 1000;
+    int fps = 0;
 
     bool quit = false;
     SDL_Event event;
 
-    Uint32 frameStart, frameTime, lastDrop;
+    Uint32 frameStart, frameTime, lastDrop, lastPrint;
 
-    SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
-    SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE, BORDER_MARGIN, BLOCK_SIZE * 2.5, BLOCK_SIZE * 2.5};
+    SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
+    SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * 2.5, BLOCK_SIZE * 2.5};
 
     while (!quit)
     {
@@ -223,30 +242,37 @@ int main(int argc, char const *argv[])
         switch (blockType)
         {
         case 0:
+            drawThreeGhostPiece(lSquig[rotation], shift.x, shift.y);
             drawThreeOnBoard(lSquig[rotation], shift.x, shift.y);
             break;
 
         case 1:
+            drawThreeGhostPiece(rSquig[rotation], shift.x, shift.y);
             drawThreeOnBoard(rSquig[rotation], shift.x, shift.y);
             break;
 
         case 2:
+            drawThreeGhostPiece(tBlock[rotation], shift.x, shift.y);
             drawThreeOnBoard(tBlock[rotation], shift.x, shift.y);
             break;
 
         case 3:
+            drawThreeGhostPiece(rLblock[rotation], shift.x, shift.y);
             drawThreeOnBoard(rLblock[rotation], shift.x, shift.y);
             break;
 
         case 4:
+            drawThreeGhostPiece(lLblock[rotation], shift.x, shift.y);
             drawThreeOnBoard(lLblock[rotation], shift.x, shift.y);
             break;
 
         case 5:
+            drawSquareGhostPiece(shift.x, shift.y);
             drawSqareOnBoard(shift.x, shift.y);
             break;
 
         case 6:
+            drawLineGhostPiece(line[rotation], shift.x, shift.y);
             drawLineOnBoard(line[rotation], shift.x, shift.y);
             break;
 
@@ -254,7 +280,7 @@ int main(int argc, char const *argv[])
             break;
         }
 
-        drawBoard(rend, BORDER_MARGIN + 1, BORDER_MARGIN + 1);
+        drawBoard(rend, BORDER_MARGIN + 1, BORDER_MARGIN + 1 + BLOCK_SIZE);
 
         drawNextBlockWindow(rend, nextBlock);
 
@@ -278,105 +304,129 @@ int main(int argc, char const *argv[])
                     case 0:
                         deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
 
-                        rotation = (rotation + 3) % 4;
-
-                        minX = checkThreeSideFree(lSquig[rotation], 0);
-                        maxX = checkThreeSideFree(lSquig[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 1:
-                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        minX = checkThreeSideFree(rSquig[rotation], 0);
-                        maxX = checkThreeSideFree(rSquig[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 2:
-                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        minX = checkThreeSideFree(tBlock[rotation], 0);
-                        maxX = checkThreeSideFree(tBlock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 3:
-                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        minX = checkThreeSideFree(rLblock[rotation], 0);
-                        maxX = checkThreeSideFree(rLblock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 4:
-                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        minX = checkThreeSideFree(lLblock[rotation], 0);
-                        maxX = checkThreeSideFree(lLblock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 5:
-                        deleteSquareFromBoard(shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        break;
-
-                    case 6:
-
-                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 3) % 4;
-
-                        if (rotation == 0 || rotation == 2)
+                        if (isThreeRotatable(lSquig[(rotation + 3) % 4], shift.x, shift.y))
                         {
-                            minX = checkLineSideFree(line[rotation], 0);
-                            maxX = checkLineSideFree(line[rotation], 1);
+
+                            removeThreeGhostPiece(lSquig[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            minX = checkThreeSideFree(lSquig[rotation], 0);
+                            maxX = checkThreeSideFree(lSquig[rotation], 1);
 
                             if (shift.x > maxX)
                                 shift.x = maxX;
                             else if (shift.x < minX)
                                 shift.x = minX;
                         }
-                        else if (shift.x < 0)
-                            shift.x = 0;
-                        else if (shift.x > BOARD_WIDTH - 4)
-                            shift.x = BOARD_WIDTH - 4;
+
+                        break;
+
+                    case 1:
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(rSquig[(rotation + 3) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(rSquig[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            minX = checkThreeSideFree(rSquig[rotation], 0);
+                            maxX = checkThreeSideFree(rSquig[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 2:
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(tBlock[(rotation + 3) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(tBlock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            minX = checkThreeSideFree(tBlock[rotation], 0);
+                            maxX = checkThreeSideFree(tBlock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 3:
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(rLblock[(rotation + 3) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(rLblock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            minX = checkThreeSideFree(rLblock[rotation], 0);
+                            maxX = checkThreeSideFree(rLblock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 4:
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(lLblock[(rotation + 3) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(lLblock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            minX = checkThreeSideFree(lLblock[rotation], 0);
+                            maxX = checkThreeSideFree(lLblock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 6:
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+
+                        if (isLineRotatable(line[(rotation + 3) % 4], shift.x, shift.y))
+                        {
+
+                            removeLineGhostPiece(line[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 3) % 4;
+
+                            if (rotation == 0 || rotation == 2)
+                            {
+                                minX = checkLineSideFree(line[rotation], 0);
+                                maxX = checkLineSideFree(line[rotation], 1);
+
+                                if (shift.x > maxX)
+                                    shift.x = maxX;
+                                else if (shift.x < minX)
+                                    shift.x = minX;
+                            }
+                            else if (shift.x < 0)
+                                shift.x = 0;
+                            else if (shift.x > BOARD_WIDTH - 4)
+                                shift.x = BOARD_WIDTH - 4;
+                        }
 
                         break;
 
@@ -394,105 +444,135 @@ int main(int argc, char const *argv[])
                     switch (blockType)
                     {
                     case 0:
+
                         deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
 
-                        rotation = (rotation + 1) % 4;
-
-                        minX = checkThreeSideFree(lSquig[rotation], 0);
-                        maxX = checkThreeSideFree(lSquig[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 1:
-                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        minX = checkThreeSideFree(rSquig[rotation], 0);
-                        maxX = checkThreeSideFree(rSquig[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 2:
-                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        minX = checkThreeSideFree(tBlock[rotation], 0);
-                        maxX = checkThreeSideFree(tBlock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 3:
-                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        minX = checkThreeSideFree(rLblock[rotation], 0);
-                        maxX = checkThreeSideFree(rLblock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 4:
-                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        minX = checkThreeSideFree(lLblock[rotation], 0);
-                        maxX = checkThreeSideFree(lLblock[rotation], 1);
-
-                        if (shift.x > maxX)
-                            shift.x = maxX;
-                        else if (shift.x < minX)
-                            shift.x = minX;
-
-                        break;
-
-                    case 5:
-                        deleteSquareFromBoard(shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        break;
-                    case 6:
-                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
-
-                        rotation = (rotation + 1) % 4;
-
-                        if (rotation == 0 || rotation == 2)
+                        if (isThreeRotatable(lSquig[(rotation + 1) % 4], shift.x, shift.y))
                         {
-                            minX = checkLineSideFree(line[rotation], 0);
-                            maxX = checkLineSideFree(line[rotation], 1);
+                            removeThreeGhostPiece(lSquig[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            minX = checkThreeSideFree(lSquig[rotation], 0);
+                            maxX = checkThreeSideFree(lSquig[rotation], 1);
 
                             if (shift.x > maxX)
                                 shift.x = maxX;
                             else if (shift.x < minX)
                                 shift.x = minX;
                         }
-                        else if (shift.x < 0)
-                            shift.x = 0;
-                        else if (shift.x > BOARD_WIDTH - 4)
-                            shift.x = BOARD_WIDTH - 4;
+
+                        break;
+
+                    case 1:
+
+                        deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(rSquig[(rotation + 1) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(rSquig[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            minX = checkThreeSideFree(rSquig[rotation], 0);
+                            maxX = checkThreeSideFree(rSquig[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 2:
+
+                        deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(tBlock[(rotation + 1) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(tBlock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            minX = checkThreeSideFree(tBlock[rotation], 0);
+                            maxX = checkThreeSideFree(tBlock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 3:
+
+                        deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(rLblock[(rotation + 1) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(rLblock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            minX = checkThreeSideFree(rLblock[rotation], 0);
+                            maxX = checkThreeSideFree(rLblock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 4:
+
+                        deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+
+                        if (isThreeRotatable(lLblock[(rotation + 1) % 4], shift.x, shift.y))
+                        {
+                            removeThreeGhostPiece(lLblock[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            minX = checkThreeSideFree(lLblock[rotation], 0);
+                            maxX = checkThreeSideFree(lLblock[rotation], 1);
+
+                            if (shift.x > maxX)
+                                shift.x = maxX;
+                            else if (shift.x < minX)
+                                shift.x = minX;
+                        }
+
+                        break;
+
+                    case 6:
+
+                        deleteLineFromBoard(line[rotation], shift.x, shift.y);
+
+                        if (isLineRotatable(line[(rotation + 1) % 4], shift.x, shift.y))
+                        {
+                            removeLineGhostPiece(line[rotation], shift.x, shift.y);
+
+                            rotation = (rotation + 1) % 4;
+
+                            if (rotation == 0 || rotation == 2)
+                            {
+                                minX = checkLineSideFree(line[rotation], 0);
+                                maxX = checkLineSideFree(line[rotation], 1);
+
+                                if (shift.x > maxX)
+                                    shift.x = maxX;
+                                else if (shift.x < minX)
+                                    shift.x = minX;
+                            }
+                            else if (shift.x < 0)
+                                shift.x = 0;
+                            else if (shift.x > BOARD_WIDTH - 4)
+                                shift.x = BOARD_WIDTH - 4;
+                        }
 
                         break;
 
@@ -639,6 +719,8 @@ int main(int argc, char const *argv[])
                         break;
                     }
 
+                    lastDrop = SDL_GetTicks();
+
                     for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
                     {
                         bool rowFull = true;
@@ -678,6 +760,7 @@ int main(int argc, char const *argv[])
                     {
                     case 0:
                         deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(lSquig[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -693,6 +776,7 @@ int main(int argc, char const *argv[])
 
                     case 1:
                         deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(rSquig[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -708,6 +792,7 @@ int main(int argc, char const *argv[])
 
                     case 2:
                         deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(tBlock[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -723,6 +808,7 @@ int main(int argc, char const *argv[])
 
                     case 3:
                         deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(rLblock[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -738,6 +824,7 @@ int main(int argc, char const *argv[])
 
                     case 4:
                         deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(lLblock[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -753,6 +840,7 @@ int main(int argc, char const *argv[])
 
                     case 5:
                         deleteSquareFromBoard(shift.x, shift.y);
+                        removeSquareGhostPiece(shift.x, shift.y);
 
                         shift.x--;
 
@@ -766,6 +854,7 @@ int main(int argc, char const *argv[])
 
                     case 6:
                         deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        removeLineGhostPiece(line[rotation], shift.x, shift.y);
 
                         shift.x--;
 
@@ -792,7 +881,6 @@ int main(int argc, char const *argv[])
 
                     break;
                 }
-
                 case SDLK_d:
                 {
                     int minX;
@@ -802,6 +890,7 @@ int main(int argc, char const *argv[])
                     {
                     case 0:
                         deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(lSquig[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -816,6 +905,7 @@ int main(int argc, char const *argv[])
 
                     case 1:
                         deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(rSquig[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -831,6 +921,7 @@ int main(int argc, char const *argv[])
 
                     case 2:
                         deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(tBlock[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -846,6 +937,7 @@ int main(int argc, char const *argv[])
 
                     case 3:
                         deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(rLblock[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -861,6 +953,7 @@ int main(int argc, char const *argv[])
 
                     case 4:
                         deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+                        removeThreeGhostPiece(lLblock[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -876,6 +969,7 @@ int main(int argc, char const *argv[])
 
                     case 5:
                         deleteSquareFromBoard(shift.x, shift.y);
+                        removeSquareGhostPiece(shift.x, shift.y);
 
                         shift.x++;
 
@@ -889,6 +983,7 @@ int main(int argc, char const *argv[])
 
                     case 6:
                         deleteLineFromBoard(line[rotation], shift.x, shift.y);
+                        removeLineGhostPiece(line[rotation], shift.x, shift.y);
 
                         shift.x++;
 
@@ -919,45 +1014,147 @@ int main(int argc, char const *argv[])
                 {
                     switch (blockType)
                     {
+
                     case 0:
                         deleteThreeFromBoard(lSquig[rotation], shift.x, shift.y);
+
+                        while (!threesPositionIsFinal(lSquig[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawThreeOnBoard(lSquig[rotation], shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
+
                         break;
 
                     case 1:
                         deleteThreeFromBoard(rSquig[rotation], shift.x, shift.y);
+
+                        while (!threesPositionIsFinal(rSquig[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawThreeOnBoard(rSquig[rotation], shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     case 2:
                         deleteThreeFromBoard(tBlock[rotation], shift.x, shift.y);
+
+                        while (!threesPositionIsFinal(tBlock[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawThreeOnBoard(tBlock[rotation], shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     case 3:
                         deleteThreeFromBoard(rLblock[rotation], shift.x, shift.y);
+
+                        while (!threesPositionIsFinal(rLblock[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawThreeOnBoard(rLblock[rotation], shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     case 4:
                         deleteThreeFromBoard(lLblock[rotation], shift.x, shift.y);
+
+                        while (!threesPositionIsFinal(lLblock[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawThreeOnBoard(lLblock[rotation], shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     case 5:
                         deleteSquareFromBoard(shift.x, shift.y);
+
+                        while (!squarePositionIsFinal(shift.x, shift.y))
+                            shift.y++;
+
+                        drawSqareOnBoard(shift.x, shift.y - 1);
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     case 6:
                         deleteLineFromBoard(line[rotation], shift.x, shift.y);
+
+                        while (!linePositionIsFinal(line[rotation], shift.x, shift.y))
+                            shift.y++;
+
+                        drawLineOnBoard(line[rotation], shift.x, shift.y - 1);
+
+                        shift.x = shift.baseX;
+                        shift.y = shift.baseY;
+                        rotation = 0;
+                        blockType = nextBlock;
+                        while (nextBlock == blockType)
+                            nextBlock = rand() % 7;
                         break;
 
                     default:
                         break;
                     }
 
-                    shift.x = shift.baseX;
-                    shift.y = shift.baseY;
+                    lastDrop = SDL_GetTicks();
 
-                    rotation = 0;
-                    blockType = nextBlock;
-                    while (nextBlock == blockType)
-                        nextBlock = rand() % 7;
+                    for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
+                    {
+                        bool rowFull = true;
+
+                        for (int j = 0; j < BOARD_WIDTH; j++)
+                        {
+                            if (board[i][j] == '.' || board[i][j] == 'e')
+                            {
+                                rowFull = false;
+                                break;
+                            }
+                        }
+                        if (rowFull)
+                        {
+                            for (int a = 0; a < BOARD_WIDTH; a++)
+                                board[i][a] = '.';
+
+                            for (int t = i; t > 0; t--)
+                            {
+                                for (size_t a = 0; a < BOARD_WIDTH; a++)
+                                {
+                                    board[t][a] = board[t - 1][a];
+                                }
+                            }
+                            i++;
+                        }
+                    }
 
                     break;
                 }
@@ -1112,7 +1309,7 @@ int main(int argc, char const *argv[])
 
                 for (int j = 0; j < BOARD_WIDTH; j++)
                 {
-                    if (board[i][j] == '.')
+                    if (board[i][j] == '.' || board[i][j] == 'e')
                     {
                         rowFull = false;
                         break;
@@ -1143,6 +1340,14 @@ int main(int argc, char const *argv[])
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
+
+        /*fps++;
+
+        if (SDL_GetTicks() - lastPrint > dropDelay)
+        {
+            lastPrint = SDL_GetTicks();
+            SDL_Log("FPS: %d", fps), fps = 0;
+        }*/
     }
 
     SDL_DestroyWindow(window);
@@ -1151,7 +1356,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void deleteThreeFromBoard(char three[3][3], int shiftX, int shiftY)
+void deleteThreeFromBoard(const char three[3][3], int shiftX, int shiftY)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
@@ -1159,7 +1364,7 @@ void deleteThreeFromBoard(char three[3][3], int shiftX, int shiftY)
                 board[i + shiftY][j + shiftX] = '.';
 }
 
-void deleteLineFromBoard(char line[4][4], int shiftX, int shiftY)
+void deleteLineFromBoard(const char line[4][4], int shiftX, int shiftY)
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
@@ -1174,7 +1379,7 @@ void deleteSquareFromBoard(int shiftX, int shiftY)
             board[i + shiftY][j + shiftX] = '.';
 }
 
-void drawThreeOnBoard(char three[3][3], int shiftX, int shiftY)
+void drawThreeOnBoard(const char three[3][3], int shiftX, int shiftY)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
@@ -1182,7 +1387,7 @@ void drawThreeOnBoard(char three[3][3], int shiftX, int shiftY)
                 board[i + shiftY][j + shiftX] = three[i][j];
 }
 
-void drawLineOnBoard(char line[4][4], int shiftX, int shiftY)
+void drawLineOnBoard(const char line[4][4], int shiftX, int shiftY)
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
@@ -1208,32 +1413,36 @@ void drawBoard(SDL_Renderer *rend, int x, int y)
         {
             switch (board[i][j])
             {
-            case 'r':
+            case 'r': // Red
                 r = 171, g = 12, b = 36;
                 break;
 
-            case 'g':
+            case 'g': // Green
                 r = 43, g = 179, b = 16;
                 break;
 
-            case 'p':
+            case 'p': // Purple
                 r = 86, g = 8, b = 138;
                 break;
 
-            case 'o':
+            case 'o': // Orange
                 r = 224, g = 123, b = 7;
                 break;
 
-            case 'b':
+            case 'b': // Blue
                 r = 6, g = 64, b = 150;
                 break;
 
-            case 'y':
+            case 'y': // Yellow
                 r = 191, g = 177, b = 21;
                 break;
 
-            case 'c':
+            case 'c': // Cyan
                 r = 8, g = 138, b = 118;
+                break;
+
+            case 'e': // Grey
+                r = 150, g = 150, b = 150;
                 break;
 
             default:
@@ -1266,7 +1475,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
                 if (lSquig[0][i][j] != '.')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
@@ -1286,7 +1495,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
                 if (rSquig[0][i][j] != '.')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
@@ -1306,7 +1515,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
                 if (tBlock[0][i][j] != '.')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
@@ -1327,7 +1536,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
                 if (rLblock[0][i][j] != '.')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
@@ -1346,7 +1555,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
                 if (lLblock[0][i][j] != '.')
                 {
                     SDL_SetRenderDrawColor(rend, r, g, b, 0);
-                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                    SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                     SDL_RenderDrawRect(rend, &tmp);
@@ -1361,7 +1570,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             for (int j = 0; j < 2; j++)
             {
                 SDL_SetRenderDrawColor(rend, 191, 177, 21, 0);
-                SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - 0.25 * BLOCK_SIZE) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+                SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - 0.25 * BLOCK_SIZE) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                 SDL_RenderFillRect(rend, &tmp);
                 SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
                 SDL_RenderDrawRect(rend, &tmp);
@@ -1373,7 +1582,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
         for (int i = 0; i < 4; i++)
         {
             SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
-            SDL_Rect tmp = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE + 2 * BLOCK_SIZE / 2, 1 + BORDER_MARGIN + (i + 0.5) * BLOCK_SIZE / 2, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
+            SDL_Rect tmp = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE + 2 * BLOCK_SIZE / 2, 1 + BLOCK_SIZE + BORDER_MARGIN + (i + 0.5) * BLOCK_SIZE / 2, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
             SDL_RenderFillRect(rend, &tmp);
             SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
             SDL_RenderDrawRect(rend, &tmp);
@@ -1381,7 +1590,75 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
     }
 }
 
-int checkThreeSideFree(char three[3][3], int side)
+void drawThreeGhostPiece(const char three[3][3], int shiftX, int shiftY)
+{
+
+    while (!threesPositionIsFinal(three, shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (three[i][j] != '.')
+                board[i + shiftY][j + shiftX] = 'e';
+}
+
+void drawSquareGhostPiece(int shiftX, int shiftY)
+{
+    while (!squarePositionIsFinal(shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            board[i + shiftY][j + shiftX] = 'e';
+}
+
+void drawLineGhostPiece(const char line[4][4], int shiftX, int shiftY)
+{
+    while (!linePositionIsFinal(line, shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (line[i][j] != '.')
+                board[i + shiftY][j + shiftX] = 'e';
+}
+
+void removeThreeGhostPiece(const char three[3][3], int shiftX, int shiftY)
+{
+
+    while (!threesPositionIsFinal(three, shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (three[i][j] != '.')
+                board[i + shiftY][j + shiftX] = '.';
+}
+
+void removeSquareGhostPiece(int shiftX, int shiftY)
+{
+
+    while (!squarePositionIsFinal(shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+            board[i + shiftY][j + shiftX] = '.';
+}
+
+void removeLineGhostPiece(const char line[4][4], int shiftX, int shiftY)
+{
+
+    while (!linePositionIsFinal(line, shiftX, shiftY + 1))
+        shiftY++;
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (line[i][j] != '.')
+                board[i + shiftY][j + shiftX] = '.';
+}
+
+int checkThreeSideFree(const char three[3][3], int side)
 {
 
     if (side > 0)
@@ -1414,7 +1691,7 @@ int checkThreeSideFree(char three[3][3], int side)
     }
 }
 
-int checkLineSideFree(char line[4][4], int side)
+int checkLineSideFree(const char line[4][4], int side)
 {
 
     if (side > 0)
@@ -1447,14 +1724,14 @@ int checkLineSideFree(char line[4][4], int side)
     }
 }
 
-bool threesPositionIsFinal(char three[3][3], int shiftX, int shiftY)
+bool threesPositionIsFinal(const char three[3][3], int shiftX, int shiftY)
 {
 
     bool stop = false;
 
     for (int i = 0; i < 3 && !stop; i++)
         for (int j = 0; j < 3; j++)
-            if (three[i][j] != '.' && board[i + shiftY][j + shiftX] != '.' || i + shiftY > BOARD_HEIGHT)
+            if (three[i][j] != '.' && board[i + shiftY][j + shiftX] != 'e' && board[i + shiftY][j + shiftX] != '.' || i + shiftY > BOARD_HEIGHT)
             {
                 stop = true;
                 break;
@@ -1469,7 +1746,7 @@ bool squarePositionIsFinal(int shiftX, int shiftY)
 
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            if (board[i + shiftY][j + shiftX] != '.' || i + shiftY > BOARD_HEIGHT)
+            if (board[i + shiftY][j + shiftX] != '.' && board[i + shiftY][j + shiftX] != 'e' || i + shiftY > BOARD_HEIGHT)
             {
                 stop = true;
                 break;
@@ -1478,17 +1755,42 @@ bool squarePositionIsFinal(int shiftX, int shiftY)
     return stop;
 }
 
-bool linePositionIsFinal(char line[4][4], int shiftX, int shiftY)
+bool linePositionIsFinal(const char line[4][4], int shiftX, int shiftY)
 {
     bool stop = false;
 
     for (int i = 0; i < 4 && !stop; i++)
         for (int j = 0; j < 4; j++)
-            if (line[i][j] != '.' && board[i + shiftY][j + shiftX] != '.' || i + shiftY > BOARD_HEIGHT)
+            if (line[i][j] != '.' && board[i + shiftY][j + shiftX] != 'e' && board[i + shiftY][j + shiftX] != '.' || i + shiftY > BOARD_HEIGHT)
             {
                 stop = true;
                 break;
             }
 
     return stop;
+}
+
+bool isThreeRotatable(const char three[3][3], int shiftX, int shiftY)
+{
+
+    bool rotatable = true;
+
+    for (int i = 0; i < 3 && rotatable; i++)
+        for (int j = 0; j < 3 && rotatable; j++)
+            if (three[i][j] != '.' && board[i + shiftY][j + shiftX] != '.' && j + shiftX < BOARD_WIDTH)
+                rotatable = false;
+
+    return rotatable;
+}
+
+bool isLineRotatable(const char line[4][4], int shiftX, int shiftY)
+{
+    bool rotatable = true;
+
+    for (int i = 0; i < 4 && rotatable; i++)
+        for (int j = 0; j < 4 && rotatable; j++)
+            if (line[i][j] != '.' && board[i + shiftY][j + shiftX] != '.' && j + shiftX < BOARD_WIDTH)
+                rotatable = false;
+
+    return rotatable;
 }
