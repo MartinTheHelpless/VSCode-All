@@ -1043,6 +1043,7 @@ int main(int argc, char const *argv[])
                 }
                 case SDLK_SPACE:
                 {
+                    bool drop = false;
 
                     switch (blockType)
                     {
@@ -1059,6 +1060,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1081,6 +1083,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1102,6 +1105,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1123,6 +1127,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1144,6 +1149,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1165,6 +1171,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1186,6 +1193,7 @@ int main(int argc, char const *argv[])
 
                         if (shift.y - 1 == shift.baseY)
                             quit = true;
+                        drop = true;
 
                         shift.x = shift.baseX;
                         shift.y = shift.baseY;
@@ -1230,6 +1238,9 @@ int main(int argc, char const *argv[])
                         }
                     }
 
+                    if (drop && dropDelay >= 220 && score % 50 == 0)
+                        dropDelay -= 50;
+
                     break;
                 }
                 }
@@ -1244,6 +1255,8 @@ int main(int argc, char const *argv[])
 
         if (SDL_GetTicks() - lastDrop > dropDelay)
         {
+
+            bool drop = false;
 
             lastDrop = SDL_GetTicks();
 
@@ -1263,6 +1276,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1286,6 +1300,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1309,6 +1324,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1332,6 +1348,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1355,6 +1372,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1378,6 +1396,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1401,6 +1420,7 @@ int main(int argc, char const *argv[])
 
                     if (shift.y - 1 == shift.baseY)
                         quit = true;
+                    drop = true;
 
                     shift.x = shift.baseX;
                     shift.y = shift.baseY;
@@ -1448,6 +1468,9 @@ int main(int argc, char const *argv[])
                     i++;
                 }
             }
+
+            if (drop && dropDelay >= 220 && score % 50 == 0)
+                dropDelay -= 20;
         }
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -1463,7 +1486,7 @@ int main(int argc, char const *argv[])
         }*/
     }
 
-    SDL_Log("Game Over");
+    SDL_Log("Game Over. Your score: %d", score);
     SDL_free(textTexture);
     SDL_free(tmpSurface);
     SDL_free(tmp);
