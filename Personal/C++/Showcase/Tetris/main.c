@@ -212,6 +212,8 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
+    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_NONE);
+
     TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
 
     SDL_Color fontColor = {255, 255, 255};
@@ -266,7 +268,7 @@ int main(int argc, char const *argv[])
         SDL_RenderCopy(rend, scoreRes, NULL, &scRect);
         SDL_RenderCopy(rend, textTexture, NULL, &scoreText);
 
-        SDL_SetRenderDrawColor(rend, 255, 255, 255, 0);
+        SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
         SDL_RenderDrawRect(rend, &border);
         SDL_RenderDrawRect(rend, &next);
 
@@ -1591,10 +1593,10 @@ void drawBoard(SDL_Renderer *rend, int x, int y)
                 break;
             }
 
-            SDL_SetRenderDrawColor(rend, r, g, b, 0);
+            SDL_SetRenderDrawColor(rend, r, g, b, 255);
             SDL_Rect rect = {x + j * BLOCK_SIZE, y + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE};
             SDL_RenderFillRect(rend, &rect);
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
             SDL_RenderDrawRect(rend, &rect);
         }
     }
@@ -1615,7 +1617,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             {
                 if (lSquig[0][i][j] != '.')
                 {
-                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_SetRenderDrawColor(rend, r, g, b, 255);
                     SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
@@ -1635,7 +1637,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             {
                 if (rSquig[0][i][j] != '.')
                 {
-                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_SetRenderDrawColor(rend, r, g, b, 255);
                     SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
@@ -1655,7 +1657,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             {
                 if (tBlock[0][i][j] != '.')
                 {
-                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_SetRenderDrawColor(rend, r, g, b, 255);
                     SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
@@ -1676,7 +1678,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             {
                 if (rLblock[0][i][j] != '.')
                 {
-                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_SetRenderDrawColor(rend, r, g, b, 255);
                     SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
                     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
@@ -1695,10 +1697,10 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
             {
                 if (lLblock[0][i][j] != '.')
                 {
-                    SDL_SetRenderDrawColor(rend, r, g, b, 0);
+                    SDL_SetRenderDrawColor(rend, r, g, b, 255);
                     SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - BLOCK_SIZE * 0.5) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                     SDL_RenderFillRect(rend, &tmp);
-                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+                    SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
                     SDL_RenderDrawRect(rend, &tmp);
                 }
             }
@@ -1710,10 +1712,10 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
         {
             for (int j = 0; j < 2; j++)
             {
-                SDL_SetRenderDrawColor(rend, 191, 177, 21, 0);
+                SDL_SetRenderDrawColor(rend, 191, 177, 21, 255);
                 SDL_Rect tmp = {(WINDOW_WIDTH - BORDER_MARGIN - 0.25 * BLOCK_SIZE) + 1 + (j - 3) * BLOCK_SIZE * 0.5, 1 + (i + 0.5) * BLOCK_SIZE * 0.5 + BORDER_MARGIN + BLOCK_SIZE * 1.5, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
                 SDL_RenderFillRect(rend, &tmp);
-                SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+                SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
                 SDL_RenderDrawRect(rend, &tmp);
             }
         }
@@ -1722,10 +1724,10 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
     {
         for (int i = 0; i < 4; i++)
         {
-            SDL_SetRenderDrawColor(rend, 8, 138, 118, 0);
+            SDL_SetRenderDrawColor(rend, 8, 138, 118, 255);
             SDL_Rect tmp = {WINDOW_WIDTH - BORDER_MARGIN - 2.5 * BLOCK_SIZE + 2 * BLOCK_SIZE / 2, 1 + BLOCK_SIZE + BORDER_MARGIN + (i + 0.5) * BLOCK_SIZE / 2, BLOCK_SIZE * 0.5, BLOCK_SIZE * 0.5};
             SDL_RenderFillRect(rend, &tmp);
-            SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
             SDL_RenderDrawRect(rend, &tmp);
         }
     }
