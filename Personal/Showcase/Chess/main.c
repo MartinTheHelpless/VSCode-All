@@ -17,6 +17,15 @@ struct piece
     int boardY;
 };
 
+char board[8][8] = {"rnbqkbnr",
+                    "pppppppp",
+                    "xxxxxxxx",
+                    "xxxxxxxx",
+                    "xxxxxxxx",
+                    "xxxxxxxx",
+                    "pppppppp",
+                    "rnbqkbnr"};
+
 void drawBoard(SDL_Renderer *rend);
 
 int main(int argc, char *argv[])
@@ -37,6 +46,8 @@ int main(int argc, char *argv[])
         SDL_Log("Could not initiate window and renderer");
         return 1;
     }
+
+    SDL_Surface *tmp = IMG_Load("src/imgs/bPwn.png");
 
     SDL_Event event;
     bool quit = false;
@@ -76,7 +87,9 @@ void drawBoard(SDL_Renderer *rend)
         for (int j = 0; j < BOARD_DIM; j++)
         {
             SDL_Rect rect = {j * xy, i * xy, xy, xy};
-            (i + j) % 2 == 0 ? SDL_SetRenderDrawColor(rend, 220, 220, 220, 0) : SDL_SetRenderDrawColor(rend, 87, 125, 49, 0);
+            (i + j) % 2 == 0 ? SDL_SetRenderDrawColor(rend, 230, 230, 230, 0) : SDL_SetRenderDrawColor(rend, 87, 125, 49, 0);
             SDL_RenderFillRect(rend, &rect);
+            SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+            SDL_RenderDrawRect(rend, &rect);
         }
 }
