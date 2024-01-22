@@ -16,7 +16,7 @@ int main(void)
     int i = 0;
     int multiplier = 1;
 
-    for (const auto &entry : std::filesystem::directory_iterator("src/tiles/Character/run"))
+    for (const auto &entry : std::filesystem::directory_iterator((std::string)path + "Character/run"))
     {
         const std::string filePath = entry.path().string();
 

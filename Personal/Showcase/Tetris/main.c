@@ -255,6 +255,7 @@ int main(int argc, char const *argv[])
 
     while (!quit)
     {
+
         frameStart = SDL_GetTicks();
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderClear(rend);
