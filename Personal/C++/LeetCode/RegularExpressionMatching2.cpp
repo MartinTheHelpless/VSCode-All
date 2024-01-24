@@ -15,41 +15,125 @@ int main(int argc, char const *argv[])
 
 bool isMatch(const std::string &s, const std::string &p)
 {
-    int sIndex = 0, pIndex = 0;
+    std::string tmp = "";
 
-    while (pIndex < p.length())
+    char current = p[0];
+
+    int count = 0;
+
+    for (int i = 0; i <= p.length(); i++)
     {
-        char patternChar = p[pIndex];
-
-        if (pIndex + 1 < p.length() && p[pIndex + 1] == '*')
+        char r = p[i];
+        if (r != current && r == '*' && i > 0 && p[i + 1] == current)
         {
-            pIndex += 2;
-
-            while (sIndex < s.length() && (s[sIndex] == patternChar || patternChar == '.'))
+            i++;
+            while (p[i] == current)
             {
-                if (isMatch(s.substr(sIndex), p.substr(pIndex)))
+                count++;
+                i++;
+            }
+            count > 0 ? count-- : count;
+            tmp += p[i - 1];
+            tmp += count + 48;
+            tmp.append("+");
+            current = p[i];
+            count = 1;
+        }
+        else if (r != current && r == '*' && i > 0)
+        {
+            count > 0 ? count-- : count;
+            tmp += p[i - 1];
+            tmp += count + 48;
+            tmp.append("+");
+            count = 1;
+            i++;
+            current = p[i];
+        }
+        else if (r != current && i > 0)
+        {
+            tmp += p[i - 1];
+            tmp += count + 48;
+            current = r;
+            count = 1;
+        }
+        else
+            count++;
+    }
+
+    int index = 0;
+
+    char lastStar = 0;
+
+    for (int i = 0; i < tmp.size(); i++)
+    {
+        current = tmp[i];
+        i++;
+        count = tmp[i] - 48;
+
+        if (current == '.')
+        {
+            if (i + 1 < tmp.length() && tmp[i + 1] == '+')
+            {
+                i++;
+                int check = 0;
+                while (s[index] != tmp[i + 1] && s[index] != 0)
                 {
-                    return true;
+                    check++;
+                    index++;
+                }
+                if (check < count)
+                {
+                    return false;
                 }
 
-                sIndex++;
+                lastStar = current;
+            }
+            else
+            {
+                for (int j = 0; j < count; j++)
+                {
+                    if (index >= s.length() || s[index] == 0)
+                        return false;
+
+                    index++;
+                }
             }
         }
         else
         {
-            if (sIndex < s.length() && (s[sIndex] == patternChar || patternChar == '.'))
+            if (i + 1 < tmp.length() && tmp[i + 1] == '+')
             {
-                sIndex++;
-                pIndex++;
+                i++;
+                int check = 0;
+                while (s[index] == current)
+                {
+                    check++;
+                    index++;
+                }
+
+                if (check < count)
+                    return false;
+                if (check > 0)
+                    lastStar = current;
             }
             else
             {
-                return false;
+                for (int j = 0; j < count; j++)
+                {
+                    if (s[index] == current || lastStar == current)
+                        index++;
+                    else
+                        return false;
+                }
+                lastStar = 0;
             }
         }
     }
 
-    return sIndex == s.length() && pIndex == p.length();
+    if (index < s.length())
+        return false;
+
+    return true;
 }
 
 /*int delim = 0;
