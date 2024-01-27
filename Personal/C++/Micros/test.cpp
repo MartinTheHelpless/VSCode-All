@@ -1,19 +1,49 @@
 #include <iostream>
+#include <vector>
+#include <cmath>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+#include <time.h>
+#include <chrono>
+
+void rotateMatrix90(int mat[3][3])
+{
+    int rotatedMat[3][3];
+
+    // Calculate the rotated matrix
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            rotatedMat[j][2 - i] = mat[i][j];
+}
+
+void displayMatrix(int mat[3][3])
+{
+    // Display the matrix
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            std::cout << mat[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
 
 int main()
 {
-    unsigned char bits[] = {0, 1, 0, 1, 1, 1, 0, 0};
-    int decimalValue = 0;
+    int matrix[3][3] = {{0, 0, 0},
+                        {1, 1, 1},
+                        {0, 0, 0}};
 
-    for (int i = 0; i < 8; ++i)
-    {
-        decimalValue = (decimalValue << 1) | bits[i];
-    }
+    std::cout << "Original Matrix:\n";
+    displayMatrix(matrix);
 
-    char character = static_cast<char>(decimalValue);
-    std::cout << "Character: " << character << std::endl;
+    // Rotate the matrix by 90 degrees clockwise using an auxiliary matrix
+    rotateMatrix90(matrix);
 
-    int treeDepth = 0;
+    std::cout << "\nRotated Matrix (90 degrees clockwise):\n";
+    displayMatrix(matrix);
 
     return 0;
 }

@@ -2,7 +2,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <stdio.h>
+#include "classes/Three.cpp"
+#include "classes/Square.h"
+#include "classes/Line.h"
 
 #ifdef main
 #undef main
