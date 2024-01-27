@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = g++
-CFLAGS = -Isrc/Include
+CFLAGS = -Isrc/include
 LDFLAGS = -Lsrc/lib
 LIBS = -lmingw32 -lSDL2 -lSDL2_image -lSDL2_ttf
 

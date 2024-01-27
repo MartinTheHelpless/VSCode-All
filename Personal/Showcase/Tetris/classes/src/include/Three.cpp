@@ -1,6 +1,6 @@
 #include "Three.h"
 
-Three::Three(char shape[3][3], int x, int y) : Block(x, y)
+Three::Three(char (&shape)[3][3], int x, int y) : Block(x, y)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)

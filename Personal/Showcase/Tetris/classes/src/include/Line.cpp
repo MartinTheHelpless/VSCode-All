@@ -1,6 +1,6 @@
 #include "Line.h"
 
-Line::Line(char shape[4][4], int x, int y) : Block(x, y)
+Line::Line(char (&shape)[4][4], int x, int y) : Block(x, y)
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)

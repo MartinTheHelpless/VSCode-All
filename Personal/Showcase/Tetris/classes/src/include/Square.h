@@ -1,12 +1,13 @@
+#pragma once
 #include "Block.h"
 
-class Three : public Block
+class Square : public Block
 {
 private:
-    char m_Shape[3][3];
+    char m_Shape[2][2];
 
 public:
-    Three(char shape[3][3], int x, int y);
+    Square(char (&shape)[2][2], int x, int y);
 
     virtual void DrawOnBoard(char (&board)[22][10]) override;
     virtual void DrawGhostPiece(char (&board)[22][10]) override;

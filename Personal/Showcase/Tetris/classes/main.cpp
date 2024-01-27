@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -83,7 +84,7 @@ void drawBoard(SDL_Renderer *rend, int x, int y);
 
 void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock);
 
-Block *GetRandomBlock(int type);
+void GetRandomBlock(Block *block, int &type);
 
 int main(int argc, char const *argv[])
 {
@@ -129,7 +130,12 @@ int main(int argc, char const *argv[])
 
     int nextBlock = rand() % 7;
 
-    Block *current = GetRandomBlock(nextBlock);
+    std::cout << nextBlock << std::endl;
+
+    Block *current;
+    GetRandomBlock(current, nextBlock);
+
+    std::cout << nextBlock << std::endl;
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -364,10 +370,8 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
     }
 }
 
-Block *GetRandomBlock(int type)
+void GetRandomBlock(Block *block, int &type)
 {
-
-    Block *block;
 
     switch (type)
     {
@@ -410,5 +414,5 @@ Block *GetRandomBlock(int type)
         break;
     }
 
-    return block;
+    type = rand() % 7;
 }

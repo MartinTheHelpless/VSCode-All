@@ -1,6 +1,6 @@
 #include "Square.h"
 
-Square::Square(char shape[2][2], int x, int y) : Block(x, y)
+Square::Square(char (&shape)[2][2], int x, int y) : Block(x, y)
 {
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
