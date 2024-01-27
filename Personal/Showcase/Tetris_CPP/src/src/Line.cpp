@@ -1,6 +1,6 @@
-#include "Line.h"
+#include "../include/Line.h"
 
-Line::Line(char (&shape)[4][4], int x, int y) : Block(x, y)
+Line::Line(const char (&shape)[4][4], int x, int y) : Block(x, y)
 {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
@@ -59,7 +59,7 @@ void Line::DrawGhostPiece(char (&board)[22][10])
 {
     int y = m_Y;
 
-    while (!CheckPositionIsFinal(board))
+    while (!CheckPositionIsFinal(board, y + 1))
         y++;
 
     for (int i = 0; i < 4; i++)
@@ -72,7 +72,7 @@ void Line::RemoveGhostPiece(char (&board)[22][10])
 {
     int y = m_Y;
 
-    while (!CheckPositionIsFinal(board))
+    while (!CheckPositionIsFinal(board, y + 1))
         y++;
 
     for (int i = 0; i < 4; i++)
@@ -125,12 +125,21 @@ bool Line::CheckPositionIsFinal(char (&board)[22][10])
     bool stop = false;
 
     for (int i = 0; i < 4 && !stop; i++)
-        for (int j = 0; j < 4; j++)
-            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != 'e' && board[i + m_Y][j + m_X] != '.' || i + m_Y > 10)
-            {
+        for (int j = 0; j < 4 && !stop; j++)
+            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != 'e' && board[i + m_Y][j + m_X] != '.' || i + m_Y > 22)
                 stop = true;
-                break;
-            }
+
+    return stop;
+}
+
+bool Line::CheckPositionIsFinal(char (&board)[22][10], int y)
+{
+    bool stop = false;
+
+    for (int i = 0; i < 4 && !stop; i++)
+        for (int j = 0; j < 4 && !stop; j++)
+            if (m_Shape[i][j] != '.' && board[i + y][j + m_X] != 'e' && board[i + y][j + m_X] != '.' || i + y > 22)
+                stop = true;
 
     return stop;
 }

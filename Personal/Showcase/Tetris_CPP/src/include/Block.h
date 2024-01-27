@@ -12,6 +12,15 @@ public:
     {
     }
 
+    int GetX();
+    int GetY();
+    void SetX(int x);
+    void SetY(int y);
+    void IncrementX();
+    void IncrementY();
+    void DecrementX();
+    void DecrementY();
+
     virtual void DrawOnBoard(char (&board)[22][10]) = 0;
     virtual void DrawGhostPiece(char (&board)[22][10]) = 0;
     virtual void DeleteFromBoard(char (&board)[22][10]) = 0;
@@ -19,5 +28,7 @@ public:
     virtual void CheckIfRotatableR(char (&board)[22][10]) = 0;
     virtual void CheckIfRotatableL(char (&board)[22][10]) = 0;
     virtual bool CheckPositionIsFinal(char (&board)[22][10]) = 0;
+    virtual bool CheckPositionIsFinal(char (&board)[22][10], int y) = 0;
+
     virtual int CheckSideFree(char (&board)[22][10], int side) = 0;
 };

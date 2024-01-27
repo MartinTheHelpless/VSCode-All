@@ -4,9 +4,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdlib.h>
-#include "Three.h"
-#include "Line.h"
-#include "Square.h"
+#include "src/include/Three.h"
+#include "src/include/Line.h"
+#include "src/include/Square.h"
 
 #ifdef main
 #undef main
@@ -55,27 +55,27 @@ char board[22][10] = {
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'}};
-char lSquig[3][3] = {{'r', 'r', '.'},
-                     {'.', 'r', 'r'},
-                     {'.', '.', '.'}};
-char rSquig[3][3] = {{'.', 'g', 'g'},
-                     {'g', 'g', '.'},
-                     {'.', '.', '.'}};
-char tBlock[3][3] = {{'.', 'p', '.'},
-                     {'p', 'p', 'p'},
-                     {'.', '.', '.'}};
-char rLblock[3][3] = {{'.', 'o', '.'},
-                      {'.', 'o', '.'},
-                      {'.', 'o', 'o'}};
-char lLblock[3][3] = {{'.', 'b', '.'},
-                      {'.', 'b', '.'},
-                      {'b', 'b', '.'}};
-char line[4][4] = {{'.', 'c', '.', '.'},
-                   {'.', 'c', '.', '.'},
-                   {'.', 'c', '.', '.'},
-                   {'.', 'c', '.', '.'}};
-char square[2][2] = {{'y', 'y'},
-                     {'y', 'y'}};
+const char lSquig[3][3] = {{'r', 'r', '.'},
+                           {'.', 'r', 'r'},
+                           {'.', '.', '.'}};
+const char rSquig[3][3] = {{'.', 'g', 'g'},
+                           {'g', 'g', '.'},
+                           {'.', '.', '.'}};
+const char tBlock[3][3] = {{'.', 'p', '.'},
+                           {'p', 'p', 'p'},
+                           {'.', '.', '.'}};
+const char rLblock[3][3] = {{'.', 'o', '.'},
+                            {'.', 'o', '.'},
+                            {'.', 'o', 'o'}};
+const char lLblock[3][3] = {{'.', 'b', '.'},
+                            {'.', 'b', '.'},
+                            {'b', 'b', '.'}};
+const char line[4][4] = {{'.', 'c', '.', '.'},
+                         {'.', 'c', '.', '.'},
+                         {'.', 'c', '.', '.'},
+                         {'.', 'c', '.', '.'}};
+const char square[2][2] = {{'y', 'y'},
+                           {'y', 'y'}};
 // ------------------------------------------------------------------------------------------------------
 // ---------------------------------- END OF SHAPE AND BOARD DEFINITION ---------------------------------
 // ------------------------------------------------------------------------------------------------------
@@ -84,7 +84,9 @@ void drawBoard(SDL_Renderer *rend, int x, int y);
 
 void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock);
 
-void GetRandomBlock(Block *block, int &type);
+Block *GetRandomBlock(int &type);
+
+void CheckForFullRows();
 
 int main(int argc, char const *argv[])
 {
@@ -123,19 +125,14 @@ int main(int argc, char const *argv[])
     SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
     SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - int(BLOCK_SIZE / 0.4), BORDER_MARGIN + BLOCK_SIZE, int(BLOCK_SIZE * 2.5), int(BLOCK_SIZE * 2.5)};
 
-    Uint32 frameStart, frameTime;
+    Uint32 frameStart, frameTime, lastDrop = 0, dropDelay = 1000;
 
     bool quit = false;
     SDL_Event event;
 
-    int nextBlock = rand() % 7;
+    int nextBlock = 1; // rand() % 7;
 
-    std::cout << nextBlock << std::endl;
-
-    Block *current;
-    GetRandomBlock(current, nextBlock);
-
-    std::cout << nextBlock << std::endl;
+    Block *current = GetRandomBlock(nextBlock);
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -151,14 +148,112 @@ int main(int argc, char const *argv[])
         SDL_RenderDrawRect(rend, &border);
         SDL_RenderDrawRect(rend, &next);
 
-        current->DrawOnBoard(board);
-
         while (SDL_PollEvent(&event))
         {
-            switch (event.key.keysym.sym)
+            switch (event.type)
             {
             case SDL_QUIT:
                 quit = true;
+                break;
+
+            case SDL_KEYDOWN:
+
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_a:
+                {
+
+                    int minX = current->CheckSideFree(board, 0);
+
+                    current->DeleteFromBoard(board);
+                    current->RemoveGhostPiece(board);
+
+                    current->DecrementX();
+
+                    if (current->GetX() < minX)
+                        current->SetX(minX);
+
+                    if (current->CheckPositionIsFinal(board))
+                        current->IncrementX();
+
+                    break;
+                }
+
+                case SDLK_d:
+                {
+                    int maxX = current->CheckSideFree(board, 1);
+
+                    current->DeleteFromBoard(board);
+                    current->RemoveGhostPiece(board);
+
+                    current->IncrementX();
+
+                    if (current->GetX() > maxX)
+                        current->SetX(maxX);
+
+                    if (current->CheckPositionIsFinal(board))
+                        current->DecrementX();
+
+                    break;
+                }
+
+                case SDLK_q:
+                {
+
+                    current->DeleteFromBoard(board);
+                    current->RemoveGhostPiece(board);
+
+                    current->CheckIfRotatableR(board);
+
+                    break;
+                }
+
+                case SDLK_e:
+                {
+                    current->DeleteFromBoard(board);
+                    current->RemoveGhostPiece(board);
+
+                    current->CheckIfRotatableL(board);
+
+                    break;
+                }
+
+                case SDLK_s:
+                {
+                    lastDrop = SDL_GetTicks();
+
+                    current->DeleteFromBoard(board);
+
+                    current->IncrementY();
+
+                    if (current->CheckPositionIsFinal(board))
+                    {
+                        current->DecrementY();
+                        current->DrawOnBoard(board);
+                        current = GetRandomBlock(nextBlock);
+                        CheckForFullRows();
+                    }
+                    break;
+                }
+
+                case SDLK_SPACE:
+                {
+                    current->DeleteFromBoard(board);
+                    current->RemoveGhostPiece(board);
+
+                    while (!current->CheckPositionIsFinal(board, current->GetY() + 1))
+                        current->IncrementY();
+
+                    current->DrawOnBoard(board);
+                    current = GetRandomBlock(nextBlock);
+                    CheckForFullRows();
+
+                    break;
+                }
+                default:
+                    break;
+                }
+
                 break;
 
             default:
@@ -166,16 +261,37 @@ int main(int argc, char const *argv[])
             }
         }
 
+        current->DrawGhostPiece(board);
+        current->DrawOnBoard(board);
+
         drawBoard(rend, BORDER_MARGIN + 1, BORDER_MARGIN + 1 + BLOCK_SIZE);
 
-        drawNextBlockWindow(rend, 0);
+        // drawNextBlockWindow(rend, 0);
 
         SDL_RenderPresent(rend);
+
+        if (SDL_GetTicks() > lastDrop + dropDelay)
+        {
+            lastDrop = SDL_GetTicks();
+
+            current->DeleteFromBoard(board);
+
+            current->IncrementY();
+
+            if (current->CheckPositionIsFinal(board))
+            {
+                current->DecrementY();
+                current->DrawOnBoard(board);
+                current = GetRandomBlock(nextBlock);
+                CheckForFullRows();
+            }
+        }
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
     }
+
     // ------------------------------------------------------------------------------------------
     // ---------------------------- END OF GAME LOOP --------------------------------------------
     // ------------------------------------------------------------------------------------------
@@ -370,19 +486,21 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock)
     }
 }
 
-void GetRandomBlock(Block *block, int &type)
+Block *GetRandomBlock(int &type)
 {
+
+    Block *block;
 
     switch (type)
     {
     case 0:
 
-        block = new Three(lSquig, BASE_X, BASE_Y);
+        block = new Three(rSquig, BASE_X, BASE_Y);
         break;
 
     case 1:
 
-        block = new Three(rSquig, BASE_X, BASE_Y);
+        block = new Three(lSquig, BASE_X, BASE_Y);
         break;
 
     case 2:
@@ -415,4 +533,32 @@ void GetRandomBlock(Block *block, int &type)
     }
 
     type = rand() % 7;
+    return block;
+}
+
+void CheckForFullRows()
+{
+    for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
+    {
+        bool rowFull = true;
+
+        for (int j = 0; j < BOARD_WIDTH; j++)
+        {
+            if (board[i][j] == '.' || board[i][j] == 'e')
+            {
+                rowFull = false;
+                break;
+            }
+        }
+        if (rowFull)
+        {
+            for (int a = 0; a < BOARD_WIDTH; a++)
+                board[i][a] = '.';
+
+            for (int t = i; t > 0; t--)
+                for (size_t a = 0; a < BOARD_WIDTH; a++)
+                    board[t][a] = board[t - 1][a];
+            i++;
+        }
+    }
 }

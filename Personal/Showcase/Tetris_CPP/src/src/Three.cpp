@@ -1,7 +1,9 @@
-#include "Three.h"
+#include "../include/Three.h"
+#include <iostream>
 
-Three::Three(char (&shape)[3][3], int x, int y) : Block(x, y)
+Three::Three(const char (&shape)[3][3], int x, int y) : Block(x, y)
 {
+
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
             m_Shape[i][j] = shape[i][j];
@@ -9,16 +11,17 @@ Three::Three(char (&shape)[3][3], int x, int y) : Block(x, y)
 
 void Three::DeleteFromBoard(char (&board)[22][10])
 {
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            board[i + m_Y][j + m_X] = '.';
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (m_Shape[i][j] != '.')
+                board[i + m_Y][j + m_X] = '.';
 }
 
 void Three::DrawOnBoard(char (&board)[22][10])
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (m_Shape[i][j] != '.' && i + m_X >= 0)
+            if (m_Shape[i][j] != '.')
                 board[i + m_Y][j + m_X] = m_Shape[i][j];
 }
 
@@ -31,12 +34,9 @@ int Three::CheckSideFree(char (&board)[22][10], int side)
 
     bool freeSide = true;
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3 && freeSide; i++)
         if (m_Shape[i][side] != '.')
-        {
             freeSide = false;
-            break;
-        }
 
     if (freeSide)
     {
@@ -58,7 +58,7 @@ void Three::DrawGhostPiece(char (&board)[22][10])
 {
     int y = m_Y;
 
-    while (!CheckPositionIsFinal(board))
+    while (!CheckPositionIsFinal(board, y + 1))
         y++;
 
     for (int i = 0; i < 3; i++)
@@ -71,7 +71,7 @@ void Three::RemoveGhostPiece(char (&board)[22][10])
 {
     int y = m_Y;
 
-    while (!CheckPositionIsFinal(board))
+    while (!CheckPositionIsFinal(board, y + 1))
         y++;
 
     for (int i = 0; i < 3; i++)
@@ -82,17 +82,26 @@ void Three::RemoveGhostPiece(char (&board)[22][10])
 
 bool Three::CheckPositionIsFinal(char (&board)[22][10])
 {
-    bool stop = false;
+    bool final = false;
 
-    for (int i = 0; i < 3 && !stop; i++)
-        for (int j = 0; j < 3; j++)
-            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != 'e' && board[i + m_Y][j + m_X] != '.' || i + m_Y > 22)
-            {
-                stop = true;
-                break;
-            }
+    for (int i = 2; i >= 0 && !final; i--)
+        for (int j = 0; j < 3 && !final; j++)
+            if (m_Shape[i][j] != '.' && i + m_Y > 21 || m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && board[i + m_Y][j + m_X] != 'e')
+                final = true;
 
-    return stop;
+    return final;
+}
+
+bool Three::CheckPositionIsFinal(char (&board)[22][10], int y)
+{
+    bool final = false;
+
+    for (int i = 2; i >= 0 && !final; i--)
+        for (int j = 0; j < 3 && !final; j++)
+            if (m_Shape[i][j] != '.' && i + y > 21 || m_Shape[i][j] != '.' && board[i + y][j + m_X] != '.' && board[i + y][j + m_X] != 'e')
+                final = true;
+
+    return final;
 }
 
 void Three::CheckIfRotatableR(char (&board)[22][10])
