@@ -106,42 +106,107 @@ bool Three::CheckPositionIsFinal(char (&board)[22][10], int y)
 
 void Three::CheckIfRotatableR(char (&board)[22][10])
 {
-    int rotatedMat[3][3];
+    char rotatedMat[3][3];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            rotatedMat[j][2 - i] = m_Shape[i][j];
+            rotatedMat[i][j] = m_Shape[i][j];
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            m_Shape[2 - j][i] = rotatedMat[i][j];
 
     bool rotatable = true;
 
-    for (int i = 0; i < 3 && rotatable; i++)
-        for (int j = 0; j < 3 && rotatable; j++)
-            if (rotatedMat[i][j] != '.' && board[i + m_X][j + m_Y] != '.' && j + m_X < 10)
-                rotatable = false;
+    int minX = CheckSideFree(board, 0);
+    int maxX = CheckSideFree(board, 1);
 
-    if (rotatable)
+    if (GetX() > maxX)
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + maxX] != '.' && board[i + m_Y][j + maxX] != 'e')
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(maxX);
+    }
+    else if (GetX() < minX)
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + minX] != '.' && board[i + m_Y][j + minX] != 'e')
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(minX);
+    }
+    else
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && board[i + m_Y][j + m_X] != 'e')
+                    rotatable = false;
+    }
+
+    if (!rotatable)
+    {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 m_Shape[i][j] = rotatedMat[i][j];
+    }
 }
 
 void Three::CheckIfRotatableL(char (&board)[22][10])
 {
-    int rotatedMat[3][3];
+
+    char rotatedMat[3][3];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            rotatedMat[2 - j][i] = m_Shape[i][j];
+            rotatedMat[i][j] = m_Shape[i][j];
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            m_Shape[j][2 - i] = rotatedMat[i][j];
 
     bool rotatable = true;
 
-    for (int i = 0; i < 3 && rotatable; i++)
-        for (int j = 0; j < 3 && rotatable; j++)
-            if (rotatedMat[i][j] != '.' && board[i + m_X][j + m_Y] != '.' && j + m_X < 10)
-                rotatable = false;
+    int minX = CheckSideFree(board, 0);
+    int maxX = CheckSideFree(board, 1);
 
-    if (rotatable)
+    if (GetX() > maxX)
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + maxX] != '.' && board[i + m_Y][j + maxX] != 'e')
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(maxX);
+    }
+    else if (GetX() < minX)
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + minX] != '.' && board[i + m_Y][j + minX] != 'e')
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(minX);
+    }
+    else
+    {
+        for (int i = 0; i < 3 && rotatable; i++)
+            for (int j = 0; j < 3 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && board[i + m_Y][j + m_X] != 'e')
+                    rotatable = false;
+    }
+
+    if (!rotatable)
+    {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 m_Shape[i][j] = rotatedMat[i][j];
+    }
 }

@@ -84,18 +84,48 @@ void Line::CheckIfRotatableR(char (&board)[22][10])
 {
     int rotatedMat[4][4];
 
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            rotatedMat[i][j] = m_Shape[i][j];
+
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
-            rotatedMat[j][3 - i] = m_Shape[i][j];
+            m_Shape[i][j] = rotatedMat[j][3 - i];
 
     bool rotatable = true;
 
-    for (int i = 0; i < 4 && rotatable; i++)
-        for (int j = 0; j < 4 && rotatable; j++)
-            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && j + m_X < 10)
-                rotatable = false;
+    int minX = CheckSideFree(board, 0);
+    int maxX = CheckSideFree(board, 1);
 
-    if (rotatable)
+    if (GetX() > maxX)
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + maxX] != '.' && board[i + m_Y][j + maxX] != 'e' && j + maxX < 10)
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(maxX);
+    }
+    else if (GetX() < minX)
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + minX] != '.' && board[i + m_Y][j + minX] != 'e' && j + minX < 10)
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(minX);
+    }
+    else
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && board[i + m_Y][j + m_X] != 'e' && j + m_X < 10)
+                    rotatable = false;
+    }
+
+    if (!rotatable)
     {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
@@ -107,18 +137,48 @@ void Line::CheckIfRotatableL(char (&board)[22][10])
 {
     int rotatedMat[4][4];
 
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            rotatedMat[i][j] = m_Shape[i][j];
+
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
-            rotatedMat[3 - j][i] = m_Shape[i][j];
+            m_Shape[i][j] = rotatedMat[3 - j][i];
 
     bool rotatable = true;
 
-    for (int i = 0; i < 4 && rotatable; i++)
-        for (int j = 0; j < 4 && rotatable; j++)
-            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && j + m_X < 10)
-                rotatable = false;
+    int minX = CheckSideFree(board, 0);
+    int maxX = CheckSideFree(board, 1);
 
-    if (rotatable)
+    if (GetX() > maxX)
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + maxX] != '.' && board[i + m_Y][j + maxX] != 'e' && j + maxX < 10)
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(maxX);
+    }
+    else if (GetX() < minX)
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + minX] != '.' && board[i + m_Y][j + minX] != 'e' && j + minX < 10)
+                    rotatable = false;
+
+        if (rotatable)
+            SetX(minX);
+    }
+    else
+    {
+        for (int i = 0; i < 4 && rotatable; i++)
+            for (int j = 0; j < 4 && rotatable; j++)
+                if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && board[i + m_Y][j + m_X] != 'e' && j + m_X < 10)
+                    rotatable = false;
+    }
+
+    if (!rotatable)
     {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
@@ -132,7 +192,7 @@ bool Line::CheckPositionIsFinal(char (&board)[22][10])
 
     for (int i = 0; i < 4 && !stop; i++)
         for (int j = 0; j < 4 && !stop; j++)
-            if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != 'e' && board[i + m_Y][j + m_X] != '.' || i + m_Y > 22)
+            if (m_Shape[i][j] != '.' && (i + m_Y >= 22 || board[i + m_Y][j + m_X] != 'e' && board[i + m_Y][j + m_X] != '.'))
                 stop = true;
 
     return stop;
@@ -144,7 +204,7 @@ bool Line::CheckPositionIsFinal(char (&board)[22][10], int y)
 
     for (int i = 0; i < 4 && !stop; i++)
         for (int j = 0; j < 4 && !stop; j++)
-            if (m_Shape[i][j] != '.' && board[i + y][j + m_X] != 'e' && board[i + y][j + m_X] != '.' || i + y > 22)
+            if (m_Shape[i][j] != '.' && (i + y >= 22 || board[i + y][j + m_X] != 'e' && board[i + y][j + m_X] != '.'))
                 stop = true;
 
     return stop;

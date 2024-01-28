@@ -224,7 +224,7 @@ int main(int argc, char const *argv[])
                     current->DeleteFromBoard(board);
                     current->RemoveGhostPiece(board);
 
-                    current->CheckIfRotatableR(board);
+                    current->CheckIfRotatableL(board);
 
                     break;
                 }
@@ -234,7 +234,7 @@ int main(int argc, char const *argv[])
                     current->DeleteFromBoard(board);
                     current->RemoveGhostPiece(board);
 
-                    current->CheckIfRotatableL(board);
+                    current->CheckIfRotatableR(board);
 
                     break;
                 }
