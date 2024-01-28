@@ -82,15 +82,15 @@ void Line::RemoveGhostPiece(char (&board)[22][10])
 
 void Line::CheckIfRotatableR(char (&board)[22][10])
 {
-    int rotatedMat[4][4];
+    int storeMat[4][4];
 
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
-            rotatedMat[i][j] = m_Shape[i][j];
+            storeMat[i][j] = m_Shape[i][j];
 
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
-            m_Shape[i][j] = rotatedMat[j][3 - i];
+            m_Shape[i][j] = storeMat[j][3 - i];
 
     bool rotatable = true;
 
@@ -129,21 +129,21 @@ void Line::CheckIfRotatableR(char (&board)[22][10])
     {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                m_Shape[i][j] = rotatedMat[i][j];
+                m_Shape[i][j] = storeMat[i][j];
     }
 }
 
 void Line::CheckIfRotatableL(char (&board)[22][10])
 {
-    int rotatedMat[4][4];
+    int storeMat[4][4];
 
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
-            rotatedMat[i][j] = m_Shape[i][j];
+            storeMat[i][j] = m_Shape[i][j];
 
     for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
-            m_Shape[i][j] = rotatedMat[3 - j][i];
+            m_Shape[i][j] = storeMat[3 - j][i];
 
     bool rotatable = true;
 
@@ -182,7 +182,7 @@ void Line::CheckIfRotatableL(char (&board)[22][10])
     {
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 4; j++)
-                m_Shape[i][j] = rotatedMat[i][j];
+                m_Shape[i][j] = storeMat[i][j];
     }
 }
 

@@ -106,15 +106,15 @@ bool Three::CheckPositionIsFinal(char (&board)[22][10], int y)
 
 void Three::CheckIfRotatableR(char (&board)[22][10])
 {
-    char rotatedMat[3][3];
+    char storeMat[3][3];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            rotatedMat[i][j] = m_Shape[i][j];
+            storeMat[i][j] = m_Shape[i][j];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            m_Shape[2 - j][i] = rotatedMat[i][j];
+            m_Shape[2 - j][i] = storeMat[i][j];
 
     bool rotatable = true;
 
@@ -153,22 +153,22 @@ void Three::CheckIfRotatableR(char (&board)[22][10])
     {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                m_Shape[i][j] = rotatedMat[i][j];
+                m_Shape[i][j] = storeMat[i][j];
     }
 }
 
 void Three::CheckIfRotatableL(char (&board)[22][10])
 {
 
-    char rotatedMat[3][3];
+    char storeMat[3][3];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            rotatedMat[i][j] = m_Shape[i][j];
+            storeMat[i][j] = m_Shape[i][j];
 
     for (int i = 0; i < 3; ++i)
         for (int j = 0; j < 3; ++j)
-            m_Shape[j][2 - i] = rotatedMat[i][j];
+            m_Shape[j][2 - i] = storeMat[i][j];
 
     bool rotatable = true;
 
@@ -207,6 +207,6 @@ void Three::CheckIfRotatableL(char (&board)[22][10])
     {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                m_Shape[i][j] = rotatedMat[i][j];
+                m_Shape[i][j] = storeMat[i][j];
     }
 }

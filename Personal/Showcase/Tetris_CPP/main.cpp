@@ -87,6 +87,8 @@ Block *GetRandomBlock(int &type);
 
 int CheckForFullRows();
 
+bool endGame(int &type);
+
 int main(int argc, char const *argv[])
 {
 
@@ -142,7 +144,7 @@ int main(int argc, char const *argv[])
     bool quit = false;
     SDL_Event event;
 
-    int nextBlock = 6, score = 0; // rand() % 7
+    int nextBlock = rand() % 7, score = 0;
 
     Block *current = GetRandomBlock(nextBlock);
 
@@ -252,6 +254,7 @@ int main(int argc, char const *argv[])
                         score += 35;
 
                         current->DecrementY();
+                        quit = endGame(nextBlock);
                         current->DrawOnBoard(board);
                         current = GetRandomBlock(nextBlock);
                         int fullRows = CheckForFullRows();
@@ -273,6 +276,7 @@ int main(int argc, char const *argv[])
                     while (!current->CheckPositionIsFinal(board, current->GetY() + 1))
                         current->IncrementY();
 
+                    quit = endGame(nextBlock);
                     current->DrawOnBoard(board);
                     current = GetRandomBlock(nextBlock);
                     int fullRows = CheckForFullRows();
@@ -299,7 +303,7 @@ int main(int argc, char const *argv[])
 
         drawBoard(rend, BORDER_MARGIN + 1, BORDER_MARGIN + 1 + BLOCK_SIZE);
 
-        // drawNextBlockWindow(rend, 0);
+        drawNextBlockWindow(rend, nextBlock);
 
         SDL_RenderPresent(rend);
 
@@ -315,6 +319,7 @@ int main(int argc, char const *argv[])
             {
                 current->DecrementY();
                 current->DrawOnBoard(board);
+                quit = endGame(nextBlock);
                 current = GetRandomBlock(nextBlock);
                 int fullRows = CheckForFullRows();
                 score += 165 * fullRows;
@@ -569,7 +574,12 @@ Block *GetRandomBlock(int &type)
         break;
     }
 
-    type = rand() % 7;
+    int next = rand() % 7;
+
+    while (type == next)
+        next = rand() % 7;
+
+    type = next;
     return block;
 }
 
@@ -602,4 +612,21 @@ int CheckForFullRows()
         }
     }
     return rowsFull;
+}
+
+bool endGame(int &type)
+{
+    if (type == 6)
+    {
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 10; j++)
+                if (board[i][j] != '.' && board[i][j] != 'e')
+                    return true;
+    }
+    else
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 10; j++)
+                if (board[i][j] != '.' && board[i][j] != 'e')
+                    return true;
+    return false;
 }
