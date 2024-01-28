@@ -25,34 +25,33 @@ void Line::DrawOnBoard(char (&board)[22][10])
 
 int Line::CheckSideFree(char (&board)[22][10], int side)
 {
+
     if (side > 0)
-        side = 2;
-    else
-        side = 1;
-
-    bool freeSide = true;
-
-    for (int i = 0; i < 4; i++)
-        if (m_Shape[i][side] != '.')
-        {
-            freeSide = false;
-            break;
-        }
-
-    if (freeSide)
     {
-        if (side > 1)
-            return 10 - side;
-        else
-            return -2;
+
+        for (int i = 0; i < 4; i++)
+            if (m_Shape[i][3] != '.')
+                return 10 - 4;
+
+        for (int i = 0; i < 4; i++)
+            if (m_Shape[i][2] != '.')
+                return 10 - 3;
+
+        return 10 - 2;
     }
     else
     {
-        if (side > 1)
-            return 10 - 3;
-        else
-            return -1;
+        for (int i = 0; i < 4; i++)
+            if (m_Shape[i][0] != '.')
+                return 0;
+
+        for (int i = 0; i < 4; i++)
+            if (m_Shape[i][1] != '.')
+                return -1;
+
+        return -2;
     }
+    return 0;
 }
 
 void Line::DrawGhostPiece(char (&board)[22][10])
@@ -95,6 +94,13 @@ void Line::CheckIfRotatableR(char (&board)[22][10])
         for (int j = 0; j < 4 && rotatable; j++)
             if (m_Shape[i][j] != '.' && board[i + m_Y][j + m_X] != '.' && j + m_X < 10)
                 rotatable = false;
+
+    if (rotatable)
+    {
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                m_Shape[i][j] = rotatedMat[i][j];
+    }
 }
 
 void Line::CheckIfRotatableL(char (&board)[22][10])

@@ -31,7 +31,6 @@ const int BASE_Y = 0;
 // ------------------------------------------------------------------------------------------------------
 // ------------------------------------- SHAPE AND BOARD DEFINITION -------------------------------------
 // ------------------------------------------------------------------------------------------------------
-
 char board[22][10] = {
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
     {'.', '.', '.', '.', '.', '.', '.', '.', '.', '.'},
@@ -86,7 +85,7 @@ void drawNextBlockWindow(SDL_Renderer *rend, int nextBlock);
 
 Block *GetRandomBlock(int &type);
 
-void CheckForFullRows();
+int CheckForFullRows();
 
 int main(int argc, char const *argv[])
 {
@@ -122,6 +121,19 @@ int main(int argc, char const *argv[])
 
     SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_NONE);
 
+    TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
+
+    SDL_Color fontColor = {255, 255, 255};
+
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, "Score: ", fontColor);
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(rend, textSurface);
+    SDL_free(textSurface);
+
+    SDL_Surface *tmp;
+    SDL_Texture *scoreRes;
+
+    SDL_Rect scoreText = {WINDOW_WIDTH / 2 - BLOCK_SIZE * 4, BORDER_MARGIN / 2, BLOCK_SIZE * 4, BLOCK_SIZE};
+    SDL_Rect scRect = {WINDOW_WIDTH / 2, BORDER_MARGIN / 2, BLOCK_SIZE * 2, BLOCK_SIZE};
     SDL_Rect border = {BORDER_MARGIN, BORDER_MARGIN + BLOCK_SIZE, BLOCK_SIZE * BOARD_WIDTH + 2, BLOCK_SIZE * BOARD_HEIGHT + 2};
     SDL_Rect next = {WINDOW_WIDTH - BORDER_MARGIN - int(BLOCK_SIZE / 0.4), BORDER_MARGIN + BLOCK_SIZE, int(BLOCK_SIZE * 2.5), int(BLOCK_SIZE * 2.5)};
 
@@ -130,7 +142,7 @@ int main(int argc, char const *argv[])
     bool quit = false;
     SDL_Event event;
 
-    int nextBlock = 1; // rand() % 7;
+    int nextBlock = 6, score = 0; // rand() % 7
 
     Block *current = GetRandomBlock(nextBlock);
 
@@ -143,6 +155,15 @@ int main(int argc, char const *argv[])
         frameStart = SDL_GetTicks();
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderClear(rend);
+
+        char value[6];
+        sprintf(value, "%d", score);
+
+        tmp = TTF_RenderText_Solid(font, value, fontColor);
+        scoreRes = SDL_CreateTextureFromSurface(rend, tmp);
+
+        SDL_RenderCopy(rend, scoreRes, NULL, &scRect);
+        SDL_RenderCopy(rend, textTexture, NULL, &scoreText);
 
         SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
         SDL_RenderDrawRect(rend, &border);
@@ -228,16 +249,24 @@ int main(int argc, char const *argv[])
 
                     if (current->CheckPositionIsFinal(board))
                     {
+                        score += 35;
+
                         current->DecrementY();
                         current->DrawOnBoard(board);
                         current = GetRandomBlock(nextBlock);
-                        CheckForFullRows();
+                        int fullRows = CheckForFullRows();
+                        score += 165 * fullRows;
+                        dropDelay -= 20 * fullRows;
+                        if (dropDelay < 200)
+                            dropDelay = 200;
                     }
                     break;
                 }
 
                 case SDLK_SPACE:
                 {
+                    score += 35;
+
                     current->DeleteFromBoard(board);
                     current->RemoveGhostPiece(board);
 
@@ -246,7 +275,11 @@ int main(int argc, char const *argv[])
 
                     current->DrawOnBoard(board);
                     current = GetRandomBlock(nextBlock);
-                    CheckForFullRows();
+                    int fullRows = CheckForFullRows();
+                    score += 165 * fullRows;
+                    dropDelay -= 20 * fullRows;
+                    if (dropDelay < 200)
+                        dropDelay = 200;
 
                     break;
                 }
@@ -283,7 +316,11 @@ int main(int argc, char const *argv[])
                 current->DecrementY();
                 current->DrawOnBoard(board);
                 current = GetRandomBlock(nextBlock);
-                CheckForFullRows();
+                int fullRows = CheckForFullRows();
+                score += 165 * fullRows;
+                dropDelay -= 20 * fullRows;
+                if (dropDelay < 200)
+                    dropDelay = 200;
             }
         }
 
@@ -536,8 +573,10 @@ Block *GetRandomBlock(int &type)
     return block;
 }
 
-void CheckForFullRows()
+int CheckForFullRows()
 {
+    int rowsFull = 0;
+
     for (int i = BOARD_HEIGHT - 1; i >= 0; i--)
     {
         bool rowFull = true;
@@ -552,6 +591,7 @@ void CheckForFullRows()
         }
         if (rowFull)
         {
+            rowsFull++;
             for (int a = 0; a < BOARD_WIDTH; a++)
                 board[i][a] = '.';
 
@@ -561,4 +601,5 @@ void CheckForFullRows()
             i++;
         }
     }
+    return rowsFull;
 }
