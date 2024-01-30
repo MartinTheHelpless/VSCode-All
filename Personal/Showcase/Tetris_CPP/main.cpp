@@ -307,6 +307,9 @@ int main(int argc, char const *argv[])
 
         SDL_RenderPresent(rend);
 
+        SDL_FreeSurface(tmp);
+        SDL_DestroyTexture(scoreRes);
+
         if (SDL_GetTicks() > lastDrop + dropDelay)
         {
             lastDrop = SDL_GetTicks();
@@ -337,6 +340,13 @@ int main(int argc, char const *argv[])
     // ------------------------------------------------------------------------------------------
     // ---------------------------- END OF GAME LOOP --------------------------------------------
     // ------------------------------------------------------------------------------------------
+
+    std::cout << "Game Over !\nYour score is: " << score << std::endl;
+
+    SDL_Quit();
+    SDL_DestroyTexture(textTexture);
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(rend);
 
     return 0;
 }
@@ -537,12 +547,12 @@ Block *GetRandomBlock(int &type)
     {
     case 0:
 
-        block = new Three(rSquig, BASE_X, BASE_Y);
+        block = new Three(lSquig, BASE_X, BASE_Y);
         break;
 
     case 1:
 
-        block = new Three(lSquig, BASE_X, BASE_Y);
+        block = new Three(rSquig, BASE_X, BASE_Y);
         break;
 
     case 2:
