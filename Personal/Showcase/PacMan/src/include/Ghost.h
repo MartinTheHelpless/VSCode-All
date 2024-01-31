@@ -1,23 +1,25 @@
 #pragma once
+#include <SDL2/SDL.h>
 
 class Ghost
 {
 private:
-    struct Color
-    {
-        int m_R;
-        int m_G;
-        int m_B;
-        int m_A;
-        Color(int r, int g, int b, int a) : m_R(r), m_G(g), m_B(b), m_A(a) {}
-    };
-
     int m_Id;
     int m_Speed;
-    int m_Algorithm; // index of a algorithm to decide the ghost path
-    Color m_Color;
+    int m_Mode; // Scatter, chase, frightened and eaten modes - 0, 1, 2, 3 respectively
+    SDL_Color m_Color;
 
 public:
-    Ghost(/* args */);
-    ~Ghost();
+    Ghost(int id, int speed, int algorithm, SDL_Color color)
+        : m_Id(id), m_Speed(speed), m_Mode(algorithm), m_Color(color) {}
+
+    void SetSpeed(int speed) { m_Speed = speed; }
+    void SetColor(SDL_Color color) { m_Color = color; }
+    void SetMode(int mode) { m_Mode = mode; }
+
+    int GetID() { return m_Id; }
+    int GetSpeed() { return m_Speed; }
+    int GetMode() { return m_Mode; }
+
+    SDL_Color GetColor() { return m_Color; }
 };

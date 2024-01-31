@@ -4,6 +4,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdlib.h>
+#include "src/include/Ghost.h"
+#include "src/include/Player.h"
 
 #ifdef main
 #undef main
@@ -12,14 +14,61 @@
 const int TARGET_FPS = 60;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
 
-const int BOARD_WIDTH = 28; // (28 : 36 tiles original Pac Man Game)
-const int BOARD_HEIGHT = 36;
+const int GAME_WIDTH = 28; // (28 : 36 tiles original Pac Man Game)
+const int GAME_HEIGHT = 36;
 
-const int WINDOW_WIDTH = BOARD_WIDTH * 20; // 3 : 4
-const int WINDOW_HEIGHT = BOARD_HEIGHT * 20;
+const int TILE_DIM = 20;
+
+const int WINDOW_WIDTH = GAME_WIDTH * TILE_DIM; // 3 : 4
+const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
+
+void DisplayGrid(SDL_Renderer *rend);
 
 int main(int argc, char const *argv[])
 {
+    // --------------------------------------------------------------------------------------------
+    // -------------------------------------- MAP DEFINITION START --------------------------------
+    // --------------------------------------------------------------------------------------------
+
+    /*
+    std::string map = ".............................oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..x....o.....o..o.....o....x..o....o.....o..o.....o....o..oooooooooooooooooooooooooo..o....o..o........o..o....o..o....o..o........o..o....o..oooooo..oooo..oooo..oooooo.......o.....e..e.....o............ o.....e..e.....o............ o..eeeeeeeeee..o............ o..e... gg... e..o............ o..e.eeeeee.e..o...... eeeeeeoeee.eeeeee.eeeoeeeeee...... o..e.eeeeee.e..o............ o..e........e..o............ o..eeeeeeeeee..o............ o..e........e..o............ o..e........e..o.......oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..o....o.....o..o.....o....o..xoo..ooooooo..ooooooo..oox....o..o..o........o..o..o...... o..o..o........o..o..o....oooooo..oooo..oooo..oooooo..o..........o..o..........o..o..........o..o..........o..oooooooooooooooooooooooooo............................."; // --------------------------------------------------------------------------------------------
+    */
+
+    std::wstring map;
+    map += L"............................";
+    map += L".oooooooooooo..oooooooooooo.";
+    map += L".o....o.....o..o.....o....o.";
+    map += L".x....o.....o..o.....o....x.";
+    map += L".o....o.....o..o.....o....o.";
+    map += L".oooooooooooooooooooooooooo.";
+    map += L".o....o..o........o..o....o.";
+    map += L".o....o..o........o..o....o.";
+    map += L".oooooo..oooo..oooo..oooooo.";
+    map += L"......o.....e..e.....o......";
+    map += L"......o.....e..e.....o......";
+    map += L"......o..eeeeeeeeee..o......";
+    map += L"......o..e...gg...e..o......";
+    map += L"......o..e.eeeeee.e..o......";
+    map += L"eeeeeeoeee.eeeeee.eeeoeeeeee";
+    map += L"......o..e.eeeeee.e..o......";
+    map += L"......o..e........e..o......";
+    map += L"......o..eeeeeeeeee..o......";
+    map += L"......o..e........e..o......";
+    map += L"......o..e........e..o......";
+    map += L".oooooooooooo..oooooooooooo.";
+    map += L".o....o.....o..o.....o....o.";
+    map += L".o....o.....o..o.....o....o.";
+    map += L".xoo..ooooooo..ooooooo..oox.";
+    map += L"...o..o..o........o..o..o...";
+    map += L"...o..o..o........o..o..o...";
+    map += L".oooooo..oooo..oooo..oooooo.";
+    map += L".o..........o..o..........o.";
+    map += L".o..........o..o..........o.";
+    map += L".oooooooooooooooooooooooooo.";
+    map += L"............................";
+    // --------------------------------------------------------------------------------------------
+    // --------------------------------------- MAP DEFINITION END ---------------------------------
+    // --------------------------------------------------------------------------------------------
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -58,8 +107,15 @@ int main(int argc, char const *argv[])
 
     Uint32 frameStart, frameTime;
 
+    SDL_Surface *tmp = IMG_Load("src/assets/background.png");
+    SDL_Texture *background = SDL_CreateTextureFromSurface(rend, tmp);
+    SDL_FreeSurface(tmp);
+    SDL_Rect backgroundRec = {0, 3 * TILE_DIM, WINDOW_WIDTH, WINDOW_HEIGHT - 5 * TILE_DIM};
+
     bool quit = false;
     SDL_Event event;
+
+    Player *pacMan = new Player();
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -70,6 +126,10 @@ int main(int argc, char const *argv[])
         frameStart = SDL_GetTicks();
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderClear(rend);
+
+        SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
+
+        DisplayGrid(rend);
 
         while (SDL_PollEvent(&event))
         {
@@ -83,32 +143,27 @@ int main(int argc, char const *argv[])
 
                 switch (event.key.keysym.sym)
                 {
+
+                case SDLK_w:
+                {
+                    pacMan->SetMoveDir(0);
+                    break;
+                }
                 case SDLK_a:
                 {
-
-                    break;
-                }
-
-                case SDLK_d:
-                {
-
-                    break;
-                }
-
-                case SDLK_q:
-                {
-
-                    break;
-                }
-
-                case SDLK_e:
-                {
-
+                    pacMan->SetMoveDir(1);
                     break;
                 }
 
                 case SDLK_s:
                 {
+                    pacMan->SetMoveDir(2);
+                    break;
+                }
+
+                case SDLK_d:
+                {
+                    pacMan->SetMoveDir(3);
                     break;
                 }
 
@@ -127,6 +182,13 @@ int main(int argc, char const *argv[])
             }
         }
 
+        pacMan->Move(map);
+
+        SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, 30, 30};
+        SDL_SetRenderDrawColor(rend, 255, 255, 0, 0);
+        SDL_RenderFillRect(rend, &player);
+        SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+
         SDL_RenderPresent(rend);
 
         frameTime = SDL_GetTicks() - frameStart;
@@ -143,4 +205,19 @@ int main(int argc, char const *argv[])
     SDL_Quit();
 
     return 0;
+}
+
+void DisplayGrid(SDL_Renderer *rend)
+{
+
+    SDL_SetRenderDrawColor(rend, 10, 115, 12, 0);
+
+    for (int i = 0; i <= GAME_WIDTH; i++)
+        for (int j = 0; j <= GAME_HEIGHT; j++)
+        {
+            SDL_Rect rect = {0, 0, i * TILE_DIM, j * TILE_DIM};
+            SDL_RenderDrawRect(rend, &rect);
+        }
+
+    SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 }
