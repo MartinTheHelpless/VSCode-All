@@ -9,6 +9,7 @@ private:
     int m_Score;
     int m_State; // Powered up and normal
     int m_Direction;
+    int m_NextDirection;
     float m_Speed;
     float m_X; // Coord X
     float m_Y; // Coord Y
@@ -17,9 +18,9 @@ public:
     Player();
     ~Player();
 
-    void Move(std::wstring &map);
-    void SetMoveDir(int dir) { m_Direction = dir; }
+    void Move(char map[31][29]);
+    void SetMoveDir(int dir) { m_NextDirection = dir; }
 
-    double GetX() { return m_X; }
-    double GetY() { return m_Y; }
+    float GetX() { return m_X; }
+    float GetY() { return m_Y; }
 };

@@ -18,6 +18,7 @@ const int GAME_WIDTH = 28; // (28 : 36 tiles original Pac Man Game)
 const int GAME_HEIGHT = 36;
 
 const int TILE_DIM = 20;
+const int ENTITY_DIM = 30;
 
 const int WINDOW_WIDTH = GAME_WIDTH * TILE_DIM; // 3 : 4
 const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
@@ -30,11 +31,9 @@ int main(int argc, char const *argv[])
     // -------------------------------------- MAP DEFINITION START --------------------------------
     // --------------------------------------------------------------------------------------------
 
-    /*
-    std::string map = ".............................oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..x....o.....o..o.....o....x..o....o.....o..o.....o....o..oooooooooooooooooooooooooo..o....o..o........o..o....o..o....o..o........o..o....o..oooooo..oooo..oooo..oooooo.......o.....e..e.....o............ o.....e..e.....o............ o..eeeeeeeeee..o............ o..e... gg... e..o............ o..e.eeeeee.e..o...... eeeeeeoeee.eeeeee.eeeoeeeeee...... o..e.eeeeee.e..o............ o..e........e..o............ o..eeeeeeeeee..o............ o..e........e..o............ o..e........e..o.......oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..o....o.....o..o.....o....o..xoo..ooooooo..ooooooo..oox....o..o..o........o..o..o...... o..o..o........o..o..o....oooooo..oooo..oooo..oooooo..o..........o..o..........o..o..........o..o..........o..oooooooooooooooooooooooooo............................."; // --------------------------------------------------------------------------------------------
-    */
+    // std::string map = ".............................oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..x....o.....o..o.....o....x..o....o.....o..o.....o....o..oooooooooooooooooooooooooo..o....o..o........o..o....o..o....o..o........o..o....o..oooooo..oooo..oooo..oooooo.......o.....e..e.....o............o.....e..e.....o............o..eeeeeeeeee..o............o..e...gg...e..o............o..e.eeeeee.e..o......eeeeeeoeee.eeeeee.eeeoeeeeee......o..e.eeeeee.e..o............o..e........e..o............o..eeeeeeeeee..o............o..e........e..o............o..e........e..o.......oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..o....o.....o..o.....o....o..xoo..ooooooo..ooooooo..oox....o..o..o........o..o..o......o..o..o........o..o..o....oooooo..oooo..oooo..oooooo..o..........o..o..........o..o..........o..o..........o..oooooooooooooooooooooooooo.............................";
 
-    std::wstring map;
+    /*std::wstring map;
     map += L"............................";
     map += L".oooooooooooo..oooooooooooo.";
     map += L".o....o.....o..o.....o....o.";
@@ -65,7 +64,43 @@ int main(int argc, char const *argv[])
     map += L".o..........o..o..........o.";
     map += L".o..........o..o..........o.";
     map += L".oooooooooooooooooooooooooo.";
-    map += L"............................";
+    map += L"............................";*/
+
+    char map[31][29] =
+        {
+            "............................",
+            ".oooooooooooo..oooooooooooo.",
+            ".o....o.....o..o.....o....o.",
+            ".x....o.....o..o.....o....x.",
+            ".o....o.....o..o.....o....o.",
+            ".oooooooooooooooooooooooooo.",
+            ".o....o..o........o..o....o.",
+            ".o....o..o........o..o....o.",
+            ".oooooo..oooo..oooo..oooooo.",
+            "......o.....e..e.....o......",
+            "......o.....e..e.....o......",
+            "......o..eeeeeeeeee..o......",
+            "......o..e...gg...e..o......",
+            "......o..e.eeeeee.e..o......",
+            "eeeeeeoeee.eeeeee.eeeoeeeeee",
+            "......o..e.eeeeee.e..o......",
+            "......o..e........e..o......",
+            "......o..eeeeeeeeee..o......",
+            "......o..e........e..o......",
+            "......o..e........e..o......",
+            ".oooooooooooo..oooooooooooo.",
+            ".o....o.....o..o.....o....o.",
+            ".o....o.....o..o.....o....o.",
+            ".xoo..oooooooeeooooooo..oox.",
+            "...o..o..o........o..o..o...",
+            "...o..o..o........o..o..o...",
+            ".oooooo..oooo..oooo..oooooo.",
+            ".o..........o..o..........o.",
+            ".o..........o..o..........o.",
+            ".oooooooooooooooooooooooooo.",
+            "............................",
+        };
+
     // --------------------------------------------------------------------------------------------
     // --------------------------------------- MAP DEFINITION END ---------------------------------
     // --------------------------------------------------------------------------------------------
@@ -167,10 +202,6 @@ int main(int argc, char const *argv[])
                     break;
                 }
 
-                case SDLK_SPACE:
-                {
-                    break;
-                }
                 default:
                     break;
                 }
@@ -184,12 +215,21 @@ int main(int argc, char const *argv[])
 
         pacMan->Move(map);
 
-        SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, 30, 30};
+        SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
         SDL_SetRenderDrawColor(rend, 255, 255, 0, 0);
         SDL_RenderFillRect(rend, &player);
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
 
         SDL_RenderPresent(rend);
+
+        /*for (int i = 0; i < 31; i++)
+        {
+            for (int j = 0; j < 29; j++)
+                std::cout << map[i][j];
+            std::cout << '\n';
+        }
+
+        std::cout << "\n---------------------------------------" << std::endl;*/
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
