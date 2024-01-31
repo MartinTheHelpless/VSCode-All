@@ -12,25 +12,25 @@ void Player::Update(char map[31][29])
         switch (m_NextDirection)
         {
         case 0:
-            if (int(10 * m_X) % 10 == 0 && map[int(m_Y) - 1][int(m_X)] != '.' && map[int(m_Y) - 1][int(m_X)] != 'g')
+            if (int(10 * m_X) % 10 <= 1.1f && map[int(m_Y) - 1][int(m_X)] != '.' && map[int(m_Y) - 1][int(m_X)] != 'g')
                 m_Direction = m_NextDirection;
 
             break;
 
         case 1:
-            if (int(10 * m_Y) % 10 == 0 && map[int(m_Y)][int(m_X) - 1] != '.' && map[int(m_Y)][int(m_X) - 1] != 'g')
+            if (int(10 * m_Y) % 10 <= 1.1f && map[int(m_Y)][int(m_X) - 1] != '.' && map[int(m_Y)][int(m_X) - 1] != 'g')
                 m_Direction = m_NextDirection;
 
             break;
 
         case 2:
-            if (int(10 * m_X) % 10 == 0 && map[int(m_Y) + 1][int(m_X)] != '.' && map[int(m_Y) + 1][int(m_X)] != 'g')
+            if (int(10 * m_X) % 10 <= 1.1f && map[int(m_Y) + 1][int(m_X)] != '.' && map[int(m_Y) + 1][int(m_X)] != 'g')
                 m_Direction = m_NextDirection;
 
             break;
 
         case 3:
-            if (int(10 * m_Y) % 10 == 0 && map[int(m_Y)][int(m_X) + 1] != '.' && map[int(m_Y)][int(m_X) + 1] != 'g')
+            if (int(10 * m_Y) % 10 <= 1.1f && map[int(m_Y)][int(m_X) + 1] != '.' && map[int(m_Y)][int(m_X) + 1] != 'g')
                 m_Direction = m_NextDirection;
 
             break;
@@ -42,16 +42,16 @@ void Player::Update(char map[31][29])
     switch (m_Direction)
     {
     case 0:
-        if (map[(int)(m_Y - m_Speed)][(int)m_X] != '.' && int(10 * m_X) % 10 == 0)
+        if (map[(int)(m_Y - m_Speed)][(int)m_X] != '.' && int(10 * m_X) % 10 <= 1.1f)
         {
             m_Y -= m_Speed;
 
-            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_Y) % 10 == 0)
+            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_Y) % 10 <= 1.1f)
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
             }
-            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 == 0)
+            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
                 m_Score += 10;
                 map[(int)m_Y][(int)m_X] = 'e';
@@ -61,16 +61,16 @@ void Player::Update(char map[31][29])
         break;
 
     case 1:
-        if (map[(int)m_Y][(int)(m_X - m_Speed)] != '.' && int(10 * m_Y) % 10 == 0)
+        if (map[(int)m_Y][(int)(m_X - m_Speed)] != '.' && int(10 * m_Y) % 10 <= 1.1f)
         {
             m_X -= m_Speed;
 
-            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_X) % 10 == 0)
+            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_X) % 10 <= 1.1f)
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
             }
-            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 == 0)
+            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
                 m_Score += 10;
                 map[(int)m_Y][(int)m_X] = 'e';
@@ -84,16 +84,16 @@ void Player::Update(char map[31][29])
 
     case 2:
 
-        if (map[(int)ceil(m_Y + m_Speed - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 == 0)
+        if (map[(int)ceil(m_Y + m_Speed - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 <= 1.1f)
         {
             m_Y += m_Speed;
 
-            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_Y) % 10 == 0)
+            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_Y) % 10 <= 1.1f)
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
             }
-            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 == 0)
+            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
                 m_Score += 10;
                 map[(int)m_Y][(int)m_X] = 'e';
@@ -103,16 +103,16 @@ void Player::Update(char map[31][29])
         break;
 
     case 3:
-        if (map[(int)m_Y][(int)ceil(m_X + m_Speed - 0.1f)] != '.' && int(10 * m_Y) % 10 == 0)
+        if (map[(int)m_Y][(int)ceil(m_X + m_Speed - 0.1f)] != '.' && int(10 * m_Y) % 10 <= 1.1f)
         {
             m_X += m_Speed;
 
-            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_X) % 10 == 0)
+            if (map[int(m_Y)][int(m_X)] == 'x' && int(10 * m_X) % 10 <= 1.1f)
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
             }
-            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 == 0)
+            else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
                 m_Score += 10;
                 map[(int)m_Y][(int)m_X] = 'e';

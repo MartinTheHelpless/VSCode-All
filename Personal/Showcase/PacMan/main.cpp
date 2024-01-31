@@ -167,6 +167,7 @@ int main(int argc, char const *argv[])
     SDL_Event event;
 
     Player *pacMan = new Player();
+    Ghost *blinky = new Ghost(1.0f, 1.0f, 1, 0.1f, {26, 1}, {200, 0, 0, 0});
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -230,15 +231,23 @@ int main(int argc, char const *argv[])
         }
 
         pacMan->Update(map);
+        blinky->Update(map);
 
         DrawDots(rend.get(), map);
 
         SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
         SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 0);
         SDL_RenderFillRect(rend.get(), &player);
+
+        SDL_Rect blink = {-5 + blinky->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + blinky->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
+        SDL_SetRenderDrawColor(rend.get(), 255, 0, 0, 0);
+        SDL_RenderFillRect(rend.get(), &blink);
+
         SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 0);
 
         SDL_RenderPresent(rend.get());
+
+        std::cout << "[X, Y] = [" << pacMan->GetX() << ", " << pacMan->GetY() << "]" << std::endl;
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
