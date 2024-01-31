@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <memory>
 #include <stdlib.h>
 #include "src/include/Ghost.h"
 #include "src/include/Player.h"
@@ -10,6 +11,20 @@
 #ifdef main
 #undef main
 #endif
+
+class SDLClear
+{
+public:
+    void operator()(SDL_Window *window) const
+    {
+        SDL_DestroyWindow(window);
+    }
+
+    void operator()(SDL_Renderer *renderer) const
+    {
+        SDL_DestroyRenderer(renderer);
+    }
+};
 
 const int TARGET_FPS = 60;
 const int FRAME_DELAY = 1000 / TARGET_FPS;
@@ -25,6 +40,8 @@ const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
 
 void DisplayGrid(SDL_Renderer *rend);
 
+void DrawDots(SDL_Renderer *rend, char map[31][29]);
+
 int main(int argc, char const *argv[])
 {
     // --------------------------------------------------------------------------------------------
@@ -32,7 +49,6 @@ int main(int argc, char const *argv[])
     // --------------------------------------------------------------------------------------------
 
     // std::string map = ".............................oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..x....o.....o..o.....o....x..o....o.....o..o.....o....o..oooooooooooooooooooooooooo..o....o..o........o..o....o..o....o..o........o..o....o..oooooo..oooo..oooo..oooooo.......o.....e..e.....o............o.....e..e.....o............o..eeeeeeeeee..o............o..e...gg...e..o............o..e.eeeeee.e..o......eeeeeeoeee.eeeeee.eeeoeeeeee......o..e.eeeeee.e..o............o..e........e..o............o..eeeeeeeeee..o............o..e........e..o............o..e........e..o.......oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..o....o.....o..o.....o....o..xoo..ooooooo..ooooooo..oox....o..o..o........o..o..o......o..o..o........o..o..o....oooooo..oooo..oooo..oooooo..o..........o..o..........o..o..........o..o..........o..oooooooooooooooooooooooooo.............................";
-
     /*std::wstring map;
     map += L"............................";
     map += L".oooooooooooo..oooooooooooo.";
@@ -111,7 +127,7 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    SDL_Window *window = SDL_CreateWindow("Pac-Man", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+    std::unique_ptr<SDL_Window, SDLClear> window(SDL_CreateWindow("Pac-Man", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN));
 
     if (!window)
     {
@@ -119,12 +135,12 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    std::unique_ptr<SDL_Renderer, SDLClear> rend(SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_ACCELERATED));
 
     if (!rend)
     {
         SDL_Log("Unable to initialize SDL Renderer \n");
-        SDL_DestroyWindow(window);
+        SDL_DestroyWindow(window.get());
         return 1;
     }
 
@@ -134,7 +150,7 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_NONE);
+    SDL_SetRenderDrawBlendMode(rend.get(), SDL_BLENDMODE_NONE);
 
     TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
 
@@ -143,7 +159,7 @@ int main(int argc, char const *argv[])
     Uint32 frameStart, frameTime;
 
     SDL_Surface *tmp = IMG_Load("src/assets/background.png");
-    SDL_Texture *background = SDL_CreateTextureFromSurface(rend, tmp);
+    SDL_Texture *background = SDL_CreateTextureFromSurface(rend.get(), tmp);
     SDL_FreeSurface(tmp);
     SDL_Rect backgroundRec = {0, 3 * TILE_DIM, WINDOW_WIDTH, WINDOW_HEIGHT - 5 * TILE_DIM};
 
@@ -159,12 +175,12 @@ int main(int argc, char const *argv[])
     while (!quit)
     {
         frameStart = SDL_GetTicks();
-        SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
-        SDL_RenderClear(rend);
+        SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 255);
+        SDL_RenderClear(rend.get());
 
-        SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
+        SDL_RenderCopy(rend.get(), background, nullptr, &backgroundRec);
 
-        DisplayGrid(rend);
+        // DisplayGrid(rend.get());
 
         while (SDL_PollEvent(&event))
         {
@@ -213,23 +229,16 @@ int main(int argc, char const *argv[])
             }
         }
 
-        pacMan->Move(map);
+        pacMan->Update(map);
+
+        DrawDots(rend.get(), map);
 
         SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
-        SDL_SetRenderDrawColor(rend, 255, 255, 0, 0);
-        SDL_RenderFillRect(rend, &player);
-        SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+        SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 0);
+        SDL_RenderFillRect(rend.get(), &player);
+        SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 0);
 
-        SDL_RenderPresent(rend);
-
-        /*for (int i = 0; i < 31; i++)
-        {
-            for (int j = 0; j < 29; j++)
-                std::cout << map[i][j];
-            std::cout << '\n';
-        }
-
-        std::cout << "\n---------------------------------------" << std::endl;*/
+        SDL_RenderPresent(rend.get());
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
@@ -240,8 +249,9 @@ int main(int argc, char const *argv[])
     // ---------------------------- END OF GAME LOOP --------------------------------------------
     // ------------------------------------------------------------------------------------------
 
-    // std::cout << "Game Over !\nYour score is: " << score << std::endl;
+    std::cout << "Game Over !\nYour score is: " << pacMan->GetScore() << std::endl;
 
+    SDL_DestroyTexture(background);
     SDL_Quit();
 
     return 0;
@@ -260,4 +270,25 @@ void DisplayGrid(SDL_Renderer *rend)
         }
 
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+}
+
+void DrawDots(SDL_Renderer *rend, char map[31][29])
+{
+
+    SDL_SetRenderDrawColor(rend, 255, 255, 255, 0);
+
+    for (int i = 0; i < 31; i++)
+        for (int j = 0; j < 28; j++)
+            if (map[i][j] == 'o')
+            {
+                SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 2, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 2, 4, 4};
+                SDL_RenderFillRect(rend, &rect);
+            }
+            else if (map[i][j] == 'x')
+            {
+                SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 6, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 4, 12, 12};
+                SDL_RenderFillRect(rend, &rect);
+            }
+
+    SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
 }

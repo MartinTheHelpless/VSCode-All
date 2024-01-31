@@ -7,7 +7,7 @@ class Player
 private:
     int m_Health;
     int m_Score;
-    int m_State; // Powered up and normal
+    int m_State; // Powered (1) up and normal (0)
     int m_Direction;
     int m_NextDirection;
     float m_Speed;
@@ -18,9 +18,11 @@ public:
     Player();
     ~Player();
 
-    void Move(char map[31][29]);
+    void Update(char map[31][29]);
     void SetMoveDir(int dir) { m_NextDirection = dir; }
 
     float GetX() { return m_X; }
     float GetY() { return m_Y; }
+
+    int GetScore() { return m_Score; }
 };
