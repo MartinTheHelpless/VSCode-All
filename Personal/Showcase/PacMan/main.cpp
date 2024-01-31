@@ -167,7 +167,7 @@ int main(int argc, char const *argv[])
     SDL_Event event;
 
     Player *pacMan = new Player();
-    Ghost *blinky = new Ghost(1.0f, 1.0f, 1, 0.1f, {26, 1}, {200, 0, 0, 0});
+    Ghost *blinky = new Ghost(1.0f, 1.0f, 1, 0.1f, {26, 26}, {200, 0, 0, 0});
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -247,7 +247,7 @@ int main(int argc, char const *argv[])
 
         SDL_RenderPresent(rend.get());
 
-        std::cout << "[X, Y] = [" << pacMan->GetX() << ", " << pacMan->GetY() << "]" << std::endl;
+        // std::cout << "[X, Y] = [" << pacMan->GetX() << ", " << pacMan->GetY() << "]" << std::endl;
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
