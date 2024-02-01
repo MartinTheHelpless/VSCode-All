@@ -91,11 +91,11 @@ void Ghost::SetNextDirection(char map[31][29])
     switch (m_Direction)
     {
     case 0:
-        if (int(m_Y) != int(m_Y - m_Speed) && map[(int)(m_Y - m_Speed)][int(m_X)] != '.')
+        if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
         {
 
             float dist = 9999999.0f;
-            int dir = 2;
+            int dir = 0;
 
             if (map[int(m_Y - m_Speed)][int(ceil(m_X)) + 1] != '.')
             {
@@ -111,7 +111,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[(int)(m_Y - m_Speed)][int(m_X) - 1] != '.')
+            if (map[int(m_Y - m_Speed)][int(m_X) - 1] != '.')
             {
                 int x = int(m_X) - 1;
                 int y = int(m_Y - m_Speed);
@@ -125,7 +125,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[(int)(m_Y - m_Speed) - 1][int(m_X)] != '.')
+            if (map[int(m_Y - m_Speed) - 1][int(m_X)] != '.')
             {
 
                 int x = m_X;
@@ -145,16 +145,17 @@ void Ghost::SetNextDirection(char map[31][29])
         break;
 
     case 1:
-        if (int(ceil(m_X)) != int(ceil(m_X - m_Speed)) && map[int(m_Y)][int(ceil(m_X - m_Speed))] != '.')
+        if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
         {
 
             float dist = 9999999.0f;
-            int dir = 3;
+            int dir = 0;
 
-            if (map[int(m_Y) + 1][int(ceil(m_X - m_Speed))] != '.')
+            if (map[int(m_Y) + 1][int(m_X - m_Speed)] != '.')
             {
-                int x = int(ceil(m_X - m_Speed));
-                int y = int(ceil(m_Y)) + 1;
+
+                int x = int(m_X - m_Speed);
+                int y = int(m_Y) + 1;
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -165,9 +166,9 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(m_Y)][int(ceil(m_X - m_Speed)) - 1] != '.')
+            if (map[int(m_Y)][int(m_X - m_Speed) - 1] != '.')
             {
-                int x = int(ceil(m_X - m_Speed)) - 1;
+                int x = int(m_X - m_Speed) - 1;
                 int y = int(m_Y);
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
@@ -179,10 +180,10 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(m_Y - 1)][int(ceil(m_X + m_Speed))] != '.')
+            if (map[int(m_Y) - 1][int(m_X - m_Speed)] != '.')
             {
 
-                int x = int(ceil(m_X - m_Speed));
+                int x = int(m_X - m_Speed);
                 int y = int(m_Y) - 1;
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
@@ -199,16 +200,16 @@ void Ghost::SetNextDirection(char map[31][29])
         break;
 
     case 2:
-        if (int(ceil(m_Y)) != int(ceil(m_Y + m_Speed)) && map[int(ceil(m_Y + m_Speed))][int(m_X)] != '.')
+        if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
         {
 
             float dist = 9999999.0f;
             int dir = 2;
 
-            if (map[int(ceil(m_Y + m_Speed))][int(ceil(m_X) + 1)] != '.')
+            if (map[int(m_Y + m_Speed)][int(m_X) + 1] != '.')
             {
-                int x = int(ceil(m_X)) + 1;
-                int y = int(ceil(m_Y + m_Speed));
+                int x = int(m_X) + 1;
+                int y = int(m_Y + m_Speed);
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -219,10 +220,11 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(ceil(m_Y + m_Speed) + 1)][int(m_X)] != '.')
+            if (map[int(m_Y + m_Speed) + 1][int(m_X)] != '.')
             {
+
                 int x = m_X;
-                int y = int(ceil(m_Y + m_Speed)) + 1;
+                int y = int(m_Y + m_Speed) + 1;
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -233,10 +235,10 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(ceil(m_Y + m_Speed))][int(m_X) - 1] != '.')
+            if (map[int(m_Y + m_Speed)][int(m_X) - 1] != '.')
             {
                 int x = int(m_X) - 1;
-                int y = int(ceil(m_Y + m_Speed));
+                int y = int(m_Y + m_Speed);
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -252,17 +254,16 @@ void Ghost::SetNextDirection(char map[31][29])
         break;
 
     case 3:
-        if (int(ceil(m_X)) != int(ceil(m_X + m_Speed)) && map[int(m_Y)][int(ceil(m_X + m_Speed))] != '.')
+        if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
         {
 
             float dist = 9999999.0f;
-            int dir = 3;
+            int dir = 0;
 
-            if (map[int(m_Y)][int(ceil(m_X + m_Speed)) + 1] != '.')
+            if (map[int(m_Y)][int(m_X + m_Speed) + 1] != '.')
             {
-
-                int x = int(ceil(m_X + m_Speed)) + 1;
-                int y = m_Y;
+                int x = int(m_X + m_Speed) + 1;
+                int y = int(m_Y);
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -273,10 +274,11 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(m_Y + 1)][int(ceil(m_X + m_Speed))] != '.')
+            if (map[int(m_Y) + 1][int(m_X + m_Speed)] != '.')
             {
-                int x = int(ceil(m_X + m_Speed));
-                int y = int(ceil(m_Y)) + 1;
+
+                int x = int(m_X + m_Speed);
+                int y = int(m_Y) + 1;
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
 
@@ -287,10 +289,10 @@ void Ghost::SetNextDirection(char map[31][29])
                 }
             }
 
-            if (map[int(m_Y - 1)][int(ceil(m_X + m_Speed))] != '.')
+            if (map[int(m_Y) - 1][int(m_X + m_Speed)] != '.')
             {
 
-                int x = int(ceil(m_X + m_Speed));
+                int x = int(m_X + m_Speed);
                 int y = int(m_Y) - 1;
 
                 float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
