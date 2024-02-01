@@ -99,7 +99,7 @@ int main(int argc, char const *argv[])
             "......o.....e..e.....o......",
             "......o.....e..e.....o......",
             "......o..eeeeeeeeee..o......",
-            "......o..e...gg...e..o......",
+            "......o..e........e..o......",
             "......o..e...ee...e..o......",
             "eeeeeeoeee.eeeeee.eeeoeeeeee",
             "......o..e........e..o......",
@@ -180,6 +180,8 @@ int main(int argc, char const *argv[])
     // ---------------------------- GAME LOOP ---------------------------------------------------
     // ------------------------------------------------------------------------------------------
 
+    int temp = 1;
+
     while (!quit)
     {
         frameStart = SDL_GetTicks();
@@ -228,7 +230,8 @@ int main(int argc, char const *argv[])
 
                 case SDLK_SPACE:
                 {
-                    ghosts[0]->SetState(1);
+                    for (Ghost *ghost : ghosts)
+                        ghost->SetState(1);
 
                     break;
                 }
@@ -247,16 +250,23 @@ int main(int argc, char const *argv[])
         pacMan->Update(map);
 
         for (Ghost *ghost : ghosts)
-            ghost->Update(map);
+            ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY());
 
         DrawDots(rend.get(), map);
 
         SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
-        SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 0);
+        SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 255);
         SDL_RenderFillRect(rend.get(), &player);
 
         for (Ghost *ghost : ghosts)
             DrawGhost(rend.get(), ghost);
+
+        for (Ghost *ghost : ghosts)
+        {
+            SDL_Rect blink = {10 + ghost->GetChaseTile().first * TILE_DIM, 10 + 3 * TILE_DIM + ghost->GetChaseTile().second * TILE_DIM, 20, 20};
+            SDL_SetRenderDrawColor(rend.get(), ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+            SDL_RenderFillRect(rend.get(), &blink);
+        }
 
         SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 0);
 
@@ -299,7 +309,7 @@ void DisplayGrid(SDL_Renderer *rend)
 void DrawDots(SDL_Renderer *rend, char map[31][29])
 {
 
-    SDL_SetRenderDrawColor(rend, 255, 255, 255, 0);
+    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
 
     for (int i = 0; i < 31; i++)
         for (int j = 0; j < 28; j++)
@@ -322,75 +332,4 @@ void DrawGhost(SDL_Renderer *rend, Ghost *ghost)
     SDL_Rect blink = {-5 + ghost->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + ghost->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
     SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
     SDL_RenderFillRect(rend, &blink);
-}
-
-std::pair<int, int> GetBlinkyPinkyChaseTile(int pacX, int pacY, int pacDirection, int ghost)
-{
-
-    std::pair<int, int> target = {-100, -100};
-
-    if (ghost == 0) // 0 is for Blinky, 1 for Pinky, rest is left out
-    {
-        target = {pacX, pacY};
-    }
-    else if (ghost == 1)
-    {
-        switch (pacDirection)
-        {
-        case 0:
-            target = {pacX - 4, pacY - 4};
-            break;
-
-        case 1:
-            target = {pacX - 4, pacY};
-
-            break;
-
-        case 2:
-            target = {pacX, pacY + 4};
-
-            break;
-
-        case 3:
-            target = {pacX + 4, pacY};
-
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    return target;
-}
-
-std::pair<int, int> GetInkyChaseTile(int pacX, int pacY, int blinkyX, int blinkyY, int pacDirection)
-{
-    std::pair<int, int> target;
-
-    switch (pacDirection)
-    {
-    case 0:
-        target = {pacX - 2 - blinkyX, pacY - 2 - blinkyY};
-        break;
-
-    case 1:
-        target = {pacX - 2 - blinkyX, pacY - blinkyY};
-
-        break;
-
-    case 2:
-        target = {pacX - blinkyX, pacY + 2 - blinkyY};
-
-        break;
-
-    case 3:
-
-        target = {pacX + 2 - blinkyX, pacY - blinkyY};
-
-        break;
-
-    default:
-        break;
-    }
 }

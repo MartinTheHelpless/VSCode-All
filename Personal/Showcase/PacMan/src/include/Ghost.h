@@ -19,6 +19,7 @@ private:
     float m_Speed;
 
     void SetNextDirection(char map[31][29]);
+    std::pair<int, int> GetChaseTile(int ghostID, int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);
 
 public:
     Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color);
@@ -28,7 +29,7 @@ public:
     void SetMode(int mode) { m_State = mode; }
     void SetState(int state) { m_NextState = state; }
 
-    void Update(char map[31][29]);
+    void Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);
 
     int GetMode() { return m_State; }
 
@@ -37,4 +38,6 @@ public:
     float GetSpeed() { return m_Speed; }
 
     SDL_Color GetColor() { return m_Color; }
+    std::pair<int, int> GetChaseTile() { return m_ChaseTarget; }
+    std::pair<int, int> GetScatterTile() { return m_ScatterTarget; }
 };

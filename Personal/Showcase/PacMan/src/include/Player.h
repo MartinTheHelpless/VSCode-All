@@ -25,4 +25,5 @@ public:
     float GetY() { return m_Y; }
 
     int GetScore() { return m_Score; }
+    int GetDirection() { return m_Direction; }
 };
