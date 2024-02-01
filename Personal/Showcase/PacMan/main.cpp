@@ -171,10 +171,10 @@ int main(int argc, char const *argv[])
 
     Player *pacMan = new Player();
 
-    Ghost *ghosts[4] = {new Ghost(13.0f, 11.0f, 1, 0.1f, {28, 0}, {255, 0, 0, 0}),     // Blinky
-                        new Ghost(13.0f, 11.0f, 1, 0.1f, {0, 0}, {255, 184, 255, 0}),  // Pinky
-                        new Ghost(13.0f, 11.0f, 1, 0.1f, {0, 29}, {255, 184, 82, 0}),  // Clyde
-                        new Ghost(13.0f, 11.0f, 1, 0.1f, {28, 29}, {0, 255, 255, 0})}; // Inky
+    Ghost *ghosts[4] = {new Ghost(0, 13.0f, 11.0f, 1, 0.1f, {25, -4}, {255, 0, 0, 0}),     // Blinky
+                        new Ghost(2, 13.0f, 11.0f, 1, 0.1f, {27, 31}, {0, 255, 255, 0}),   // Inky
+                        new Ghost(3, 13.0f, 11.0f, 1, 0.1f, {0, 31}, {255, 184, 82, 0}),   // Clyde
+                        new Ghost(1, 13.0f, 11.0f, 1, 0.1f, {2, -4}, {255, 184, 255, 0})}; // Pinky
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -223,6 +223,13 @@ int main(int argc, char const *argv[])
                 case SDLK_d:
                 {
                     pacMan->SetMoveDir(3);
+                    break;
+                }
+
+                case SDLK_SPACE:
+                {
+                    ghosts[0]->SetState(1);
+
                     break;
                 }
 
@@ -315,4 +322,75 @@ void DrawGhost(SDL_Renderer *rend, Ghost *ghost)
     SDL_Rect blink = {-5 + ghost->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + ghost->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
     SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
     SDL_RenderFillRect(rend, &blink);
+}
+
+std::pair<int, int> GetBlinkyPinkyChaseTile(int pacX, int pacY, int pacDirection, int ghost)
+{
+
+    std::pair<int, int> target = {-100, -100};
+
+    if (ghost == 0) // 0 is for Blinky, 1 for Pinky, rest is left out
+    {
+        target = {pacX, pacY};
+    }
+    else if (ghost == 1)
+    {
+        switch (pacDirection)
+        {
+        case 0:
+            target = {pacX - 4, pacY - 4};
+            break;
+
+        case 1:
+            target = {pacX - 4, pacY};
+
+            break;
+
+        case 2:
+            target = {pacX, pacY + 4};
+
+            break;
+
+        case 3:
+            target = {pacX + 4, pacY};
+
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return target;
+}
+
+std::pair<int, int> GetInkyChaseTile(int pacX, int pacY, int blinkyX, int blinkyY, int pacDirection)
+{
+    std::pair<int, int> target;
+
+    switch (pacDirection)
+    {
+    case 0:
+        target = {pacX - 2 - blinkyX, pacY - 2 - blinkyY};
+        break;
+
+    case 1:
+        target = {pacX - 2 - blinkyX, pacY - blinkyY};
+
+        break;
+
+    case 2:
+        target = {pacX - blinkyX, pacY + 2 - blinkyY};
+
+        break;
+
+    case 3:
+
+        target = {pacX + 2 - blinkyX, pacY - blinkyY};
+
+        break;
+
+    default:
+        break;
+    }
 }

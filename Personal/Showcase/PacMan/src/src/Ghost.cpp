@@ -4,12 +4,19 @@
 
 #define FLOAT_MAX 3.40282e+038
 
-Ghost::Ghost(float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color)
-    : m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter),
-      m_Color(color), m_State(0), m_Direction(direction), m_NextDirection(direction) {}
+Ghost::Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color)
+    : m_ID(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter), m_Color(color),
+      m_Direction(direction), m_NextDirection(direction), m_State(0), m_NextState(0) {}
 
 void Ghost::Update(char map[31][29])
 {
+
+    if (m_State != m_NextState && (m_NextState == 0 && m_State == 1 || m_NextState == 1 && m_State == 0))
+    {
+        m_Direction = (m_Direction + 2) % 4;
+        m_NextDirection = m_Direction;
+        m_State = m_NextState;
+    }
 
     switch (m_Direction)
     {
@@ -85,14 +92,39 @@ void Ghost::Update(char map[31][29])
         }
     }
 
-    SetNextDirection(map);
+    if (m_State != 2)
+    {
+        SetNextDirection(map);
+    }
 }
 
 void Ghost::SetNextDirection(char map[31][29])
 {
+
+    std::pair<int, int> target;
+
+    switch (m_State)
+    {
+    case 0:
+        target = m_ScatterTarget;
+        break;
+
+    case 1:
+        target = m_ChaseTarget;
+        break;
+
+    case 3:
+        target = {14, 11};
+        break;
+
+    default:
+        break;
+    }
+
     switch (m_Direction)
     {
     case 0:
+    {
         if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
         {
 
@@ -104,7 +136,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X) + 1;
                 int y = int(m_Y - m_Speed);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -118,7 +150,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X) - 1;
                 int y = int(m_Y - m_Speed);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -133,7 +165,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = m_X;
                 int y = int(m_Y - m_Speed) - 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -145,8 +177,10 @@ void Ghost::SetNextDirection(char map[31][29])
             m_NextDirection = dir;
         }
         break;
+    }
 
     case 1:
+    {
         if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
         {
 
@@ -159,7 +193,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X - m_Speed);
                 int y = int(m_Y) + 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -173,7 +207,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X - m_Speed) - 1;
                 int y = int(m_Y);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -188,7 +222,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X - m_Speed);
                 int y = int(m_Y) - 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -200,8 +234,10 @@ void Ghost::SetNextDirection(char map[31][29])
             m_NextDirection = dir;
         }
         break;
+    }
 
     case 2:
+    {
         if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
         {
 
@@ -213,7 +249,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X) + 1;
                 int y = int(m_Y + m_Speed);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -228,7 +264,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = m_X;
                 int y = int(m_Y + m_Speed) + 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -242,7 +278,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X) - 1;
                 int y = int(m_Y + m_Speed);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -254,8 +290,10 @@ void Ghost::SetNextDirection(char map[31][29])
             m_NextDirection = dir;
         }
         break;
+    }
 
     case 3:
+    {
         if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
         {
 
@@ -267,7 +305,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X + m_Speed) + 1;
                 int y = int(m_Y);
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -282,7 +320,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X + m_Speed);
                 int y = int(m_Y) + 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -297,7 +335,7 @@ void Ghost::SetNextDirection(char map[31][29])
                 int x = int(m_X + m_Speed);
                 int y = int(m_Y) - 1;
 
-                float vec = sqrt((m_ScatterTarget.first - x) * (m_ScatterTarget.first - x) + (m_ScatterTarget.second - y) * (m_ScatterTarget.second - y));
+                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
 
                 if (vec <= dist)
                 {
@@ -308,7 +346,8 @@ void Ghost::SetNextDirection(char map[31][29])
 
             m_NextDirection = dir;
         }
-        break;
+    }
+    break;
 
     default:
         break;
