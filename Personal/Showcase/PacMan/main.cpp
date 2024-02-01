@@ -166,6 +166,16 @@ int main(int argc, char const *argv[])
     SDL_FreeSurface(tmp);
     SDL_Rect backgroundRec = {0, 3 * TILE_DIM, WINDOW_WIDTH, WINDOW_HEIGHT - 5 * TILE_DIM};
 
+    int timers[] = {7, 20, 7, 20, 5, 20, 5}; // Int array for measuring scatter and chase phases
+    float elapsed = timers[0];
+
+    float frightTime = 6000; // Time that ghosts stay frightened for after change of state in ms
+
+    float compTime = 0;
+
+    int index = 1;
+    bool phase = false; // true = scatter phase
+
     bool quit = false;
     SDL_Event event;
 
@@ -228,14 +238,6 @@ int main(int argc, char const *argv[])
                     break;
                 }
 
-                case SDLK_SPACE:
-                {
-                    for (Ghost *ghost : ghosts)
-                        ghost->SetState(1);
-
-                    break;
-                }
-
                 default:
                     break;
                 }
@@ -247,7 +249,15 @@ int main(int argc, char const *argv[])
             }
         }
 
-        pacMan->Update(map);
+        if (pacMan->Update(map) == 1)
+        {
+            for (Ghost *ghost : ghosts)
+            {
+                ghost->SetState(2);
+                ghost->SetSpeed(0.05f);
+            }
+            elapsed += 6000;
+        }
 
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY());
@@ -273,6 +283,20 @@ int main(int argc, char const *argv[])
         SDL_RenderPresent(rend.get());
 
         // std::cout << "[X, Y] = [" << pacMan->GetX() << ", " << pacMan->GetY() << "]" << std::endl;
+
+        if (((float)SDL_GetTicks() / 1000.0f) > elapsed && index < 7)
+        {
+
+            std::cout << ((float)SDL_GetTicks() / 1000.0f) << std::endl;
+
+            std::cout << (phase ? "Scatter" : "Chase") << std::endl;
+
+            elapsed = SDL_GetTicks() * 1000.0f + timers[index++];
+
+            for (Ghost *ghost : ghosts)
+                ghost->SetState((phase ? 0 : 1));
+            phase = !phase;
+        }
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)

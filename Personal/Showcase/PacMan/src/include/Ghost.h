@@ -24,9 +24,8 @@ private:
 public:
     Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color);
 
-    void SetSpeed(int speed) { m_Speed = speed; }
+    void SetSpeed(float speed) { m_Speed = speed; }
     void SetColor(SDL_Color color) { m_Color = color; }
-    void SetMode(int mode) { m_State = mode; }
     void SetState(int state) { m_NextState = state; }
 
     void Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);

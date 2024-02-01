@@ -105,6 +105,50 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
     {
         SetNextDirection(map);
     }
+    else if (m_State == 2)
+    {
+        switch (m_State)
+        {
+        case 0:
+            if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
+            {
+                m_NextDirection = rand() % 4;
+                while (m_NextDirection == 2)
+                    m_NextDirection = rand() % 4;
+            }
+            break;
+
+        case 1:
+            if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
+            {
+                m_NextDirection = rand() % 4;
+                while (m_NextDirection == 3)
+                    m_NextDirection = rand() % 4;
+            }
+            break;
+
+        case 2:
+            if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
+            {
+                m_NextDirection = rand() % 4;
+                while (m_NextDirection == 0)
+                    m_NextDirection = rand() % 4;
+            }
+            break;
+
+        case 3:
+            if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
+            {
+                m_NextDirection = rand() % 4;
+                while (m_NextDirection == 1)
+                    m_NextDirection = rand() % 4;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
 }
 
 void Ghost::SetNextDirection(char map[31][29])

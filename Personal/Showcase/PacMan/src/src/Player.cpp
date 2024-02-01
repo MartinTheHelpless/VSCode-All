@@ -5,7 +5,7 @@ Player::Player()
     : m_X(13.5f), m_Y(23), m_Speed(0.1f), m_State(0), m_Health(3),
       m_Score(0), m_Direction(-1), m_NextDirection(-1) {}
 
-void Player::Update(char map[31][29])
+int Player::Update(char map[31][29])
 {
 
     if (m_Direction != m_NextDirection)
@@ -50,6 +50,7 @@ void Player::Update(char map[31][29])
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
+                return 1;
             }
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
@@ -69,7 +70,9 @@ void Player::Update(char map[31][29])
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
+                return 1;
             }
+
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
                 m_Score += 10;
@@ -92,7 +95,9 @@ void Player::Update(char map[31][29])
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
+                return 1;
             }
+
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
                 m_Score += 10;
@@ -111,7 +116,9 @@ void Player::Update(char map[31][29])
             {
                 map[(int)m_Y][(int)m_X] = 'e';
                 m_State = 1;
+                return 1;
             }
+
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
                 m_Score += 10;
@@ -127,4 +134,6 @@ void Player::Update(char map[31][29])
     default:
         break;
     }
+
+    return 0;
 }

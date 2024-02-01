@@ -18,7 +18,7 @@ public:
     Player();
     ~Player();
 
-    void Update(char map[31][29]);
+    int Update(char map[31][29]);
     void SetMoveDir(int dir) { m_NextDirection = dir; }
 
     float GetX() { return m_X; }
