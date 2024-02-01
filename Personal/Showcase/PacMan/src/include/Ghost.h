@@ -5,7 +5,6 @@
 class Ghost
 {
 private:
-    int m_Id;
     int m_State; // Scatter, chase, frightened and eaten modes - 0, 1, 2, 3 respectively
     int m_Direction;
     int m_NextDirection;
@@ -19,7 +18,7 @@ private:
     void SetNextDirection(char map[31][29]);
 
 public:
-    Ghost(float x, float y, int id, float speed, std::pair<int, int> scatter, SDL_Color color);
+    Ghost(float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color);
 
     void SetSpeed(int speed) { m_Speed = speed; }
     void SetColor(SDL_Color color) { m_Color = color; }
@@ -27,7 +26,6 @@ public:
 
     void Update(char map[31][29]);
 
-    int GetID() { return m_Id; }
     int GetMode() { return m_State; }
 
     float GetX() { return m_X; }

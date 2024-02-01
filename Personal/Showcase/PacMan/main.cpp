@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <memory>
+#include <vector>
 #include <stdlib.h>
 #include "src/include/Ghost.h"
 #include "src/include/Player.h"
@@ -41,6 +42,8 @@ const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
 void DisplayGrid(SDL_Renderer *rend);
 
 void DrawDots(SDL_Renderer *rend, char map[31][29]);
+
+void DrawGhost(SDL_Renderer *rend, Ghost *ghost);
 
 int main(int argc, char const *argv[])
 {
@@ -97,9 +100,9 @@ int main(int argc, char const *argv[])
             "......o.....e..e.....o......",
             "......o..eeeeeeeeee..o......",
             "......o..e...gg...e..o......",
-            "......o..e.eeeeee.e..o......",
+            "......o..e...ee...e..o......",
             "eeeeeeoeee.eeeeee.eeeoeeeeee",
-            "......o..e.eeeeee.e..o......",
+            "......o..e........e..o......",
             "......o..e........e..o......",
             "......o..eeeeeeeeee..o......",
             "......o..e........e..o......",
@@ -167,7 +170,11 @@ int main(int argc, char const *argv[])
     SDL_Event event;
 
     Player *pacMan = new Player();
-    Ghost *blinky = new Ghost(1.0f, 1.0f, 1, 0.1f, {25, 1}, {200, 0, 0, 0});
+
+    Ghost *ghosts[4] = {new Ghost(13.0f, 11.0f, 1, 0.1f, {28, 0}, {255, 0, 0, 0}),     // Blinky
+                        new Ghost(13.0f, 11.0f, 1, 0.1f, {0, 0}, {255, 184, 255, 0}),  // Pinky
+                        new Ghost(13.0f, 11.0f, 1, 0.1f, {0, 29}, {255, 184, 82, 0}),  // Clyde
+                        new Ghost(13.0f, 11.0f, 1, 0.1f, {28, 29}, {0, 255, 255, 0})}; // Inky
 
     // ------------------------------------------------------------------------------------------
     // ---------------------------- GAME LOOP ---------------------------------------------------
@@ -231,7 +238,9 @@ int main(int argc, char const *argv[])
         }
 
         pacMan->Update(map);
-        blinky->Update(map);
+
+        for (Ghost *ghost : ghosts)
+            ghost->Update(map);
 
         DrawDots(rend.get(), map);
 
@@ -239,9 +248,8 @@ int main(int argc, char const *argv[])
         SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 0);
         SDL_RenderFillRect(rend.get(), &player);
 
-        SDL_Rect blink = {-5 + blinky->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + blinky->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
-        SDL_SetRenderDrawColor(rend.get(), 255, 0, 0, 0);
-        SDL_RenderFillRect(rend.get(), &blink);
+        for (Ghost *ghost : ghosts)
+            DrawGhost(rend.get(), ghost);
 
         SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 0);
 
@@ -300,4 +308,11 @@ void DrawDots(SDL_Renderer *rend, char map[31][29])
             }
 
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+}
+
+void DrawGhost(SDL_Renderer *rend, Ghost *ghost)
+{
+    SDL_Rect blink = {-5 + ghost->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + ghost->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
+    SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+    SDL_RenderFillRect(rend, &blink);
 }

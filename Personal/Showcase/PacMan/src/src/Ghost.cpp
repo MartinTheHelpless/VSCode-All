@@ -2,9 +2,11 @@
 #include <cmath>
 #include "Ghost.h"
 
-Ghost::Ghost(float x, float y, int id, float speed, std::pair<int, int> scatter, SDL_Color color)
-    : m_Id(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter),
-      m_Color(color), m_State(0), m_Direction(3), m_NextDirection(3) {}
+#define FLOAT_MAX 3.40282e+038
+
+Ghost::Ghost(float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color)
+    : m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter),
+      m_Color(color), m_State(0), m_Direction(direction), m_NextDirection(direction) {}
 
 void Ghost::Update(char map[31][29])
 {
@@ -94,10 +96,10 @@ void Ghost::SetNextDirection(char map[31][29])
         if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
         {
 
-            float dist = 9999999.0f;
+            float dist = FLOAT_MAX;
             int dir = 0;
 
-            if (map[int(m_Y - m_Speed)][int(ceil(m_X)) + 1] != '.')
+            if (map[int(m_Y - m_Speed)][int(m_X) + 1] != '.')
             {
                 int x = int(m_X) + 1;
                 int y = int(m_Y - m_Speed);
@@ -148,7 +150,7 @@ void Ghost::SetNextDirection(char map[31][29])
         if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
         {
 
-            float dist = 9999999.0f;
+            float dist = FLOAT_MAX;
             int dir = 0;
 
             if (map[int(m_Y) + 1][int(m_X - m_Speed)] != '.')
@@ -203,7 +205,7 @@ void Ghost::SetNextDirection(char map[31][29])
         if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
         {
 
-            float dist = 9999999.0f;
+            float dist = FLOAT_MAX;
             int dir = 2;
 
             if (map[int(m_Y + m_Speed)][int(m_X) + 1] != '.')
@@ -257,7 +259,7 @@ void Ghost::SetNextDirection(char map[31][29])
         if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
         {
 
-            float dist = 9999999.0f;
+            float dist = FLOAT_MAX;
             int dir = 0;
 
             if (map[int(m_Y)][int(m_X + m_Speed) + 1] != '.')
