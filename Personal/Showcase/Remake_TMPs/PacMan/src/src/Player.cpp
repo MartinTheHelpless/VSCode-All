@@ -78,7 +78,7 @@ int Player::Update(char map[31][29])
                 map[(int)m_Y][(int)m_X] = 'e';
             }
 
-            if (m_Y > 14.09f && m_Y < 14.11f && m_X < -1.0f)
+            if (m_Y > 14.19f && m_Y < 14.21f && m_X < -1.0f)
                 m_X = 28.0f;
         }
 
@@ -124,7 +124,7 @@ int Player::Update(char map[31][29])
                 map[(int)m_Y][(int)m_X] = 'e';
             }
 
-            if (m_Y > 14.09f && m_Y < 14.11f && m_X > 28.0f)
+            if (m_Y > 14.19f && m_Y < 14.21f && m_X > 28.0f)
                 m_X = -1.0f;
         }
 

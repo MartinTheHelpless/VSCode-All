@@ -23,6 +23,49 @@ TTF_Font *font;
 Ghost *ghosts[4];
 Player *pacMan;
 
+// --------------------------------------------------------------------------------------------
+// -------------------------------------- MAP DEFINITION START --------------------------------
+// --------------------------------------------------------------------------------------------
+
+char map[31][29] =
+    {
+        "............................",
+        ".oooooooooooo..oooooooooooo.",
+        ".o....o.....o..o.....o....o.",
+        ".x....o.....o..o.....o....x.",
+        ".o....o.....o..o.....o....o.",
+        ".oooooooooooooooooooooooooo.",
+        ".o....o..o........o..o....o.",
+        ".o....o..o........o..o....o.",
+        ".oooooo..oooo..oooo..oooooo.",
+        "......o.....e..e.....o......",
+        "......o.....e..e.....o......",
+        "......o..eeeeeeeeee..o......",
+        "......o..e........e..o......",
+        "......o..e...ee...e..o......",
+        "eeeeeeoeee.eeeeee.eeeoeeeeee",
+        "......o..e........e..o......",
+        "......o..e........e..o......",
+        "......o..eeeeeeeeee..o......",
+        "......o..e........e..o......",
+        "......o..e........e..o......",
+        ".oooooooooooo..oooooooooooo.",
+        ".o....o.....o..o.....o....o.",
+        ".o....o.....o..o.....o....o.",
+        ".xoo..oooooooeeooooooo..oox.",
+        "...o..o..o........o..o..o...",
+        "...o..o..o........o..o..o...",
+        ".oooooo..oooo..oooo..oooooo.",
+        ".o..........o..o..........o.",
+        ".o..........o..o..........o.",
+        ".oooooooooooooooooooooooooo.",
+        "............................",
+};
+
+// --------------------------------------------------------------------------------------------
+// --------------------------------------- MAP DEFINITION END ---------------------------------
+// --------------------------------------------------------------------------------------------
+
 bool Init();
 
 void Close();
@@ -112,6 +155,14 @@ int main(int argc, char const *argv[])
                     break;
                 }
 
+                case SDLK_SPACE:
+                {
+                    for (Ghost *ghost : ghosts)
+                        ghost->SetState(1);
+
+                    break;
+                }
+
                 default:
                     break;
                 }
@@ -130,6 +181,8 @@ int main(int argc, char const *argv[])
 
         DrawGhosts();
         DrawPlayer();
+
+        // std::cout << pacMan->GetX() << " " << pacMan->GetY() << std::endl;
 
         SDL_RenderPresent(rend);
 
@@ -227,7 +280,7 @@ void DrawDots()
 
 void DrawPlayer()
 {
-    SDL_Rect tmp = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
+    SDL_Rect tmp = {-5 + int(pacMan->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(pacMan->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
     SDL_SetRenderDrawColor(rend, 255, 255, 0, 255);
     SDL_RenderFillRect(rend, &tmp);
 }
@@ -236,7 +289,7 @@ void DrawGhosts()
 {
     for (Ghost *ghost : ghosts)
     {
-        SDL_Rect tmp = {-5 + ghost->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + ghost->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
+        SDL_Rect tmp = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
         SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
         SDL_RenderFillRect(rend, &tmp);
     }

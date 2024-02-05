@@ -1,8 +1,6 @@
 #include "../include/Ghost.h"
 #include <cmath>
 
-#define FLOAT_MAX 3.40282e+038
-
 Ghost::Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color)
     : m_ID(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter), m_Color(color),
       m_Direction(direction), m_NextDirection(direction), m_State(0), m_NextState(0) {}
@@ -165,244 +163,14 @@ void Ghost::SetNextDirection(char map[31][29])
         break;
 
     case 3:
-        target = {14, 11};
+        target = {14, 11}; // Ghost house coords
         break;
 
     default:
         break;
     }
 
-    switch (m_Direction)
-    {
-    case 0:
-    {
-        if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
-        {
-
-            float dist = FLOAT_MAX;
-            int dir = 0;
-
-            if (map[int(m_Y - m_Speed)][int(m_X) + 1] != '.')
-            {
-                int x = int(m_X) + 1;
-                int y = int(m_Y - m_Speed);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 3;
-                }
-            }
-
-            if (map[int(m_Y - m_Speed)][int(m_X) - 1] != '.')
-            {
-                int x = int(m_X) - 1;
-                int y = int(m_Y - m_Speed);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 1;
-                }
-            }
-
-            if (map[int(m_Y - m_Speed) - 1][int(m_X)] != '.')
-            {
-
-                int x = m_X;
-                int y = int(m_Y - m_Speed) - 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 0;
-                }
-            }
-
-            m_NextDirection = dir;
-        }
-        break;
-    }
-
-    case 1:
-    {
-        if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
-        {
-
-            float dist = FLOAT_MAX;
-            int dir = 0;
-
-            if (map[int(m_Y) + 1][int(m_X - m_Speed)] != '.')
-            {
-
-                int x = int(m_X - m_Speed);
-                int y = int(m_Y) + 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 2;
-                }
-            }
-
-            if (map[int(m_Y)][int(m_X - m_Speed) - 1] != '.')
-            {
-                int x = int(m_X - m_Speed) - 1;
-                int y = int(m_Y);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 1;
-                }
-            }
-
-            if (map[int(m_Y) - 1][int(m_X - m_Speed)] != '.')
-            {
-
-                int x = int(m_X - m_Speed);
-                int y = int(m_Y) - 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 0;
-                }
-            }
-
-            m_NextDirection = dir;
-        }
-        break;
-    }
-
-    case 2:
-    {
-        if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
-        {
-
-            float dist = FLOAT_MAX;
-            int dir = 2;
-
-            if (map[int(m_Y + m_Speed)][int(m_X) + 1] != '.')
-            {
-                int x = int(m_X) + 1;
-                int y = int(m_Y + m_Speed);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 3;
-                }
-            }
-
-            if (map[int(m_Y + m_Speed) + 1][int(m_X)] != '.')
-            {
-
-                int x = m_X;
-                int y = int(m_Y + m_Speed) + 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 2;
-                }
-            }
-
-            if (map[int(m_Y + m_Speed)][int(m_X) - 1] != '.')
-            {
-                int x = int(m_X) - 1;
-                int y = int(m_Y + m_Speed);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 1;
-                }
-            }
-
-            m_NextDirection = dir;
-        }
-        break;
-    }
-
-    case 3:
-    {
-        if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
-        {
-
-            float dist = FLOAT_MAX;
-            int dir = 0;
-
-            if (map[int(m_Y)][int(m_X + m_Speed) + 1] != '.')
-            {
-                int x = int(m_X + m_Speed) + 1;
-                int y = int(m_Y);
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 3;
-                }
-            }
-
-            if (map[int(m_Y) + 1][int(m_X + m_Speed)] != '.')
-            {
-
-                int x = int(m_X + m_Speed);
-                int y = int(m_Y) + 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 2;
-                }
-            }
-
-            if (map[int(m_Y) - 1][int(m_X + m_Speed)] != '.')
-            {
-
-                int x = int(m_X + m_Speed);
-                int y = int(m_Y) - 1;
-
-                float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-                if (vec <= dist)
-                {
-                    dist = vec;
-                    dir = 0;
-                }
-            }
-
-            m_NextDirection = dir;
-        }
-    }
-    break;
-
-    default:
-        break;
-    }
+    GetNextDirection(target, map);
 }
 
 std::pair<int, int> Ghost::GetChaseTile(int ghostID, int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY)
@@ -538,4 +306,109 @@ std::pair<int, int> Ghost::GetChaseTile(int ghostID, int pacManX, int pacManY, i
     }
 
     return target;
+}
+
+void Ghost::GetNextDirection(std::pair<int, int> &target, char map[31][29])
+{
+
+    switch (m_Direction)
+    {
+    case 0:
+    {
+        if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y - m_Speed), target, map);
+        break;
+    }
+
+    case 1:
+    {
+        if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X - m_Speed), int(m_Y), target, map);
+        break;
+    }
+
+    case 2:
+    {
+        if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y + m_Speed), target, map);
+        break;
+    }
+
+    case 3:
+    {
+        if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X + m_Speed), int(m_Y), target, map);
+    }
+    break;
+
+    default:
+        break;
+    }
+}
+
+int Ghost::GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target, char map[31][29])
+{
+
+    float dist = FLOAT_MAX;
+    int dir = 3;
+
+    if (m_Direction != 1 && map[base_Y][base_X + 1] != '.')
+    {
+        int x = base_X + 1;
+        int y = base_Y;
+
+        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
+
+        if (vec <= dist)
+        {
+            dist = vec;
+            dir = 3;
+        }
+    }
+
+    if (m_Direction != 0 && map[base_Y + 1][base_X] != '.')
+    {
+
+        int x = base_X;
+        int y = base_Y + 1;
+
+        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
+
+        if (vec <= dist)
+        {
+            dist = vec;
+            dir = 2;
+        }
+    }
+
+    if (m_Direction != 3 && map[base_Y][base_X - 1] != '.')
+    {
+        int x = base_X - 1;
+        int y = base_Y;
+
+        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
+
+        if (vec <= dist)
+        {
+            dist = vec;
+            dir = 1;
+        }
+    }
+
+    if (m_Direction != 2 && map[base_Y - 1][base_X] != '.')
+    {
+
+        int x = base_X;
+        int y = base_Y - 1;
+
+        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
+
+        if (vec <= dist)
+        {
+            dist = vec;
+            dir = 0;
+        }
+    }
+
+    return dir;
 }
