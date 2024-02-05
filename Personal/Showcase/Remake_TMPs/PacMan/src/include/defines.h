@@ -1,3 +1,4 @@
+#pragma once
 #include <SDL2/SDL.h>
 
 const int TARGET_FPS = 60;

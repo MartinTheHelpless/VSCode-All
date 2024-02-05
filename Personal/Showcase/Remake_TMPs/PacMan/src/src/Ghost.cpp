@@ -102,9 +102,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
     }
 
     if (m_State != 2)
-    {
         SetNextDirection(map);
-    }
     else if (m_State == 2)
     {
         switch (m_State)

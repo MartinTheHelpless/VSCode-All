@@ -39,7 +39,7 @@ const int ENTITY_DIM = 30;
 const int WINDOW_WIDTH = GAME_WIDTH * TILE_DIM; // 3 : 4
 const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
 
-void DisplayGrid(SDL_Renderer *rend);
+void DrawGrid(SDL_Renderer *rend);
 
 void DrawDots(SDL_Renderer *rend, char map[31][29]);
 
@@ -198,7 +198,7 @@ int main(int argc, char const *argv[])
 
         SDL_RenderCopy(rend.get(), background, nullptr, &backgroundRec);
 
-        // DisplayGrid(rend.get());
+        // DrawGrid(rend.get());
 
         while (SDL_PollEvent(&event))
         {
@@ -313,7 +313,7 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void DisplayGrid(SDL_Renderer *rend)
+void DrawGrid(SDL_Renderer *rend)
 {
 
     SDL_SetRenderDrawColor(rend, 10, 115, 12, 0);
