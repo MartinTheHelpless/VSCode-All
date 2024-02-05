@@ -157,8 +157,6 @@ int main(int argc, char const *argv[])
 
     TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
 
-    SDL_Color fontColor = {255, 255, 255};
-
     Uint32 frameStart, frameTime;
 
     SDL_Surface *tmp = IMG_Load("src/assets/background.png");
