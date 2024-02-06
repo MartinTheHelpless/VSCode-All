@@ -2,7 +2,7 @@
 
 Player::Player()
     : m_X(13.5f), m_Y(23), m_Speed(0.1f), m_State(0), m_Health(3),
-      m_Score(0), m_Direction(-1), m_NextDirection(-1) {}
+      m_Score(0), m_Direction(0), m_NextDirection(0) {}
 
 int Player::Update(char map[31][29])
 {

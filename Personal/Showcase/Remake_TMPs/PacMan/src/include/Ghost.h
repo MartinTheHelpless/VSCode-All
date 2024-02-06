@@ -5,22 +5,31 @@
 
 class Ghost
 {
-protected:
+private:
     int m_ID;
     int m_State; // Scatter, chase, frightened and eaten modes - 0, 1, 2, 3 respectively
     int m_NextState;
     int m_Direction;
     int m_NextDirection;
+
+    int m_ChangeTimes[6] = {6, 20, 6, 20, 6, 15};
+
+    Uint32 m_ScaredStartTicks;
+
+    SDL_Color m_Color;
+
     std::pair<int, int> m_ScatterTarget;
     std::pair<int, int> m_ChaseTarget;
-    SDL_Color m_Color;
 
     float m_X;
     float m_Y;
     float m_Speed;
 
+    void ChangeDirection(char map[31][29]);
     void SetNextDirection(char map[31][29]);
+    void UpdateState(Uint32 ticks, char map[31][29]);
     void GetNextDirection(std::pair<int, int> &target, char map[31][29]);
+
     std::pair<int, int> GetChaseTile(int ghostID, int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);
 
     int GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target, char map[31][29]);
@@ -28,11 +37,16 @@ protected:
 public:
     Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color);
 
-    void Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);
+    void Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, Uint32 ticks);
 
-    void SetSpeed(float speed) { m_Speed = speed; }
     void SetColor(SDL_Color color) { m_Color = color; }
-    void SetState(int state) { m_NextState = state; }
+    void SetState(int state)
+    {
+        if (state == 2)
+            m_ScaredStartTicks = SDL_GetTicks();
+
+        m_NextState = state;
+    }
 
     int GetState() { return m_State; }
 
@@ -45,11 +59,13 @@ public:
 
     SDL_Color GetColor()
     {
+        std::cout << m_State << std::endl;
+
         if (m_State == 2)
             return {33, 33, 222, 0};
         else if (m_State == 3)
             return {35, 35, 35, 0};
-        else
+        else if (m_State == 1 || m_State == 0)
             return m_Color;
     }
 };

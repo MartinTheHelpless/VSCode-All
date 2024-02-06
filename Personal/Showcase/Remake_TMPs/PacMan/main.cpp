@@ -40,9 +40,9 @@ char map[31][29] =
         ".oooooo..oooo..oooo..oooooo.",
         "......o.....e..e.....o......",
         "......o.....e..e.....o......",
-        "......o..eeeeeeeeee..o......",
-        "......o..e........e..o......",
-        "......o..e...ee...e..o......",
+        "......o..eeeeggeeee..o......",
+        "......o..e....e...e..o......",
+        "......o..e....e...e..o......",
         "eeeeeeoeee.eeeeee.eeeoeeeeee",
         "......o..e........e..o......",
         "......o..e........e..o......",
@@ -72,11 +72,13 @@ void Close();
 
 void DrawGrid();
 
-void DrawDots();
+int DrawDots();
 
 void DrawPlayer();
 
 void DrawGhosts();
+
+void DrawGhostChaseTargets();
 
 int main(int argc, char const *argv[])
 {
@@ -117,7 +119,8 @@ int main(int argc, char const *argv[])
         SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
 
         // DrawGrid();
-        DrawDots();
+        if (DrawDots() <= 0)
+            quit = true;
 
         while (SDL_PollEvent(&event))
         {
@@ -174,15 +177,21 @@ int main(int argc, char const *argv[])
             }
         }
 
-        pacMan->Update(map);
+        if (pacMan->Update(map) == 1)
+            for (Ghost *ghost : ghosts)
+                ghost->SetState(2);
+
+        Uint32 ticks = SDL_GetTicks();
 
         for (Ghost *ghost : ghosts)
-            ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY());
+            ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
         DrawGhosts();
+        // DrawGhostChaseTargets();
         DrawPlayer();
 
         // std::cout << pacMan->GetX() << " " << pacMan->GetY() << std::endl;
+        // std::cout << SDL_GetTicks() / 1000.0f << std::endl;
 
         SDL_RenderPresent(rend);
 
@@ -257,8 +266,10 @@ void DrawGrid()
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 }
 
-void DrawDots()
+int DrawDots()
 {
+
+    int dotCount = 0;
 
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
 
@@ -266,16 +277,20 @@ void DrawDots()
         for (int j = 0; j < 28; j++)
             if (map[i][j] == 'o')
             {
+                dotCount++;
                 SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 2, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 2, 4, 4};
                 SDL_RenderFillRect(rend, &rect);
             }
             else if (map[i][j] == 'x')
             {
+                dotCount++;
                 SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 6, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 4, 12, 12};
                 SDL_RenderFillRect(rend, &rect);
             }
 
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+
+    return dotCount;
 }
 
 void DrawPlayer()
@@ -290,6 +305,16 @@ void DrawGhosts()
     for (Ghost *ghost : ghosts)
     {
         SDL_Rect tmp = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+        SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+        SDL_RenderFillRect(rend, &tmp);
+    }
+}
+
+void DrawGhostChaseTargets()
+{
+    for (Ghost *ghost : ghosts)
+    {
+        SDL_Rect tmp = {int(ghost->GetChaseTile().first * TILE_DIM), 3 * TILE_DIM + int(ghost->GetChaseTile().second * TILE_DIM), ENTITY_DIM / 2, ENTITY_DIM / 2};
         SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
         SDL_RenderFillRect(rend, &tmp);
     }
