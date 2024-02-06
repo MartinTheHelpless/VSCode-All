@@ -20,7 +20,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
     switch (m_Direction)
     {
     case 0:
-        if (map[(int)(m_Y - m_Speed)][(int)m_X] != '.' && int(10 * m_X) % 10 <= 1.1f)
+        if (map[int(m_Y - m_Speed)][int(m_X)] != '.' && int(10 * m_X) % 10 <= 1.1f)
         {
             m_Y -= m_Speed;
 
@@ -78,55 +78,33 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
         break;
     }
 
-    if (m_State != 2)
-        SetNextDirection(map);
-    else if (m_State == 2)
+    if (m_State == 2)
     {
         m_Speed = 0.05f;
-        m_State = 2;
 
         switch (m_Direction)
         {
         case 0:
-            if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
-            {
-                m_NextDirection = rand() % 4;
-                while (m_NextDirection == 2)
-                    m_NextDirection = rand() % 4;
-            }
+
             break;
 
         case 1:
-            if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
-            {
-                m_NextDirection = rand() % 4;
-                while (m_NextDirection == 3)
-                    m_NextDirection = rand() % 4;
-            }
+
             break;
 
         case 2:
-            if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
-            {
-                m_NextDirection = rand() % 4;
-                while (m_NextDirection == 0)
-                    m_NextDirection = rand() % 4;
-            }
+
             break;
 
         case 3:
-            if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
-            {
-                m_NextDirection = rand() % 4;
-                while (m_NextDirection == 1)
-                    m_NextDirection = rand() % 4;
-            }
             break;
 
         default:
             break;
         }
     }
+    else
+        SetNextDirection(map);
 
     UpdateState(ticks, map);
 }
@@ -154,10 +132,16 @@ void Ghost::UpdateState(Uint32 ticks, char map[31][29])
     {
 
         if (m_ScaredStartTicks / 1000.0f + 6 <= SDL_GetTicks() / 1000.0f)
+        {
             m_State = 0;
+            ChangeDirection(map);
+        }
     }
     else if (m_State == 3 && int(m_X) == 14 && int(m_Y) == 14)
+    {
         m_State = 0;
+        ChangeDirection(map);
+    }
 }
 
 void Ghost::SetNextDirection(char map[31][29])
@@ -178,7 +162,16 @@ void Ghost::SetNextDirection(char map[31][29])
         break;
 
     case 3:
-        target = {14, 14}; // Ghost house coords
+        if (int(m_X) == 14 && int(m_Y) == 12)
+        {
+            m_State = 0;
+            m_Direction = 0;
+            m_NextDirection = 0;
+            target = m_ScatterTarget;
+            break;
+        }
+
+        target = {15, 15}; // Ghost house coords
         m_Speed = 0.2f;
         break;
 
@@ -426,6 +419,45 @@ int Ghost::GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target,
         }
     }
 
+    return dir;
+}
+
+int Ghost::GetRandomFreeDirection(int base_X, int base_Y, char map[31][29])
+{
+
+    int dir = 0;
+
+    while (true)
+    {
+
+        dir = rand() % 4;
+
+        switch (dir)
+        {
+        case 0:
+            if (m_Direction != 2 && map[base_Y - 1][base_X] != '.' && dir != ((m_Direction + 2) % 4))
+                return dir;
+            break;
+
+        case 1:
+            if (m_Direction != 3 && map[base_Y][base_X - 1] != '.' && dir != ((m_Direction + 2) % 4))
+                return dir;
+            break;
+
+        case 2:
+            if (m_Direction != 0 && map[base_Y + 1][base_X] != '.' && dir != ((m_Direction + 2) % 4))
+                return dir;
+            break;
+
+        case 3:
+            if (m_Direction != 1 && map[base_Y][base_X + 1] != '.' && dir != ((m_Direction + 2) % 4))
+                return dir;
+            break;
+
+        default:
+            break;
+        }
+    }
     return dir;
 }
 

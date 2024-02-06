@@ -40,11 +40,11 @@ char map[31][29] =
         ".oooooo..oooo..oooo..oooooo.",
         "......o.....e..e.....o......",
         "......o.....e..e.....o......",
-        "......o..eeeeggeeee..o......",
+        "......o..eeeeeeeeee..o......",
         "......o..e....e...e..o......",
-        "......o..e....e...e..o......",
-        "eeeeeeoeee.eeeeee.eeeoeeeeee",
-        "......o..e........e..o......",
+        "......o..e.eeeeee.e..o......",
+        "eeeeeeoeee.e....e.e.eeoeeeee",
+        "......o..e.eeeeee.e..o......",
         "......o..e........e..o......",
         "......o..eeeeeeeeee..o......",
         "......o..e........e..o......",
@@ -179,7 +179,7 @@ int main(int argc, char const *argv[])
 
         if (pacMan->Update(map) == 1)
             for (Ghost *ghost : ghosts)
-                ghost->SetState(2);
+                ghost->SetState(3);
 
         Uint32 ticks = SDL_GetTicks();
 

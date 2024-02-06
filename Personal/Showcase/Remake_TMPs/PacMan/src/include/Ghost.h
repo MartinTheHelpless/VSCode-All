@@ -32,6 +32,7 @@ private:
 
     std::pair<int, int> GetChaseTile(int ghostID, int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY);
 
+    int GetRandomFreeDirection(int base_X, int base_Y, char map[31][29]);
     int GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target, char map[31][29]);
 
 public:
@@ -59,13 +60,14 @@ public:
 
     SDL_Color GetColor()
     {
-        std::cout << m_State << std::endl;
 
         if (m_State == 2)
             return {33, 33, 222, 0};
         else if (m_State == 3)
             return {35, 35, 35, 0};
         else if (m_State == 1 || m_State == 0)
+            return m_Color;
+        else
             return m_Color;
     }
 };
