@@ -8,6 +8,8 @@ Ghost::Ghost(int id, float x, float y, int direction, float speed, std::pair<int
 void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, Uint32 ticks)
 {
 
+    ChangeDirection(map);
+
     if (m_State != m_NextState && (m_NextState == 0 && m_State == 1 || m_NextState == 1 && m_State == 0))
     {
         m_Direction = (m_Direction + 2) % 4;
@@ -20,7 +22,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
     switch (m_Direction)
     {
     case 0:
-        if (map[int(m_Y - m_Speed)][int(m_X)] != '.' && int(10 * m_X) % 10 <= 1.1f)
+        if (map[int(m_Y - m_Speed)][int(m_X)] != '.' && int(10 * m_X) % 10 <= m_Speed * 11.0f)
         {
             m_Y -= m_Speed;
 
@@ -32,7 +34,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
         break;
 
     case 1:
-        if (map[(int)m_Y][(int)(m_X - m_Speed)] != '.' && int(10 * m_Y) % 10 <= 1.1f)
+        if (map[(int)m_Y][(int)(m_X - m_Speed)] != '.' && int(10 * m_Y) % 10 <= m_Speed * 11.0f)
         {
             m_X -= m_Speed;
 
@@ -48,7 +50,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
 
     case 2:
 
-        if (map[(int)ceil(m_Y + m_Speed - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 <= 1.1f)
+        if (map[(int)ceil(m_Y + m_Speed - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 <= m_Speed * 11.0f)
         {
             m_Y += m_Speed;
 
@@ -60,7 +62,7 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
         break;
 
     case 3:
-        if (map[(int)m_Y][(int)ceil(m_X + m_Speed - 0.1f)] != '.' && int(10 * m_Y) % 10 <= 1.1f)
+        if (map[(int)m_Y][(int)ceil(m_X + m_Speed - 0.1f)] != '.' && int(10 * m_Y) % 10 <= m_Speed * 11.0f)
         {
             m_X += m_Speed;
 

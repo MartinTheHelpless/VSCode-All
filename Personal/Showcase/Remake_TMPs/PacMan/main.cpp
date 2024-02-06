@@ -191,6 +191,7 @@ int main(int argc, char const *argv[])
         DrawPlayer();
 
         // std::cout << pacMan->GetX() << " " << pacMan->GetY() << std::endl;
+        std::cout << ghosts[0]->GetX() << " " << ghosts[0]->GetY() << std::endl;
         // std::cout << SDL_GetTicks() / 1000.0f << std::endl;
 
         SDL_RenderPresent(rend);
