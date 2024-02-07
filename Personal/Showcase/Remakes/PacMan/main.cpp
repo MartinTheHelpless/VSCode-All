@@ -118,7 +118,7 @@ int main(int argc, char const *argv[])
 
         SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
 
-        // DrawGrid();
+        DrawGrid();
         if (DrawDots() <= 0)
             quit = true;
 
