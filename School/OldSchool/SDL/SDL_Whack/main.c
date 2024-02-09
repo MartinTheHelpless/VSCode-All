@@ -232,22 +232,22 @@ void game(SDL_Renderer *renderer, SDL_Surface *image)
                             SDL_Rect a = {randomX - i, randomY - i, sizeX / 2, sizeY / 2};
 
                             SDL_Rect originA = {cols * 100 + 15, rows * 77, sizeX / 2, sizeY / 2};
-                            SDL_RenderCopyEx(renderer, emt, &originA, &a, i*7, NULL, SDL_FLIP_NONE);
+                            SDL_RenderCopyEx(renderer, emt, &originA, &a, i * 7, NULL, SDL_FLIP_NONE);
 
                             SDL_Rect b = {randomX + sizeX / 2 + i, randomY - i, sizeX / 2, sizeY / 2};
 
                             SDL_Rect originB = {cols * 100 + 15 + sizeX / 2, rows * 77, sizeX / 2, sizeY / 2};
-                            SDL_RenderCopyEx(renderer, emt, &originB, &b, i*7, NULL, SDL_FLIP_NONE);
+                            SDL_RenderCopyEx(renderer, emt, &originB, &b, i * 7, NULL, SDL_FLIP_NONE);
 
                             SDL_Rect c = {randomX - i, randomY + sizeY / 2 + i, sizeX / 2, sizeY / 2};
 
                             SDL_Rect originC = {cols * 100 + 15, rows * 77 + sizeY / 2, sizeX / 2, sizeY / 2};
-                            SDL_RenderCopyEx(renderer, emt, &originC, &c, i*7, NULL, SDL_FLIP_NONE);
+                            SDL_RenderCopyEx(renderer, emt, &originC, &c, i * 7, NULL, SDL_FLIP_NONE);
 
                             SDL_Rect d = {randomX + sizeX / 2 + i, randomY + sizeY / 2 + i, sizeX / 2, sizeY / 2};
 
                             SDL_Rect originD = {cols * 100 + 15 + sizeX / 2, rows * 77 + sizeY / 2, sizeX / 2, sizeY / 2};
-                            SDL_RenderCopyEx(renderer, emt, &originD, &d, i*7, NULL, SDL_FLIP_NONE);
+                            SDL_RenderCopyEx(renderer, emt, &originD, &d, i * 7, NULL, SDL_FLIP_NONE);
 
                             SDL_RenderPresent(renderer);
                         }
@@ -347,9 +347,7 @@ int main(int argc, char *argv[])
     SDL_Surface *image = IMG_Load("srcFiles/emojipedia.jpg");
 
     while (!endGame)
-    {
         game(renderer, image);
-    }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
