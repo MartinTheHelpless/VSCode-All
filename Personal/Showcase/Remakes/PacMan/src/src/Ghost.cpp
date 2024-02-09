@@ -1,42 +1,52 @@
 #include "../include/Ghost.h"
 #include <cmath>
+#include <vector>
 
 Ghost::Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color)
-    : m_ID(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter), m_Color(color),
-      m_Direction(direction), m_NextDirection(direction), m_State(0), m_NextState(0), m_ScaredStartTicks(0) {}
+    : m_ID(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter), m_Color(color), m_FrameMove(0.05f),
+      m_Direction(direction), m_NextDirection(direction), m_State(0), m_ScaredStartTicks(0) {}
 
 void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, Uint32 ticks)
 {
 
-    ChangeDirection(map);
+    m_X = float(int(m_X * 1000.0f) / 1000.0f);
+    m_Y = float(int(m_Y * 1000.0f) / 1000.0f);
 
-    if (m_State != m_NextState && (m_NextState == 0 && m_State == 1 || m_NextState == 1 && m_State == 0))
+    for (int i = 0; i < m_Speed; i++)
     {
-        m_Direction = (m_Direction + 2) % 4;
-        m_NextDirection = m_Direction;
-        m_State = m_NextState;
+        if (m_State != 2)
+        {
+            ChangeDirectionIfOnCrossroad(pacManX, pacManY, pacManDir, blinkyX, blinkyY, map);
+            SetNextDirection(map);
+        }
+        else
+        {
+        }
+
+        UpdateState(ticks, map);
     }
-    else if (m_State != m_NextState)
-        m_State = m_NextState;
+}
+
+void Ghost::ChangeDirectionIfOnCrossroad(int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, char map[31][29])
+{
 
     switch (m_Direction)
     {
     case 0:
-        if (map[int(m_Y - m_Speed)][int(m_X)] != '.' && int(10 * m_X) % 10 <= m_Speed * 11.0f)
+        if (map[int(m_Y - m_FrameMove * 2)][int(m_X)] != '.' && int(10 * m_X) % 10 <= m_FrameMove * 2 * 11.0f)
         {
-            m_Y -= m_Speed;
+            m_Y -= m_FrameMove;
 
             ChangeDirection(map);
 
             m_ChaseTarget = GetChaseTile(m_ID, pacManX, pacManY, pacManDir, blinkyX, blinkyY);
         }
-
         break;
 
     case 1:
-        if (map[(int)m_Y][(int)(m_X - m_Speed)] != '.' && int(10 * m_Y) % 10 <= m_Speed * 11.0f)
+        if (map[(int)m_Y][(int)(m_X - m_FrameMove * 2)] != '.' && int(10 * m_Y) % 10 <= m_FrameMove * 2 * 11.0f)
         {
-            m_X -= m_Speed;
+            m_X -= m_FrameMove;
 
             if (m_Y > 14.0f && m_Y < 14.3f && m_X < -0.5f)
                 m_X = 27.0f;
@@ -50,21 +60,20 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
 
     case 2:
 
-        if (map[(int)ceil(m_Y + m_Speed - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 <= m_Speed * 11.0f)
+        if (map[(int)ceil(m_Y + m_FrameMove * 2 - 0.1f)][(int)m_X] != '.' && int(10 * m_X) % 10 <= m_FrameMove * 2 * 11.0f)
         {
-            m_Y += m_Speed;
+            m_Y += m_FrameMove;
 
             ChangeDirection(map);
 
             m_ChaseTarget = GetChaseTile(m_ID, pacManX, pacManY, pacManDir, blinkyX, blinkyY);
         }
-
         break;
 
     case 3:
-        if (map[(int)m_Y][(int)ceil(m_X + m_Speed - 0.1f)] != '.' && int(10 * m_Y) % 10 <= m_Speed * 11.0f)
+        if (map[(int)m_Y][(int)ceil(m_X + m_FrameMove * 2 - 0.1f)] != '.' && int(10 * m_Y) % 10 <= m_FrameMove * 2 * 11.0f)
         {
-            m_X += m_Speed;
+            m_X += m_FrameMove;
 
             if (m_Y > 14.0f && m_Y < 14.3f && m_X > 27.0f)
                 m_X = -0.5f;
@@ -73,42 +82,11 @@ void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, in
 
             m_ChaseTarget = GetChaseTile(m_ID, pacManX, pacManY, pacManDir, blinkyX, blinkyY);
         }
-
         break;
 
     default:
         break;
     }
-
-    if (m_State == 2)
-    {
-        m_Speed = 0.05f;
-
-        switch (m_Direction)
-        {
-        case 0:
-
-            break;
-
-        case 1:
-
-            break;
-
-        case 2:
-
-            break;
-
-        case 3:
-            break;
-
-        default:
-            break;
-        }
-    }
-    else
-        SetNextDirection(map);
-
-    UpdateState(ticks, map);
 }
 
 void Ghost::UpdateState(Uint32 ticks, char map[31][29])
@@ -126,8 +104,8 @@ void Ghost::UpdateState(Uint32 ticks, char map[31][29])
 
         if (i % 2 != m_State)
         {
-            m_NextState = i % 2;
-            ChangeDirection(map);
+            SetState(i % 2);
+            SetNextDirection(map);
         }
     }
     else if (m_State == 2)
@@ -135,14 +113,9 @@ void Ghost::UpdateState(Uint32 ticks, char map[31][29])
 
         if (m_ScaredStartTicks / 1000.0f + 6 <= SDL_GetTicks() / 1000.0f)
         {
-            m_State = 0;
-            ChangeDirection(map);
+            SetState(0);
+            SetNextDirection(map);
         }
-    }
-    else if (m_State == 3 && int(m_X) == 14 && int(m_Y) == 14)
-    {
-        m_State = 0;
-        ChangeDirection(map);
     }
 }
 
@@ -155,26 +128,24 @@ void Ghost::SetNextDirection(char map[31][29])
     {
     case 0:
         target = m_ScatterTarget;
-        m_Speed = 0.1f;
         break;
 
     case 1:
         target = m_ChaseTarget;
-        m_Speed = 0.1f;
         break;
 
     case 3:
-        if (int(m_X) == 14 && int(m_Y) == 12)
+        if (int(m_X) == 14 && int(m_Y) == 15)
         {
-            m_State = 0;
-            m_Direction = 0;
+            SetState(0);
+            m_Direction = 2;
             m_NextDirection = 0;
             target = m_ScatterTarget;
+
             break;
         }
-
-        target = {15, 15}; // Ghost house coords
-        m_Speed = 0.2f;
+        else
+            target = {14, 15}; // Ghost house coords
         break;
 
     default:
@@ -326,29 +297,29 @@ void Ghost::GetNextDirection(std::pair<int, int> &target, char map[31][29])
     {
     case 0:
     {
-        if (int(m_Y) != int(m_Y - m_Speed) && map[int(m_Y - m_Speed)][int(m_X)] != '.')
-            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y - m_Speed), target, map);
+        if (int(m_Y) != int(m_Y - m_FrameMove * 2) && map[int(m_Y - m_FrameMove * 2)][int(m_X)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y - m_FrameMove * 2), target, map);
         break;
     }
 
     case 1:
     {
-        if (int(m_X) != int(m_X - m_Speed) && map[int(m_Y)][int(m_X - m_Speed)] != '.')
-            m_NextDirection = GetFreeDirection(int(m_X - m_Speed), int(m_Y), target, map);
+        if (int(m_X) != int(m_X - m_FrameMove * 2) && map[int(m_Y)][int(m_X - m_FrameMove * 2)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X - m_FrameMove * 2), int(m_Y), target, map);
         break;
     }
 
     case 2:
     {
-        if (int(m_Y) != int(m_Y + m_Speed) && map[int(m_Y + m_Speed)][int(m_X)] != '.')
-            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y + m_Speed), target, map);
+        if (int(m_Y) != int(m_Y + m_FrameMove * 2) && map[int(m_Y + m_FrameMove * 2)][int(m_X)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X), int(m_Y + m_FrameMove * 2), target, map);
         break;
     }
 
     case 3:
     {
-        if (int(m_X) != int(m_X + m_Speed) && map[int(m_Y)][int(m_X + m_Speed)] != '.')
-            m_NextDirection = GetFreeDirection(int(m_X + m_Speed), int(m_Y), target, map);
+        if (int(m_X) != int(m_X + m_FrameMove * 2) && map[int(m_Y)][int(m_X + m_FrameMove * 2)] != '.')
+            m_NextDirection = GetFreeDirection(int(m_X + m_FrameMove * 2), int(m_Y), target, map);
     }
     break;
 
@@ -427,40 +398,21 @@ int Ghost::GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target,
 int Ghost::GetRandomFreeDirection(int base_X, int base_Y, char map[31][29])
 {
 
-    int dir = 0;
+    std::vector<int> dirs;
 
-    while (true)
-    {
+    if (m_Direction != 2 && map[base_Y - 1][base_X] != '.')
+        dirs.push_back(0);
 
-        dir = rand() % 4;
+    if (m_Direction != 3 && map[base_Y][base_X - 1] != '.')
+        dirs.push_back(1);
 
-        switch (dir)
-        {
-        case 0:
-            if (m_Direction != 2 && map[base_Y - 1][base_X] != '.' && dir != ((m_Direction + 2) % 4))
-                return dir;
-            break;
+    if (m_Direction != 0 && map[base_Y + 1][base_X] != '.')
+        dirs.push_back(2);
 
-        case 1:
-            if (m_Direction != 3 && map[base_Y][base_X - 1] != '.' && dir != ((m_Direction + 2) % 4))
-                return dir;
-            break;
+    if (m_Direction != 1 && map[base_Y][base_X + 1] != '.')
+        dirs.push_back(3);
 
-        case 2:
-            if (m_Direction != 0 && map[base_Y + 1][base_X] != '.' && dir != ((m_Direction + 2) % 4))
-                return dir;
-            break;
-
-        case 3:
-            if (m_Direction != 1 && map[base_Y][base_X + 1] != '.' && dir != ((m_Direction + 2) % 4))
-                return dir;
-            break;
-
-        default:
-            break;
-        }
-    }
-    return dir;
+    return dirs[rand() % dirs.size()];
 }
 
 void Ghost::ChangeDirection(char map[31][29])
@@ -498,75 +450,3 @@ void Ghost::ChangeDirection(char map[31][29])
         }
     }
 }
-
-/*   ------------------  Method with state 3 edited to be able to pass trough 'g' -----------------
-
-
-int Ghost::GetFreeDirection(int base_X, int base_Y, std::pair<int, int> &target, char map[31][29])
-{
-
-    float dist = FLOAT_MAX;
-    int dir = 3;
-
-    if (m_Direction != 1 && map[base_Y][base_X + 1] != '.' && map[base_Y][base_X + 1] != 'g' && m_State != 3 || m_Direction != 1 && map[base_Y][base_X + 1] != '.' && m_State == 3)
-    {
-        int x = base_X + 1;
-        int y = base_Y;
-
-        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-        if (vec <= dist)
-        {
-            dist = vec;
-            dir = 3;
-        }
-    }
-
-    if (m_State != 3 && m_Direction != 0 && map[base_Y + 1][base_X] != '.' && map[base_Y + 1][base_X] != 'g' || m_State == 3 && m_Direction != 0 && map[base_Y + 1][base_X] != '.')
-    {
-
-        int x = base_X;
-        int y = base_Y + 1;
-
-        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-        if (vec <= dist)
-        {
-            dist = vec;
-            dir = 2;
-        }
-    }
-
-    if (m_State != 3 && m_Direction != 3 && map[base_Y][base_X - 1] != '.' && map[base_Y][base_X - 1] != 'g' || m_State == 3 && m_Direction != 3 && map[base_Y][base_X - 1] != '.')
-    {
-        int x = base_X - 1;
-        int y = base_Y;
-
-        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-        if (vec <= dist)
-        {
-            dist = vec;
-            dir = 1;
-        }
-    }
-
-    if (m_State != 3 && m_Direction != 2 && map[base_Y - 1][base_X] != '.' && map[base_Y - 1][base_X] != 'g' || m_State == 3 && m_Direction != 2 && map[base_Y - 1][base_X] != '.')
-    {
-
-        int x = base_X;
-        int y = base_Y - 1;
-
-        float vec = sqrt((target.first - x) * (target.first - x) + (target.second - y) * (target.second - y));
-
-        if (vec <= dist)
-        {
-            dist = vec;
-            dir = 0;
-        }
-    }
-
-    return dir;
-}
-
-*/

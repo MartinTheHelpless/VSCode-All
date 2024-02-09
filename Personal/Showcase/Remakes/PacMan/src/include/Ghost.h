@@ -8,9 +8,9 @@ class Ghost
 private:
     int m_ID;
     int m_State; // Scatter, chase, frightened and eaten modes - 0, 1, 2, 3 respectively
-    int m_NextState;
     int m_Direction;
     int m_NextDirection;
+    int m_Speed;
 
     int m_ChangeTimes[6] = {6, 20, 6, 20, 6, 15};
 
@@ -23,10 +23,11 @@ private:
 
     float m_X;
     float m_Y;
-    float m_Speed;
+    float m_FrameMove;
 
     void ChangeDirection(char map[31][29]);
     void SetNextDirection(char map[31][29]);
+    void ChangeDirectionIfOnCrossroad(int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, char map[31][29]);
     void UpdateState(Uint32 ticks, char map[31][29]);
     void GetNextDirection(std::pair<int, int> &target, char map[31][29]);
 
@@ -45,13 +46,30 @@ public:
     {
         if (state == 2)
             m_ScaredStartTicks = SDL_GetTicks();
+        else
+            m_ScaredStartTicks = 0;
 
-        m_NextState = state;
+        if (state == 0 || state == 1)
+        {
+            m_Speed = 2;
+            m_Direction = (m_Direction + 2) % 4;
+            m_NextDirection = m_Direction;
+        }
+        else if (state == 2)
+            m_Speed = 1;
+        else
+            m_Speed = 4;
+
+        m_State = state;
     }
 
     int GetState() { return m_State; }
+    int GetDirection() { return m_Direction; }
 
-    float GetX() { return m_X; }
+    float GetX()
+    {
+        return m_X;
+    }
     float GetY() { return m_Y; }
     float GetSpeed() { return m_Speed; }
 

@@ -42,9 +42,9 @@ char map[31][29] =
         "......o.....e..e.....o......",
         "......o..eeeeeeeeee..o......",
         "......o..e....e...e..o......",
-        "......o..e.eeeeee.e..o......",
-        "eeeeeeoeee.e....e.e.eeoeeeee",
-        "......o..e.eeeeee.e..o......",
+        "......o..e....e...e..o......",
+        "eeeeeeoeee....e...eeeoeeeeee",
+        "......o..e....e...e..o......",
         "......o..e........e..o......",
         "......o..eeeeeeeeee..o......",
         "......o..e........e..o......",
@@ -80,6 +80,8 @@ void DrawGhosts();
 
 void DrawGhostChaseTargets();
 
+void CheckCollisions(bool &quit);
+
 int main(int argc, char const *argv[])
 {
 
@@ -99,10 +101,10 @@ int main(int argc, char const *argv[])
 
     // (id, x, y, direction, speed, x and y scatter target, color) color will be removed with sprite addition
 
-    ghosts[0] = new Ghost(0, 13.0f, 11.0f, 1, 0.1f, {25, -4}, {255, 0, 0, 0});    // Blinky
-    ghosts[1] = new Ghost(2, 13.0f, 11.0f, 1, 0.1f, {27, 31}, {0, 255, 255, 0});  // Inky
-    ghosts[2] = new Ghost(3, 13.0f, 11.0f, 1, 0.1f, {0, 31}, {255, 184, 82, 0});  // Clyde
-    ghosts[3] = new Ghost(1, 13.0f, 11.0f, 1, 0.1f, {2, -4}, {255, 184, 255, 0}); // Pinky
+    ghosts[0] = new Ghost(0, 14.0f, 13.0f, 0, 2, {25, -4}, {255, 0, 0, 0});    // Blinky
+    ghosts[1] = new Ghost(2, 14.0f, 13.0f, 0, 2, {27, 31}, {0, 255, 255, 0});  // Inky
+    ghosts[2] = new Ghost(3, 14.0f, 13.0f, 0, 2, {0, 31}, {255, 184, 82, 0});  // Clyde
+    ghosts[3] = new Ghost(1, 14.0f, 13.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
 
     Uint32 frameStart, frameTime;
 
@@ -118,7 +120,8 @@ int main(int argc, char const *argv[])
 
         SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
 
-        DrawGrid();
+        // DrawGrid();
+
         if (DrawDots() <= 0)
             quit = true;
 
@@ -160,8 +163,8 @@ int main(int argc, char const *argv[])
 
                 case SDLK_SPACE:
                 {
-                    for (Ghost *ghost : ghosts)
-                        ghost->SetState(1);
+                    /*for (Ghost *ghost : ghosts)
+                        ghost->SetState(1);*/
 
                     break;
                 }
@@ -179,20 +182,25 @@ int main(int argc, char const *argv[])
 
         if (pacMan->Update(map) == 1)
             for (Ghost *ghost : ghosts)
-                ghost->SetState(3);
+                ghost->SetState(2);
 
         Uint32 ticks = SDL_GetTicks();
 
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
+        CheckCollisions(quit);
+
         DrawGhosts();
         // DrawGhostChaseTargets();
         DrawPlayer();
 
-        // std::cout << pacMan->GetX() << " " << pacMan->GetY() << std::endl;
-        std::cout << ghosts[0]->GetX() << " " << ghosts[0]->GetY() << std::endl;
-        // std::cout << SDL_GetTicks() / 1000.0f << std::endl;
+        /*
+        std::cout << pacMan->GetX() << " | " << pacMan->GetY() << std::endl;
+        std::cout << ghosts[0]->GetX() << " | " << ghosts[0]->GetY() << std::endl;
+        std::cout << "State: " << ghosts[0]->GetState() << " | Direction: " << ghosts[0]->GetDirection() << std::endl;
+        std::cout << SDL_GetTicks() / 1000.0f << std::endl;
+        */
 
         SDL_RenderPresent(rend);
 
@@ -318,5 +326,21 @@ void DrawGhostChaseTargets()
         SDL_Rect tmp = {int(ghost->GetChaseTile().first * TILE_DIM), 3 * TILE_DIM + int(ghost->GetChaseTile().second * TILE_DIM), ENTITY_DIM / 2, ENTITY_DIM / 2};
         SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
         SDL_RenderFillRect(rend, &tmp);
+    }
+}
+
+void CheckCollisions(bool &quit)
+{
+
+    for (int i = 0; i < 4; i++)
+    {
+
+        float x = ghosts[i]->GetX() - pacMan->GetX();
+        float y = ghosts[i]->GetY() - pacMan->GetY();
+
+        if (sqrt(x * x + y * y) <= 1.0f && ghosts[i]->GetState() == 2)
+            ghosts[i]->SetState(3);
+        else if (sqrt(x * x + y * y) <= 1.0f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
+            quit = true;
     }
 }
