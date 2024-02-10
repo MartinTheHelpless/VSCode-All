@@ -1,11 +1,8 @@
-#include <stdbool.h>
+#include <memory>
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <memory>
-#include <vector>
-#include <stdlib.h>
+#include <SDL2/SDL_image.h>
 #include "src/include/Ghost.h"
 #include "src/include/Player.h"
 #include "src/include/defines.h" // File with all the consts, defines, etc.
@@ -41,7 +38,7 @@ char map[31][29] =
         "......o.....e..e.....o......",
         "......o.....e..e.....o......",
         "......o..eeeeeeeeee..o......",
-        "......o..e....e...e..o......",
+        "......o..e....g...e..o......",
         "......o..e....e...e..o......",
         "eeeeeeoeee....e...eeeoeeeeee",
         "......o..e....e...e..o......",
@@ -86,7 +83,7 @@ int main(int argc, char const *argv[])
 {
 
     if (!Init())
-        return -1;
+        return 1;
 
     font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
 
@@ -107,6 +104,8 @@ int main(int argc, char const *argv[])
     ghosts[3] = new Ghost(1, 14.0f, 13.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
 
     Uint32 frameStart, frameTime;
+
+    bool blink = false, pink = false, ink = false, cly = false;
 
     bool quit = false;
     SDL_Event event;
@@ -143,6 +142,7 @@ int main(int argc, char const *argv[])
                     pacMan->SetMoveDir(0);
                     break;
                 }
+
                 case SDLK_a:
                 {
                     pacMan->SetMoveDir(1);
@@ -158,6 +158,30 @@ int main(int argc, char const *argv[])
                 case SDLK_d:
                 {
                     pacMan->SetMoveDir(3);
+                    break;
+                }
+
+                case SDLK_1:
+                {
+                    blink = !blink;
+                    break;
+                }
+
+                case SDLK_2:
+                {
+                    ink = !ink;
+                    break;
+                }
+
+                case SDLK_3:
+                {
+                    pink = !pink;
+                    break;
+                }
+
+                case SDLK_4:
+                {
+                    cly = !cly;
                     break;
                 }
 
@@ -189,7 +213,7 @@ int main(int argc, char const *argv[])
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
-        CheckCollisions(quit);
+        // CheckCollisions(quit);
 
         DrawGhosts();
         // DrawGhostChaseTargets();
@@ -201,6 +225,11 @@ int main(int argc, char const *argv[])
         std::cout << "State: " << ghosts[0]->GetState() << " | Direction: " << ghosts[0]->GetDirection() << std::endl;
         std::cout << SDL_GetTicks() / 1000.0f << std::endl;
         */
+
+        blink ? std::cout << "X: " << ghosts[0]->GetX() << " | Y: " << ghosts[0]->GetY() << std::endl : std::cout << "";
+        ink ? std::cout << "X: " << ghosts[1]->GetX() << " | Y: " << ghosts[1]->GetY() << std::endl : std::cout << "";
+        pink ? std::cout << "X: " << ghosts[2]->GetX() << " | Y: " << ghosts[2]->GetY() << std::endl : std::cout << "";
+        cly ? std::cout << "X: " << ghosts[3]->GetX() << " | Y: " << ghosts[3]->GetY() << std::endl : std::cout << "";
 
         SDL_RenderPresent(rend);
 
