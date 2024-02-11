@@ -1,204 +1,136 @@
-#include <stdbool.h>
+#include <memory>
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <memory>
-#include <vector>
-#include <stdlib.h>
+#include <SDL2/SDL_image.h>
 #include "src/include/Ghost.h"
 #include "src/include/Player.h"
+#include "src/include/defines.h" // File with all the consts, defines, etc.
 
 #ifdef main
 #undef main
 #endif
 
-class SDLClear
-{
-public:
-    void operator()(SDL_Window *window) const
-    {
-        SDL_DestroyWindow(window);
-    }
+SDL_Window *window = nullptr;
+SDL_Renderer *rend = nullptr;
 
-    void operator()(SDL_Renderer *renderer) const
+SDL_Texture *background;
+SDL_Texture *pacman[3];
+TTF_Font *font;
+
+Ghost *ghosts[4];
+Player *pacMan;
+
+// --------------------------------------------------------------------------------------------
+// -------------------------------------- MAP DEFINITION START --------------------------------
+// --------------------------------------------------------------------------------------------
+
+char map[31][29] =
     {
-        SDL_DestroyRenderer(renderer);
-    }
+        "............................",
+        ".oooooooooooo..oooooooooooo.",
+        ".o....o.....o..o.....o....o.",
+        ".x....o.....o..o.....o....x.",
+        ".o....o.....o..o.....o....o.",
+        ".oooooooooooooooooooooooooo.",
+        ".o....o..o........o..o....o.",
+        ".o....o..o........o..o....o.",
+        ".oooooo..oooo..oooo..oooooo.",
+        "......o.....e..e.....o......",
+        "......o.....e..e.....o......",
+        "......o..eeeeeeeeee..o......",
+        "......o..e....g...e..o......",
+        "......o..e....e...e..o......",
+        "eeeeeeoeee....e...eeeoeeeeee",
+        "......o..e....e...e..o......",
+        "......o..e........e..o......",
+        "......o..eeeeeeeeee..o......",
+        "......o..e........e..o......",
+        "......o..e........e..o......",
+        ".oooooooooooo..oooooooooooo.",
+        ".o....o.....o..o.....o....o.",
+        ".o....o.....o..o.....o....o.",
+        ".xoo..oooooooeeooooooo..oox.",
+        "...o..o..o........o..o..o...",
+        "...o..o..o........o..o..o...",
+        ".oooooo..oooo..oooo..oooooo.",
+        ".o..........o..o..........o.",
+        ".o..........o..o..........o.",
+        ".oooooooooooooooooooooooooo.",
+        "............................",
 };
 
-const int TARGET_FPS = 60;
-const int FRAME_DELAY = 1000 / TARGET_FPS;
+// --------------------------------------------------------------------------------------------
+// --------------------------------------- MAP DEFINITION END ---------------------------------
+// --------------------------------------------------------------------------------------------
 
-const int GAME_WIDTH = 28; // (28 : 36 tiles original Pac Man Game)
-const int GAME_HEIGHT = 36;
+bool Init();
 
-const int TILE_DIM = 20;
-const int ENTITY_DIM = 30;
+void Close();
 
-const int WINDOW_WIDTH = GAME_WIDTH * TILE_DIM; // 3 : 4
-const int WINDOW_HEIGHT = GAME_HEIGHT * TILE_DIM;
+void DrawGrid();
 
-void DrawGrid(SDL_Renderer *rend);
+int DrawDots();
 
-void DrawDots(SDL_Renderer *rend, char map[31][29]);
+void DrawPlayer();
 
-void DrawGhost(SDL_Renderer *rend, Ghost *ghost);
+void DrawGhosts();
+
+void DrawGhostChaseTargets();
+
+void CheckCollisions(bool &quit);
 
 int main(int argc, char const *argv[])
 {
-    // --------------------------------------------------------------------------------------------
-    // -------------------------------------- MAP DEFINITION START --------------------------------
-    // --------------------------------------------------------------------------------------------
 
-    // std::string map = ".............................oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..x....o.....o..o.....o....x..o....o.....o..o.....o....o..oooooooooooooooooooooooooo..o....o..o........o..o....o..o....o..o........o..o....o..oooooo..oooo..oooo..oooooo.......o.....e..e.....o............o.....e..e.....o............o..eeeeeeeeee..o............o..e...gg...e..o............o..e.eeeeee.e..o......eeeeeeoeee.eeeeee.eeeoeeeeee......o..e.eeeeee.e..o............o..e........e..o............o..eeeeeeeeee..o............o..e........e..o............o..e........e..o.......oooooooooooo..oooooooooooo..o....o.....o..o.....o....o..o....o.....o..o.....o....o..xoo..ooooooo..ooooooo..oox....o..o..o........o..o..o......o..o..o........o..o..o....oooooo..oooo..oooo..oooooo..o..........o..o..........o..o..........o..o..........o..oooooooooooooooooooooooooo.............................";
-    /*std::wstring map;
-    map += L"............................";
-    map += L".oooooooooooo..oooooooooooo.";
-    map += L".o....o.....o..o.....o....o.";
-    map += L".x....o.....o..o.....o....x.";
-    map += L".o....o.....o..o.....o....o.";
-    map += L".oooooooooooooooooooooooooo.";
-    map += L".o....o..o........o..o....o.";
-    map += L".o....o..o........o..o....o.";
-    map += L".oooooo..oooo..oooo..oooooo.";
-    map += L"......o.....e..e.....o......";
-    map += L"......o.....e..e.....o......";
-    map += L"......o..eeeeeeeeee..o......";
-    map += L"......o..e...gg...e..o......";
-    map += L"......o..e.eeeeee.e..o......";
-    map += L"eeeeeeoeee.eeeeee.eeeoeeeeee";
-    map += L"......o..e.eeeeee.e..o......";
-    map += L"......o..e........e..o......";
-    map += L"......o..eeeeeeeeee..o......";
-    map += L"......o..e........e..o......";
-    map += L"......o..e........e..o......";
-    map += L".oooooooooooo..oooooooooooo.";
-    map += L".o....o.....o..o.....o....o.";
-    map += L".o....o.....o..o.....o....o.";
-    map += L".xoo..ooooooo..ooooooo..oox.";
-    map += L"...o..o..o........o..o..o...";
-    map += L"...o..o..o........o..o..o...";
-    map += L".oooooo..oooo..oooo..oooooo.";
-    map += L".o..........o..o..........o.";
-    map += L".o..........o..o..........o.";
-    map += L".oooooooooooooooooooooooooo.";
-    map += L"............................";*/
-
-    char map[31][29] =
-        {
-            "............................",
-            ".oooooooooooo..oooooooooooo.",
-            ".o....o.....o..o.....o....o.",
-            ".x....o.....o..o.....o....x.",
-            ".o....o.....o..o.....o....o.",
-            ".oooooooooooooooooooooooooo.",
-            ".o....o..o........o..o....o.",
-            ".o....o..o........o..o....o.",
-            ".oooooo..oooo..oooo..oooooo.",
-            "......o.....e..e.....o......",
-            "......o.....e..e.....o......",
-            "......o..eeeeeeeeee..o......",
-            "......o..e........e..o......",
-            "......o..e...ee...e..o......",
-            "eeeeeeoeee.eeeeee.eeeoeeeeee",
-            "......o..e........e..o......",
-            "......o..e........e..o......",
-            "......o..eeeeeeeeee..o......",
-            "......o..e........e..o......",
-            "......o..e........e..o......",
-            ".oooooooooooo..oooooooooooo.",
-            ".o....o.....o..o.....o....o.",
-            ".o....o.....o..o.....o....o.",
-            ".xoo..oooooooeeooooooo..oox.",
-            "...o..o..o........o..o..o...",
-            "...o..o..o........o..o..o...",
-            ".oooooo..oooo..oooo..oooooo.",
-            ".o..........o..o..........o.",
-            ".o..........o..o..........o.",
-            ".oooooooooooooooooooooooooo.",
-            "............................",
-        };
-
-    // --------------------------------------------------------------------------------------------
-    // --------------------------------------- MAP DEFINITION END ---------------------------------
-    // --------------------------------------------------------------------------------------------
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+    if (!Init())
         return 1;
-    }
 
-    std::unique_ptr<SDL_Window, SDLClear> window(SDL_CreateWindow("Pac-Man", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN));
+    font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
 
-    if (!window)
-    {
-        SDL_Log("Unable to initialize SDL Window\n");
-        return 1;
-    }
+    SDL_Color fontColor = {255, 255, 255, 0};
 
-    std::unique_ptr<SDL_Renderer, SDLClear> rend(SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_ACCELERATED));
+    SDL_Surface *tmp = IMG_Load("src/assets/Background.png");
+    background = SDL_CreateTextureFromSurface(rend, tmp);
+    SDL_Rect backgroundRec = {0, 3 * TILE_DIM, WINDOW_WIDTH, WINDOW_HEIGHT - 5 * TILE_DIM};
 
-    if (!rend)
-    {
-        SDL_Log("Unable to initialize SDL Renderer \n");
-        SDL_DestroyWindow(window.get());
-        return 1;
-    }
+    tmp = IMG_Load("src/assets/pac1.png");
+    pacman[0] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/pac2.png");
+    pacman[1] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/pac3.png");
+    pacman[2] = SDL_CreateTextureFromSurface(rend, tmp);
+    SDL_FreeSurface(tmp);
 
-    if (TTF_Init() != 0)
-    {
-        SDL_Log("Font could not be loaded.");
-        return 1;
-    }
+    pacMan = new Player();
 
-    SDL_SetRenderDrawBlendMode(rend.get(), SDL_BLENDMODE_NONE);
+    // (id, x, y, direction, speed, x and y scatter target, color) color will be removed with sprite addition
 
-    TTF_Font *font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
+    ghosts[0] = new Ghost(0, 14.0f, 14.0f, 0, 2, {25, -4}, {255, 0, 0, 0});    // Blinky
+    ghosts[1] = new Ghost(2, 14.0f, 14.0f, 0, 2, {27, 31}, {0, 255, 255, 0});  // Inky
+    ghosts[2] = new Ghost(3, 14.0f, 14.0f, 0, 2, {0, 31}, {255, 184, 82, 0});  // Clyde
+    ghosts[3] = new Ghost(1, 14.0f, 14.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
 
     Uint32 frameStart, frameTime;
 
-    SDL_Surface *tmp = IMG_Load("src/assets/background.png");
-    SDL_Texture *background = SDL_CreateTextureFromSurface(rend.get(), tmp);
-    SDL_FreeSurface(tmp);
-    SDL_Rect backgroundRec = {0, 3 * TILE_DIM, WINDOW_WIDTH, WINDOW_HEIGHT - 5 * TILE_DIM};
-
-    int timers[] = {7, 20, 7, 20, 5, 20, 5}; // Int array for measuring scatter and chase phases
-    float elapsed = timers[0];
-
-    float frightTime = 6000; // Time that ghosts stay frightened for after change of state in ms
-
-    float compTime = 0;
-
-    int index = 1;
-    bool phase = false; // true = scatter phase
+    bool blink = false, pink = false, ink = false, cly = false;
 
     bool quit = false;
     SDL_Event event;
 
-    Player *pacMan = new Player();
-
-    Ghost *ghosts[4] = {new Ghost(0, 13.0f, 11.0f, 1, 0.1f, {25, -4}, {255, 0, 0, 0}),     // Blinky
-                        new Ghost(2, 13.0f, 11.0f, 1, 0.1f, {27, 31}, {0, 255, 255, 0}),   // Inky
-                        new Ghost(3, 13.0f, 11.0f, 1, 0.1f, {0, 31}, {255, 184, 82, 0}),   // Clyde
-                        new Ghost(1, 13.0f, 11.0f, 1, 0.1f, {2, -4}, {255, 184, 255, 0})}; // Pinky
-
-    // ------------------------------------------------------------------------------------------
-    // ---------------------------- GAME LOOP ---------------------------------------------------
-    // ------------------------------------------------------------------------------------------
-
-    int temp = 1;
-
     while (!quit)
     {
+
         frameStart = SDL_GetTicks();
-        SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 255);
-        SDL_RenderClear(rend.get());
+        SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
+        SDL_RenderClear(rend);
 
-        SDL_RenderCopy(rend.get(), background, nullptr, &backgroundRec);
+        SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
 
-        // DrawGrid(rend.get());
+        // DrawGrid();
+
+        if (DrawDots() <= 0)
+            quit = true;
 
         while (SDL_PollEvent(&event))
         {
@@ -218,6 +150,7 @@ int main(int argc, char const *argv[])
                     pacMan->SetMoveDir(0);
                     break;
                 }
+
                 case SDLK_a:
                 {
                     pacMan->SetMoveDir(1);
@@ -236,6 +169,38 @@ int main(int argc, char const *argv[])
                     break;
                 }
 
+                case SDLK_1:
+                {
+                    blink = !blink;
+                    break;
+                }
+
+                case SDLK_2:
+                {
+                    ink = !ink;
+                    break;
+                }
+
+                case SDLK_3:
+                {
+                    pink = !pink;
+                    break;
+                }
+
+                case SDLK_4:
+                {
+                    cly = !cly;
+                    break;
+                }
+
+                case SDLK_SPACE:
+                {
+                    /*for (Ghost *ghost : ghosts)
+                        ghost->SetState(1);*/
+
+                    break;
+                }
+
                 default:
                     break;
                 }
@@ -248,72 +213,92 @@ int main(int argc, char const *argv[])
         }
 
         if (pacMan->Update(map) == 1)
-        {
             for (Ghost *ghost : ghosts)
-            {
-                ghost->SetState(2);
-                ghost->SetSpeed(0.05f);
-            }
-            elapsed += 6000;
-        }
+                if ((int(ghost->GetX()) > 17 || int(ghost->GetX()) < 10 || int(ghost->GetY()) > 16 || int(ghost->GetY()) < 12) && ghost->GetState() != 3)
+                    ghost->SetState(2);
+
+        Uint32 ticks = SDL_GetTicks();
 
         for (Ghost *ghost : ghosts)
-            ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY());
+            ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
-        DrawDots(rend.get(), map);
+        CheckCollisions(quit);
 
-        SDL_Rect player = {-5 + pacMan->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + pacMan->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
-        SDL_SetRenderDrawColor(rend.get(), 255, 255, 0, 255);
-        SDL_RenderFillRect(rend.get(), &player);
+        DrawGhosts();
+        // DrawGhostChaseTargets();
+        DrawPlayer();
 
-        for (Ghost *ghost : ghosts)
-            DrawGhost(rend.get(), ghost);
+        /*
+        std::cout << pacMan->GetX() << " | " << pacMan->GetY() << std::endl;
+        std::cout << ghosts[0]->GetX() << " | " << ghosts[0]->GetY() << std::endl;
+        std::cout << "State: " << ghosts[0]->GetState() << " | Direction: " << ghosts[0]->GetDirection() << std::endl;
+        std::cout << SDL_GetTicks() / 1000.0f << std::endl;
+        */
 
-        for (Ghost *ghost : ghosts)
-        {
-            SDL_Rect blink = {10 + ghost->GetChaseTile().first * TILE_DIM, 10 + 3 * TILE_DIM + ghost->GetChaseTile().second * TILE_DIM, 20, 20};
-            SDL_SetRenderDrawColor(rend.get(), ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
-            SDL_RenderFillRect(rend.get(), &blink);
-        }
+        blink ? std::cout << "X: " << ghosts[0]->GetX() << " | Y: " << ghosts[0]->GetY() << std::endl : std::cout << "";
+        ink ? std::cout << "X: " << ghosts[1]->GetX() << " | Y: " << ghosts[1]->GetY() << std::endl : std::cout << "";
+        pink ? std::cout << "X: " << ghosts[2]->GetX() << " | Y: " << ghosts[2]->GetY() << std::endl : std::cout << "";
+        cly ? std::cout << "X: " << ghosts[3]->GetX() << " | Y: " << ghosts[3]->GetY() << std::endl : std::cout << "";
 
-        SDL_SetRenderDrawColor(rend.get(), 0, 0, 0, 0);
-
-        SDL_RenderPresent(rend.get());
-
-        // std::cout << "[X, Y] = [" << pacMan->GetX() << ", " << pacMan->GetY() << "]" << std::endl;
-
-        if (((float)SDL_GetTicks() / 1000.0f) > elapsed && index < 7)
-        {
-
-            std::cout << ((float)SDL_GetTicks() / 1000.0f) << std::endl;
-
-            std::cout << (phase ? "Scatter" : "Chase") << std::endl;
-
-            elapsed = SDL_GetTicks() * 1000.0f + timers[index++];
-
-            for (Ghost *ghost : ghosts)
-                ghost->SetState((phase ? 0 : 1));
-            phase = !phase;
-        }
+        SDL_RenderPresent(rend);
 
         frameTime = SDL_GetTicks() - frameStart;
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
     }
 
-    // ------------------------------------------------------------------------------------------
-    // ---------------------------- END OF GAME LOOP --------------------------------------------
-    // ------------------------------------------------------------------------------------------
-
-    std::cout << "Game Over !\nYour score is: " << pacMan->GetScore() << std::endl;
-
-    SDL_DestroyTexture(background);
-    SDL_Quit();
+    Close();
 
     return 0;
 }
 
-void DrawGrid(SDL_Renderer *rend)
+bool Init()
+{
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
+        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+        return false;
+    }
+
+    window = SDL_CreateWindow("Player Movement", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+
+    if (!window)
+    {
+        SDL_Log("Unable to initialize SDL Window\n");
+        return false;
+    }
+
+    rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    if (!rend)
+    {
+        SDL_Log("Unable to initialize SDL Renderer \n");
+        SDL_DestroyWindow(window);
+        return false;
+    }
+
+    if (TTF_Init() != 0)
+    {
+        SDL_Log("Font could not be loaded.");
+        return 1;
+    }
+
+    SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_NONE);
+
+    return true;
+}
+
+void Close()
+{
+    TTF_CloseFont(font);
+    SDL_DestroyTexture(background);
+    SDL_DestroyRenderer(rend);
+    SDL_DestroyWindow(window);
+
+    SDL_Quit();
+}
+
+void DrawGrid()
 {
 
     SDL_SetRenderDrawColor(rend, 10, 115, 12, 0);
@@ -328,8 +313,10 @@ void DrawGrid(SDL_Renderer *rend)
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
 }
 
-void DrawDots(SDL_Renderer *rend, char map[31][29])
+int DrawDots()
 {
+
+    int dotCount = 0;
 
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
 
@@ -337,21 +324,62 @@ void DrawDots(SDL_Renderer *rend, char map[31][29])
         for (int j = 0; j < 28; j++)
             if (map[i][j] == 'o')
             {
+                dotCount++;
                 SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 2, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 2, 4, 4};
                 SDL_RenderFillRect(rend, &rect);
             }
             else if (map[i][j] == 'x')
             {
+                dotCount++;
                 SDL_Rect rect = {j * TILE_DIM + TILE_DIM / 2 - 6, 3 * TILE_DIM + i * TILE_DIM + TILE_DIM / 2 - 4, 12, 12};
                 SDL_RenderFillRect(rend, &rect);
             }
 
     SDL_SetRenderDrawColor(rend, 0, 0, 0, 0);
+
+    return dotCount;
 }
 
-void DrawGhost(SDL_Renderer *rend, Ghost *ghost)
+void DrawPlayer()
 {
-    SDL_Rect blink = {-5 + ghost->GetX() * TILE_DIM, -5 + 3 * TILE_DIM + ghost->GetY() * TILE_DIM, ENTITY_DIM, ENTITY_DIM};
-    SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
-    SDL_RenderFillRect(rend, &blink);
+    SDL_Rect tmp = {-5 + int(pacMan->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(pacMan->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+    SDL_SetRenderDrawColor(rend, 255, 255, 0, 255);
+
+    SDL_RenderCopyEx(rend, pacman[(int(pacMan->GetX() * 1.5f + pacMan->GetY() * 1.5f) % 3)], nullptr, &tmp, 90 - pacMan->GetDirection() * 90, nullptr, SDL_FLIP_NONE);
+}
+
+void DrawGhosts()
+{
+    for (Ghost *ghost : ghosts)
+    {
+        SDL_Rect tmp = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+        SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+        SDL_RenderFillRect(rend, &tmp);
+    }
+}
+
+void DrawGhostChaseTargets()
+{
+    for (Ghost *ghost : ghosts)
+    {
+        SDL_Rect tmp = {int(ghost->GetChaseTile().first * TILE_DIM), 3 * TILE_DIM + int(ghost->GetChaseTile().second * TILE_DIM), ENTITY_DIM / 2, ENTITY_DIM / 2};
+        SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+        SDL_RenderFillRect(rend, &tmp);
+    }
+}
+
+void CheckCollisions(bool &quit)
+{
+
+    for (int i = 0; i < 4; i++)
+    {
+
+        float x = ghosts[i]->GetX() - pacMan->GetX();
+        float y = ghosts[i]->GetY() - pacMan->GetY();
+
+        if (sqrt(x * x + y * y) <= 1.0f && ghosts[i]->GetState() == 2)
+            ghosts[i]->SetState(3);
+        else if (sqrt(x * x + y * y) <= 1.0f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
+            quit = true;
+    }
 }
