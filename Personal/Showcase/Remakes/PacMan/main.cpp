@@ -98,10 +98,10 @@ int main(int argc, char const *argv[])
 
     // (id, x, y, direction, speed, x and y scatter target, color) color will be removed with sprite addition
 
-    ghosts[0] = new Ghost(0, 14.0f, 13.0f, 0, 2, {25, -4}, {255, 0, 0, 0});    // Blinky
-    ghosts[1] = new Ghost(2, 14.0f, 13.0f, 0, 2, {27, 31}, {0, 255, 255, 0});  // Inky
-    ghosts[2] = new Ghost(3, 14.0f, 13.0f, 0, 2, {0, 31}, {255, 184, 82, 0});  // Clyde
-    ghosts[3] = new Ghost(1, 14.0f, 13.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
+    ghosts[0] = new Ghost(0, 14.0f, 14.0f, 0, 2, {25, -4}, {255, 0, 0, 0});    // Blinky
+    ghosts[1] = new Ghost(2, 14.0f, 14.0f, 0, 2, {27, 31}, {0, 255, 255, 0});  // Inky
+    ghosts[2] = new Ghost(3, 14.0f, 14.0f, 0, 2, {0, 31}, {255, 184, 82, 0});  // Clyde
+    ghosts[3] = new Ghost(1, 14.0f, 14.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
 
     Uint32 frameStart, frameTime;
 
@@ -206,14 +206,15 @@ int main(int argc, char const *argv[])
 
         if (pacMan->Update(map) == 1)
             for (Ghost *ghost : ghosts)
-                ghost->SetState(2);
+                if ((int(ghost->GetX()) > 17 || int(ghost->GetX()) < 10 || int(ghost->GetY()) > 16 || int(ghost->GetY()) < 12) && ghost->GetState() != 3)
+                    ghost->SetState(2);
 
         Uint32 ticks = SDL_GetTicks();
 
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
-        // CheckCollisions(quit);
+        CheckCollisions(quit);
 
         DrawGhosts();
         // DrawGhostChaseTargets();

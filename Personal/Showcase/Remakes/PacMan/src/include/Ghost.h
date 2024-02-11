@@ -26,7 +26,7 @@ private:
     float m_FrameMove;
 
     void ChangeDirection(char map[31][29]);
-    void SetNextDirection(char map[31][29]);
+    void SetNextDirection(uint32_t timer, char map[31][29]);
     void ChangeDirectionIfOnCrossroad(int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, char map[31][29]);
     void UpdateState(Uint32 ticks, char map[31][29]);
     void GetNextDirection(std::pair<int, int> &target, char map[31][29]);
@@ -56,7 +56,11 @@ public:
             m_NextDirection = m_Direction;
         }
         else if (state == 2)
+        {
             m_Speed = 1;
+            m_Direction = (m_Direction + 2) % 4;
+            m_NextDirection = m_Direction;
+        }
         else
             m_Speed = 4;
 
