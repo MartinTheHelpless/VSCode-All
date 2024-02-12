@@ -222,7 +222,7 @@ int main(int argc, char const *argv[])
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
-        CheckCollisions(quit);
+        // CheckCollisions(quit);
 
         DrawGhosts();
         // DrawGhostChaseTargets();

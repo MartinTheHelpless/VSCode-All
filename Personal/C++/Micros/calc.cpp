@@ -29,14 +29,14 @@ int main()
 
             std::cout << "Choose two numbers to perform the operation with: " << std::endl;
 
-            std::cin >> ifRes;
+            std::cin >> *(ifRes);
 
             if (std::strstr(ifRes, "res") != NULL)
                 a = result;
             else
                 a = atoi(ifRes);
 
-            std::cin >> ifRes;
+            std::cin >> *(ifRes);
 
             if (std::strstr(ifRes, "res") != NULL)
                 b = result;

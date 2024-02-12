@@ -1,13 +1,13 @@
 {
   "configurations": [
     {
-      "name": "Linux",
+      "name": "MinGW",
       "includePath": ["${workspaceFolder}/**"],
       "defines": [],
-      "cStandard": "c17",
-      "cppStandard": "gnu++17",
-      "intelliSenseMode": "linux-gcc-x64",
-      "compilerPath": "/usr/bin/g++-12"
+      "compilerPath": "C:\\Program Files\\mingw64\\bin\\g++.exe",
+      "cStandard": "c11",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "gcc-x64"
     }
   ],
   "version": 4

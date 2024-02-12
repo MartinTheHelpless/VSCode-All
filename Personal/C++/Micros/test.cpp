@@ -1,49 +1,18 @@
 #include <iostream>
-#include <vector>
-#include <cmath>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-#include <time.h>
-#include <chrono>
 
-void rotateMatrix90(int mat[3][3])
+int main(int argc, char const *argv[])
 {
-    int rotatedMat[3][3];
-
-    // Calculate the rotated matrix
-    for (int i = 0; i < 3; ++i)
-        for (int j = 0; j < 3; ++j)
-            rotatedMat[j][2 - i] = mat[i][j];
-}
-
-void displayMatrix(int mat[3][3])
-{
-    // Display the matrix
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 3; ++j)
-        {
-            std::cout << mat[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-int main()
-{
-    int matrix[3][3] = {{0, 0, 0},
-                        {1, 1, 1},
-                        {0, 0, 0}};
-
-    std::cout << "Original Matrix:\n";
-    displayMatrix(matrix);
-
-    // Rotate the matrix by 90 degrees clockwise using an auxiliary matrix
-    rotateMatrix90(matrix);
-
-    std::cout << "\nRotated Matrix (90 degrees clockwise):\n";
-    displayMatrix(matrix);
-
+    if (__cplusplus == 202002L)
+        std::cout << "C++20" << std::endl;
+    else if (__cplusplus == 201703L)
+        std::cout << "C++17" << std::endl;
+    else if (__cplusplus == 201402L)
+        std::cout << "C++14" << std::endl;
+    else if (__cplusplus == 201103)
+        std::cout << "C++11" << std::endl;
+    else if (__cplusplus == 199711L)
+        std::cout << "C++98" << std::endl;
+    else
+        std::cout << "Pre-standard C++" << std::endl;
     return 0;
 }
