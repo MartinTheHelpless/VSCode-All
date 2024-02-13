@@ -41,8 +41,8 @@ void Ghost::ChangeDirectionIfOnCrossroad(int pacManX, int pacManY, int pacManDir
         {
             m_X -= m_FrameMove;
 
-            if (m_Y > 14.0f && m_Y < 14.3f && m_X < -0.5f)
-                m_X = 27.0f;
+            if (m_Y > 14.0f && m_Y < 14.3f && m_X < -1.0f)
+                m_X = 27.5f;
 
             m_ChaseTarget = GetChaseTile(m_ID, pacManX, pacManY, pacManDir, blinkyX, blinkyY);
         }
@@ -64,8 +64,8 @@ void Ghost::ChangeDirectionIfOnCrossroad(int pacManX, int pacManY, int pacManDir
         {
             m_X += m_FrameMove;
 
-            if (m_Y > 14.0f && m_Y < 14.3f && m_X > 27.0f)
-                m_X = -0.5f;
+            if (m_Y > 14.0f && m_Y < 14.3f && m_X > 27.5f)
+                m_X = -1.0f;
 
             m_ChaseTarget = GetChaseTile(m_ID, pacManX, pacManY, pacManDir, blinkyX, blinkyY);
         }

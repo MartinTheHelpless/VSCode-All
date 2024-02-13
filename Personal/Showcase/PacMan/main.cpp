@@ -253,10 +253,10 @@ int main(int argc, char const *argv[])
 
         /*
         std::cout << pacMan->GetX() << " | " << pacMan->GetY() << std::endl;
-        std::cout << ghosts[0]->GetX() << " | " << ghosts[0]->GetY() << std::endl;
-        std::cout << "State: " << ghosts[0]->GetState() << " | Direction: " << ghosts[0]->GetDirection() << std::endl;
-        std::cout << SDL_GetTicks() / 1000.0f << std::endl;
-        */
+         std::cout << ghosts[0]->GetX() << " | " << ghosts[0]->GetY() << std::endl;
+         std::cout << "State: " << ghosts[0]->GetState() << " | Direction: " << ghosts[0]->GetDirection() << std::endl;
+         std::cout << SDL_GetTicks() / 1000.0f << std::endl;
+         */
 
         blink ? std::cout << "X: " << ghosts[0]->GetX() << " | Y: " << ghosts[0]->GetY() << std::endl : std::cout << "";
         ink ? std::cout << "X: " << ghosts[1]->GetX() << " | Y: " << ghosts[1]->GetY() << std::endl : std::cout << "";
@@ -453,9 +453,9 @@ void CheckCollisions(bool &quit)
         float x = ghosts[i]->GetX() - pacMan->GetX();
         float y = ghosts[i]->GetY() - pacMan->GetY();
 
-        if (sqrt(x * x + y * y) <= 1.0f && ghosts[i]->GetState() == 2)
+        if (sqrt(x * x + y * y) <= 1.2f && ghosts[i]->GetState() == 2)
             ghosts[i]->SetState(3);
-        else if (sqrt(x * x + y * y) <= 1.0f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
+        else if (sqrt(x * x + y * y) <= 1.2f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
             quit = true;
     }
 }
