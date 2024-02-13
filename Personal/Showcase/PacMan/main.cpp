@@ -21,6 +21,8 @@ TTF_Font *font;
 Ghost *ghosts[4];
 Player *pacMan;
 
+SDL_Texture *ghostSprites[6]; // 4 Ghosts, eaten scared sprites
+
 // --------------------------------------------------------------------------------------------
 // -------------------------------------- MAP DEFINITION START --------------------------------
 // --------------------------------------------------------------------------------------------
@@ -74,7 +76,7 @@ int DrawDots();
 
 void DrawPlayer();
 
-void DrawGhosts();
+void DrawGhosts(bool moveState);
 
 void DrawGhostChaseTargets();
 
@@ -100,6 +102,19 @@ int main(int argc, char const *argv[])
     pacman[1] = SDL_CreateTextureFromSurface(rend, tmp);
     tmp = IMG_Load("src/assets/pac3.png");
     pacman[2] = SDL_CreateTextureFromSurface(rend, tmp);
+
+    tmp = IMG_Load("src/assets/GhostSprites/Blinky.png");
+    ghostSprites[0] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/GhostSprites/Pinky.png");
+    ghostSprites[1] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/GhostSprites/Inky.png");
+    ghostSprites[2] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/GhostSprites/Clyde.png");
+    ghostSprites[3] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/GhostSprites/Eaten.png");
+    ghostSprites[4] = SDL_CreateTextureFromSurface(rend, tmp);
+    tmp = IMG_Load("src/assets/GhostSprites/Scared.png");
+    ghostSprites[5] = SDL_CreateTextureFromSurface(rend, tmp);
     SDL_FreeSurface(tmp);
 
     pacMan = new Player();
@@ -111,7 +126,9 @@ int main(int argc, char const *argv[])
     ghosts[2] = new Ghost(3, 14.0f, 14.0f, 0, 2, {0, 31}, {255, 184, 82, 0});  // Clyde
     ghosts[3] = new Ghost(1, 14.0f, 14.0f, 0, 2, {2, -4}, {255, 184, 255, 0}); // Pinky
 
-    Uint32 frameStart, frameTime;
+    Uint32 frameStart, frameTime, lastState = 0;
+
+    bool movementState = false;
 
     bool blink = false, pink = false, ink = false, cly = false;
 
@@ -131,6 +148,12 @@ int main(int argc, char const *argv[])
 
         if (DrawDots() <= 0)
             quit = true;
+
+        if (lastState + 250 <= frameStart)
+        {
+            movementState = !movementState;
+            lastState = frameStart;
+        }
 
         while (SDL_PollEvent(&event))
         {
@@ -222,9 +245,9 @@ int main(int argc, char const *argv[])
         for (Ghost *ghost : ghosts)
             ghost->Update(map, pacMan->GetX(), pacMan->GetY(), pacMan->GetDirection(), ghosts[0]->GetX(), ghosts[0]->GetY(), ticks);
 
-        // CheckCollisions(quit);
+        CheckCollisions(quit);
 
-        DrawGhosts();
+        DrawGhosts(movementState);
         // DrawGhostChaseTargets();
         DrawPlayer();
 
@@ -348,14 +371,67 @@ void DrawPlayer()
     SDL_RenderCopyEx(rend, pacman[(int(pacMan->GetX() * 1.5f + pacMan->GetY() * 1.5f) % 3)], nullptr, &tmp, 90 - pacMan->GetDirection() * 90, nullptr, SDL_FLIP_NONE);
 }
 
-void DrawGhosts()
+void DrawGhosts(bool moveState)
 {
+
     for (Ghost *ghost : ghosts)
     {
-        SDL_Rect tmp = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
-        SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
-        SDL_RenderFillRect(rend, &tmp);
+
+        switch (ghost->GetState())
+        {
+        case 0:
+        {
+            SDL_Rect src = {0, 50 * (3 - ghost->GetDirection()) * 2 + (moveState ? 50 : 0), 50, 50};
+            SDL_Rect dst = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+
+            SDL_RenderCopyEx(rend, ghostSprites[ghost->GetId()], &src, &dst, 0, nullptr, SDL_FLIP_NONE);
+
+            break;
+        }
+
+        case 1:
+        {
+            SDL_Rect src = {0, 50 * (3 - ghost->GetDirection()) * 2 + (moveState ? 50 : 0), 50, 50};
+            SDL_Rect dst = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+
+            SDL_RenderCopyEx(rend, ghostSprites[ghost->GetId()], &src, &dst, 0, nullptr, SDL_FLIP_NONE);
+
+            break;
+        }
+
+        case 2:
+        {
+            SDL_Rect src = {0, (moveState ? 50 : 0), 50, 50};
+            SDL_Rect dst = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+
+            SDL_RenderCopyEx(rend, ghostSprites[5], &src, &dst, 0, nullptr, SDL_FLIP_NONE);
+
+            break;
+        }
+
+        case 3:
+        {
+            SDL_Rect src = {0, 50 * (3 - ghost->GetDirection()) * 2, 50, 50};
+            SDL_Rect dst = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+
+            SDL_RenderCopyEx(rend, ghostSprites[4], &src, &dst, 0, nullptr, SDL_FLIP_NONE);
+
+            break;
+        }
+
+        default:
+            break;
+        }
     }
+
+    /*
+        for (Ghost *ghost : ghosts)
+        {
+            SDL_Rect tmp = {-5 + int(ghost->GetX() * TILE_DIM), -5 + 3 * TILE_DIM + int(ghost->GetY() * TILE_DIM), ENTITY_DIM, ENTITY_DIM};
+            SDL_SetRenderDrawColor(rend, ghost->GetColor().r, ghost->GetColor().g, ghost->GetColor().b, ghost->GetColor().a);
+            SDL_RenderFillRect(rend, &tmp);
+        }
+    */
 }
 
 void DrawGhostChaseTargets()

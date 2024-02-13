@@ -52,14 +52,12 @@ public:
         if (state == 0 || state == 1)
         {
             m_Speed = 2;
-            m_Direction = (m_Direction + 2) % 4;
-            m_NextDirection = m_Direction;
+            m_NextDirection = (m_Direction + 2) % 4;
         }
         else if (state == 2)
         {
             m_Speed = 1;
-            m_Direction = (m_Direction + 2) % 4;
-            m_NextDirection = m_Direction;
+            m_NextDirection = (m_Direction + 2) % 4;
         }
         else
             m_Speed = 4;
@@ -67,6 +65,7 @@ public:
         m_State = state;
     }
 
+    int GetId() { return m_ID; }
     int GetState() { return m_State; }
     int GetDirection() { return m_Direction; }
 
