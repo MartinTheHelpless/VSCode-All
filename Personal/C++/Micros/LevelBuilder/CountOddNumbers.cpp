@@ -46,7 +46,7 @@ int CountOddNumbersInRange5(std::vector<int> &vec, const std::function<int(int)>
 
 template <typename Func>
 
-void MeasureFunction(std::vector<int> &vec, Func func, const std::function<int(int)> &lambda)
+void MeasureAverageFunctionRuntime(std::vector<int> &vec, Func func, const std::function<int(int)> &lambda)
 {
     auto start_time = std::chrono::steady_clock::now();
 
@@ -56,23 +56,23 @@ void MeasureFunction(std::vector<int> &vec, Func func, const std::function<int(i
     auto end_time = std::chrono::steady_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end_time - start_time);
 
-    std::cout << "Execution time: " << duration.count() / 1000000 << " nanoseconds" << std::endl;
+    std::cout << "Execution time per one function call: " << duration.count() / 1000000 << " nanoseconds" << std::endl;
 }
 
 int main(int argc, char const *argv[])
 {
 
     std::vector<int> vec = {12, 4, 5, 6, 9, 7, 12, 654, 61, 6, 16, 464, 68,
-                            6, 4, 624, 64, 165, 4, 97, 9, 9, 11, 65};
+                            6, 4, 624, 64, 165, 4, 97, 9, 9, 11, 65, 13, 21};
 
     auto lambda = [](int value)
     { return value % 2 == 0; };
 
-    MeasureFunction(vec, CountOddNumbersInRange1, lambda);
-    MeasureFunction(vec, CountOddNumbersInRange2, lambda);
-    MeasureFunction(vec, CountOddNumbersInRange3, lambda);
-    MeasureFunction(vec, CountOddNumbersInRange4, lambda);
-    MeasureFunction(vec, CountOddNumbersInRange5, lambda);
+    MeasureAverageFunctionRuntime(vec, CountOddNumbersInRange1, lambda);
+    MeasureAverageFunctionRuntime(vec, CountOddNumbersInRange2, lambda);
+    MeasureAverageFunctionRuntime(vec, CountOddNumbersInRange3, lambda);
+    MeasureAverageFunctionRuntime(vec, CountOddNumbersInRange4, lambda);
+    MeasureAverageFunctionRuntime(vec, CountOddNumbersInRange5, lambda);
 
     return 0;
 }
