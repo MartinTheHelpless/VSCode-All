@@ -96,11 +96,11 @@ void Fibonacci2(int n, int k)
 int main(int argc, char const *argv[])
 {
 
-    // MeasureAverageFunctionRuntime(Fibonacci1, 3, 5);
-    // MeasureAverageFunctionRuntime(Fibonacci2, 3, 5);
+    MeasureAverageFunctionRuntime(Fibonacci1, 3, 5);
+    MeasureAverageFunctionRuntime(Fibonacci2, 3, 5);
 
-    Fibonacci1(47, 1);
-    Fibonacci2(47, 1);
+    // Fibonacci1(47, 1);
+    // Fibonacci2(47, 1);
 
     return 0;
 }

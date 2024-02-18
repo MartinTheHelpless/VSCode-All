@@ -258,10 +258,10 @@ int main(int argc, char const *argv[])
          std::cout << SDL_GetTicks() / 1000.0f << std::endl;
          */
 
-        blink ? std::cout << "X: " << ghosts[0]->GetX() << " | Y: " << ghosts[0]->GetY() << std::endl : std::cout << "";
-        ink ? std::cout << "X: " << ghosts[1]->GetX() << " | Y: " << ghosts[1]->GetY() << std::endl : std::cout << "";
-        pink ? std::cout << "X: " << ghosts[2]->GetX() << " | Y: " << ghosts[2]->GetY() << std::endl : std::cout << "";
-        cly ? std::cout << "X: " << ghosts[3]->GetX() << " | Y: " << ghosts[3]->GetY() << std::endl : std::cout << "";
+        // blink ? std::cout << "X: " << ghosts[0]->GetX() << " | Y: " << ghosts[0]->GetY() << std::endl : std::cout << "";
+        // ink ? std::cout << "X: " << ghosts[1]->GetX() << " | Y: " << ghosts[1]->GetY() << std::endl : std::cout << "";
+        // pink ? std::cout << "X: " << ghosts[2]->GetX() << " | Y: " << ghosts[2]->GetY() << std::endl : std::cout << "";
+        // cly ? std::cout << "X: " << ghosts[3]->GetX() << " | Y: " << ghosts[3]->GetY() << std::endl : std::cout << "";
 
         SDL_RenderPresent(rend);
 
