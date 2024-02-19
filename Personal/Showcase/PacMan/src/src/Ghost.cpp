@@ -6,6 +6,18 @@ Ghost::Ghost(int id, float x, float y, int direction, float speed, std::pair<int
     : m_ID(id), m_Speed(speed), m_X(x), m_Y(y), m_ScatterTarget(scatter), m_Color(color), m_FrameMove(0.05f),
       m_Direction(direction), m_NextDirection(direction), m_State(3), m_ScaredStartTicks(0) {}
 
+void Ghost::Reset(int x, int y, int direction, float speed)
+{
+    m_Speed = speed;
+    m_X = x;
+    m_Y = y;
+    m_FrameMove = 0.05f;
+    m_Direction = direction;
+    m_NextDirection = direction;
+    m_State = 3;
+    m_ScaredStartTicks = 0;
+}
+
 void Ghost::Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, uint32_t ticks)
 {
 

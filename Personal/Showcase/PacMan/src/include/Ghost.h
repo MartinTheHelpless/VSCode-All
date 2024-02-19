@@ -39,6 +39,7 @@ private:
 public:
     Ghost(int id, float x, float y, int direction, float speed, std::pair<int, int> scatter, SDL_Color color);
 
+    void Reset(int x, int y, int direction, float speed);
     void Update(char map[31][29], int pacManX, int pacManY, int pacManDir, int blinkyX, int blinkyY, Uint32 ticks);
 
     void SetColor(SDL_Color color) { m_Color = color; }

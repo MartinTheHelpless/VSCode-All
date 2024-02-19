@@ -1,4 +1,5 @@
 #include "../include/Player.h"
+#include "Player.h"
 
 Player::Player()
     : m_X(13.5f), m_Y(23), m_Speed(0.1f), m_State(0), m_Health(3),
@@ -135,4 +136,14 @@ int Player::Update(char map[31][29])
     }
 
     return 0;
+}
+void Player::Reset()
+{
+    m_X = 13.5f;
+    m_Y = 23;
+    m_Speed = 0.1f;
+    m_State = 0;
+    m_Score = 0;
+    m_Direction = 0;
+    m_NextDirection = 0;
 }

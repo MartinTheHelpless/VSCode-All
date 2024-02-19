@@ -53,8 +53,8 @@ namespace strutils
         return true;
     }
 
-    size_t validate_utf8(size_t &input, int &result)
+    bool validate_utf8(std::vector<uint8_t> input, size_t &result)
     {
-        return size_t();
+        return false;
     }
 }

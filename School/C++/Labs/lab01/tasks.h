@@ -2,6 +2,7 @@
 #include <iostream>
 #include <utility>
 #include <stdio.h>
+#include <vector>
 
 namespace math
 {
@@ -14,5 +15,5 @@ namespace strutils
 
     bool parse_uint(std::string input, int &result);
 
-    size_t validate_utf8(size_t &input, int &result);
+    bool validate_utf8(std::vector<size_t> input, size_t &result);
 }

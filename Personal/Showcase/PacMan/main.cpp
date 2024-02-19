@@ -447,6 +447,8 @@ void DrawGhostChaseTargets()
 void CheckCollisions(bool &quit)
 {
 
+    int startHealth = pacMan->GetHealth();
+
     for (int i = 0; i < 4; i++)
     {
 
@@ -456,6 +458,21 @@ void CheckCollisions(bool &quit)
         if (sqrt(x * x + y * y) <= 1.2f && ghosts[i]->GetState() == 2)
             ghosts[i]->SetState(3);
         else if (sqrt(x * x + y * y) <= 1.2f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
-            quit = true;
+        {
+            pacMan->SetHealth(pacMan->GetHealth() - 1);
+            break;
+        }
+    }
+
+    std::cout << pacMan->GetHealth() << std::endl;
+
+    if (pacMan->GetHealth() <= 0)
+        quit = true;
+    else if (pacMan->GetHealth() != startHealth)
+    {
+        pacMan->Reset();
+
+        for (Ghost *ghost : ghosts)
+            ghost->Reset(14.0f, 14.0f, 0, 2);
     }
 }

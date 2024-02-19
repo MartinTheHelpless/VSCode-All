@@ -20,11 +20,14 @@ public:
     ~Player();
 
     int Update(char map[31][29]);
+    void Reset();
     void SetMoveDir(int dir) { m_NextDirection = dir; }
+    void SetHealth(int health) { m_Health = health; }
 
     float GetX() { return m_X; }
     float GetY() { return m_Y; }
 
     int GetScore() { return m_Score; }
     int GetDirection() { return m_Direction; }
+    int GetHealth() { return m_Health; }
 };
