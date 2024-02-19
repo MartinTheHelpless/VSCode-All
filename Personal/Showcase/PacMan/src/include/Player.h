@@ -21,8 +21,9 @@ public:
 
     int Update(char map[31][29]);
     void Reset();
-    void SetMoveDir(int dir) { m_NextDirection = dir; }
+    void SetScore(int score) { m_Score = score; }
     void SetHealth(int health) { m_Health = health; }
+    void SetMoveDir(int dir) { m_NextDirection = dir; }
 
     float GetX() { return m_X; }
     float GetY() { return m_Y; }

@@ -82,6 +82,8 @@ void DrawGhostChaseTargets();
 
 void CheckCollisions(bool &quit);
 
+void DrawPacLives(SDL_Renderer *rend, SDL_Texture *texture);
+
 int main(int argc, char const *argv[])
 {
 
@@ -115,6 +117,10 @@ int main(int argc, char const *argv[])
     ghostSprites[4] = SDL_CreateTextureFromSurface(rend, tmp);
     tmp = IMG_Load("src/assets/GhostSprites/Scared.png");
     ghostSprites[5] = SDL_CreateTextureFromSurface(rend, tmp);
+
+    tmp = IMG_Load("src/assets/Cherry.png");
+    SDL_Texture *cherry = SDL_CreateTextureFromSurface(rend, tmp);
+
     SDL_FreeSurface(tmp);
 
     pacMan = new Player();
@@ -135,6 +141,14 @@ int main(int argc, char const *argv[])
     bool quit = false;
     SDL_Event event;
 
+    SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, "Score", fontColor);
+    SDL_Rect scoreText = {WINDOW_WIDTH / 2 - 80 / 2, 5, 80, 20};
+    SDL_Texture *Message = SDL_CreateTextureFromSurface(rend, surfaceMessage);
+
+    SDL_Texture *ScoreInt;
+    SDL_Surface *ScoreMess;
+    SDL_Rect scoreRect = {WINDOW_WIDTH / 2 - 40 / 2, 30, 40, 20};
+
     while (!quit)
     {
 
@@ -144,16 +158,19 @@ int main(int argc, char const *argv[])
 
         SDL_RenderCopy(rend, background, nullptr, &backgroundRec);
 
+        SDL_RenderCopy(rend, Message, NULL, &scoreText);
+
+        ScoreMess = TTF_RenderText_Solid(font, std::to_string(pacMan->GetScore()).c_str(), fontColor);
+        ScoreInt = SDL_CreateTextureFromSurface(rend, ScoreMess);
+        SDL_RenderCopy(rend, ScoreInt, NULL, &scoreRect);
+
         // DrawGrid();
 
         if (DrawDots() <= 0)
             quit = true;
 
         if (lastState + 250 <= frameStart)
-        {
-            movementState = !movementState;
-            lastState = frameStart;
-        }
+            movementState = !movementState, lastState = frameStart;
 
         while (SDL_PollEvent(&event))
         {
@@ -250,6 +267,7 @@ int main(int argc, char const *argv[])
         DrawGhosts(movementState);
         // DrawGhostChaseTargets();
         DrawPlayer();
+        DrawPacLives(rend, pacman[1]);
 
         /*
         std::cout << pacMan->GetX() << " | " << pacMan->GetY() << std::endl;
@@ -269,6 +287,8 @@ int main(int argc, char const *argv[])
         if (frameTime < FRAME_DELAY)
             SDL_Delay(FRAME_DELAY - frameTime);
     }
+
+    std::cout << "Game Over. Your score is: " << pacMan->GetScore() << std::endl;
 
     Close();
 
@@ -456,15 +476,16 @@ void CheckCollisions(bool &quit)
         float y = ghosts[i]->GetY() - pacMan->GetY();
 
         if (sqrt(x * x + y * y) <= 1.2f && ghosts[i]->GetState() == 2)
+        {
             ghosts[i]->SetState(3);
+            pacMan->SetScore(pacMan->GetScore() + 200);
+        }
         else if (sqrt(x * x + y * y) <= 1.2f && (ghosts[i]->GetState() == 1 || ghosts[i]->GetState() == 0))
         {
             pacMan->SetHealth(pacMan->GetHealth() - 1);
             break;
         }
     }
-
-    std::cout << pacMan->GetHealth() << std::endl;
 
     if (pacMan->GetHealth() <= 0)
         quit = true;
@@ -474,5 +495,20 @@ void CheckCollisions(bool &quit)
 
         for (Ghost *ghost : ghosts)
             ghost->Reset(14.0f, 14.0f, 0, 2);
+    }
+}
+
+void DrawPacLives(SDL_Renderer *rend, SDL_Texture *texture)
+{
+
+    int xPadding = 0;
+
+    for (int i = 0; i < pacMan->GetHealth(); i++)
+    {
+
+        SDL_Rect tmp = {15 + xPadding, WINDOW_HEIGHT - 35, 30, 30};
+
+        SDL_RenderCopy(rend, texture, nullptr, &tmp);
+        xPadding += 45;
     }
 }

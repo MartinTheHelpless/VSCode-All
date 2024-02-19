@@ -54,7 +54,7 @@ int Player::Update(char map[31][29])
             }
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
-                m_Score += 10;
+                m_Score += 35;
                 map[(int)m_Y][(int)m_X] = 'e';
             }
         }
@@ -75,7 +75,7 @@ int Player::Update(char map[31][29])
 
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
-                m_Score += 10;
+                m_Score += 35;
                 map[(int)m_Y][(int)m_X] = 'e';
             }
 
@@ -100,7 +100,7 @@ int Player::Update(char map[31][29])
 
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_Y) % 10 <= 1.1f)
             {
-                m_Score += 10;
+                m_Score += 35;
                 map[(int)m_Y][(int)m_X] = 'e';
             }
         }
@@ -121,7 +121,7 @@ int Player::Update(char map[31][29])
 
             else if (map[int(m_Y)][int(m_X)] == 'o' && int(10 * m_X) % 10 <= 1.1f)
             {
-                m_Score += 10;
+                m_Score += 35;
                 map[(int)m_Y][(int)m_X] = 'e';
             }
 
@@ -143,7 +143,6 @@ void Player::Reset()
     m_Y = 23;
     m_Speed = 0.1f;
     m_State = 0;
-    m_Score = 0;
     m_Direction = 0;
     m_NextDirection = 0;
 }
