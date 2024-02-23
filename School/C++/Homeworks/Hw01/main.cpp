@@ -1,22 +1,29 @@
 #include "tasks.h"
 #include <iostream>
 
-int main(int argc, char const *argv[])
+std::string camel_to_snake(std::string input)
 {
 
-    int res;
+    std::string result = "";
 
-    std::cout << math::fibonacci(4) << std::endl;
+    for (int i = 0; i < input.length(); i++)
+    {
+        if (isupper(input[i]) && i != 0)
+            result += '_', result += tolower(input[i]);
+        else if (isupper(input[i]) && i == 0)
+            result += tolower(input[i]);
+        else
+            result += input[i];
+    }
 
-    if (strutils::parse_uint("65158", res))
-        std::cout << res << std::endl;
+    return result;
+}
 
-    std::cout << strutils::camel_to_snake("helloWorld") << std::endl;
+int main(int argc, char const *argv[])
+{
+    std::string tmp = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-    size_t result;
-
-    if (strutils::validate_utf8({0b11000011, 0b10001101, 0b00001001}, result))
-        std::cout << result << std::endl;
+    std::cout << camel_to_snake(tmp) << std::endl;
 
     return 0;
 }

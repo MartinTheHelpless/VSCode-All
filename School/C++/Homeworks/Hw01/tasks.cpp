@@ -27,8 +27,10 @@ namespace strutils
 
         for (int i = 0; i < input.length(); i++)
         {
-            if (isupper(input[i]))
+            if (isupper(input[i]) && i != 0)
                 result += '_', result += tolower(input[i]);
+            else if (isupper(input[i]) && i == 0)
+                result += tolower(input[i]);
             else
                 result += input[i];
         }
@@ -36,25 +38,35 @@ namespace strutils
         return result;
     }
 
-    bool parse_uint(std::string input, int &result)
+    bool parse_uint(std::string input, uint32_t &result)
     {
+        if (input.empty())
+            return false;
 
-        int position = 1;
+        uint32_t tmpRes = 0;
 
-        for (int i = input.length() - 1; i >= 0; i--)
+        const uint32_t max_uint32 = std::numeric_limits<uint32_t>::max();
+
+        for (char c : input)
         {
-            if (int(input[i]) > 57 || input[i] < 48)
+            if (!std::isdigit(c))
                 return false;
 
-            result += (int(input[i]) - 48) * position;
-            position *= 10;
+            uint32_t digit = c - '0';
+
+            if (tmpRes > max_uint32 / 10 || (tmpRes == max_uint32 / 10 && digit > max_uint32 % 10))
+                return false;
+
+            tmpRes = tmpRes * 10 + digit;
         }
+
+        result = tmpRes;
 
         return true;
     }
 
     bool validate_utf8(std::vector<uint8_t> input, size_t &result)
     {
-        return false;
+        return true;
     }
 }
