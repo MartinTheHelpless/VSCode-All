@@ -16,5 +16,5 @@ namespace strutils
 
     bool parse_uint(std::string input, uint32_t &result);
 
-    bool validate_utf8(std::vector<uint8_t> input, size_t &result);
+    bool validate_utf8(std::vector<uint8_t> &input, size_t &result);
 }
