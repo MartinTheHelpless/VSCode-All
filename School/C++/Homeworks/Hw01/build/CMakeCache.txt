@@ -216,7 +216,7 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Do not use Address sanitizer
-DISABLE_ASAN:BOOL=OFF
+DISABLE_ASAN:BOOL=ON
 
 //Value Computed by CMake
 tasks01_BINARY_DIR:STATIC=/home/buri/Documents/Programming/VSCode/VSCode-All/School/C++/Homeworks/Hw01/build
