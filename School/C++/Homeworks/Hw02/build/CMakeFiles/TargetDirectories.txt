@@ -1,0 +1,4 @@
+C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw02/build/CMakeFiles/tasks.dir
+C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw02/build/CMakeFiles/tests.dir
+C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw02/build/CMakeFiles/edit_cache.dir
+C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw02/build/CMakeFiles/rebuild_cache.dir
