@@ -1,39 +1,35 @@
-def fizzbuzz(num):
-    """
-    Return 'Fizz' if `num` is divisible by 3, 'Buzz' if `num` is divisible by 5, 'FizzBuzz' if `num` is divisible both by 3 and 5.
-    If `num` isn't divisible neither by 3 nor by 5, return `num`.
-    Example:
-        fizzbuzz(3) # Fizz
-        fizzbuzz(5) # Buzz
-        fizzbuzz(15) # FizzBuzz
-        fizzbuzz(8) # 8
-    """
-    pass
+def fizzbuzz(num): 
+    if(num % 3 == 0 and num % 5 == 0):
+        return "FizzBuzz"
+    elif(num % 5 == 0):
+        return "Buzz"
+    elif(num % 3 == 0):
+        return "Fizz"
+    
+    return num
+ 
+def fibonacci(n): 
+
+    a = 0
+    b = 1
+
+    for i in range(0,n):
+        tmp = a + b
+        a = b 
+        b = tmp
+
+    return a
 
 
-def fibonacci(n):
-    """
-    Return the `n`-th Fibonacci number (counting from 0).
-    Example:
-        fibonacci(0) == 0
-        fibonacci(1) == 1
-        fibonacci(2) == 1
-        fibonacci(3) == 2
-        fibonacci(4) == 3
-    """
-    pass
 
+def dot_product(a, b): 
 
-def dot_product(a, b):
-    """
-    Calculate the dot product of `a` and `b`.
-    Assume that `a` and `b` have same length.
-    Hint:
-        lookup `zip` function
-    Example:
-        dot_product([1, 2, 3], [0, 3, 4]) == 1*0 + 2*3 + 3*4 == 18
-    """
-    pass
+    res = 0;
+
+    for i in range(len(a)):
+        res += a[i] * b[i]
+    return res
+
 
 
 def redact(data, chars):
@@ -44,7 +40,18 @@ def redact(data, chars):
         redact("Hello world!", "lo")        # Hexxx wxrxd!
         redact("Secret message", "mse")     # Sxcrxt xxxxagx
     """
-    pass
+     
+    string = data 
+    tmp = ""
+
+    for i in range(len(data)):
+        if(chars.find(data[i]) != -1):    
+            tmp += "x"
+        else:
+            tmp += data[i]
+
+    return tmp
+
 
 
 def count_words(data):
@@ -67,8 +74,20 @@ def count_words(data):
             'what': 1
         }
     """
-    pass
+    
 
+    words = data.split(" ")
+
+    wordMap = {}
+
+    for word in words:
+        if word in wordMap: 
+            wordMap[word] = wordMap[word] + 1
+        else:
+            wordMap.update({word: 1})
+
+    return wordMap
+ 
 
 def bonus_fizzbuzz(num):
     """
@@ -86,3 +105,5 @@ def bonus_utf8(cp):
         bonus_utf8(0x1F601) == [0xF0, 0x9F, 0x98, 0x81]
     """
     pass
+
+ 
