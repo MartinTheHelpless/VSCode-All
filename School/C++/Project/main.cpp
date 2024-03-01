@@ -224,13 +224,13 @@ bool Init()
     SDL_Surface *tmp_Surface = TTF_RenderText_Blended(font, "DFS Alg.", white);
     ButtonTexts[0] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Dijkstra", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "BFS Alg.", white);
     ButtonTexts[1] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "A* Alg.", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "Dijkstra", white);
     ButtonTexts[2] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Custom", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "A* Alg.", white);
     ButtonTexts[3] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
     tmp_Surface = TTF_RenderText_Blended(font, "Custom", white);

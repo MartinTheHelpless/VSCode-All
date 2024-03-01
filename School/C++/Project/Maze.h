@@ -52,11 +52,11 @@ public:
     void ResetPath();
 
     bool PathFind(uint32_t algId);
+
     bool PathFindDFS();
     bool PathFindBFS();
     bool PathFindAStar();
-    bool PathFindRFS();
-    bool PathFindSFS();
+    bool PathFindDijkstra();
 
     Node *GetMazeNode(uint32_t id) { return m_MazeNodes[id]; }
 };

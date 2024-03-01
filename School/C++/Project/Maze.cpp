@@ -191,15 +191,15 @@ bool Maze::PathFind(uint32_t algId)
         break;
 
     case 1:
-        /* code */
+        return PathFindBFS();
         break;
 
     case 2:
-        /* code */
+        return PathFindDijkstra();
         break;
 
     case 3:
-        /* code */
+        return PathFindAStar();
         break;
 
     default:
@@ -280,4 +280,19 @@ bool Maze::PathFindDFS()
         return true;
 
     return false;
+}
+
+bool Maze::PathFindBFS()
+{
+    return true;
+}
+
+bool Maze::PathFindAStar()
+{
+    return true;
+}
+
+bool Maze::PathFindDijkstra()
+{
+    return true;
 }
