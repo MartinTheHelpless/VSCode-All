@@ -20,7 +20,7 @@ bool Init();
 
 void Close();
 
-void DrawPathChoices(uint32_t choice);
+void DrawPathChoices(uint32_t path, uint32_t maze);
 
 int main(int argc, char const *argv[])
 {
@@ -31,10 +31,11 @@ int main(int argc, char const *argv[])
 
     Maze *testMaze = new Maze();
 
-    testMaze->RandomizeMaze();
-
-    Uint32 frameStart, frameTime, pathMode = 0, lastState = 0;
     float scale = 59;
+
+    testMaze->RandomizeMaze(0, scale);
+
+    Uint32 frameStart, frameTime, mazeChoice = 0, pathMode = 0, lastState = 0;
 
     bool quit = false, rButtonPressed = false, drawWall = false, finding = false;
     SDL_Event event;
@@ -59,9 +60,9 @@ int main(int argc, char const *argv[])
 
             case SDL_MOUSEWHEEL:
             {
-                if (event.wheel.y > 0 && !finding) // scroll up
+                if (event.wheel.y > 0) // scroll up
                     scale - 1 < 15 ? scale = 15 : scale--;
-                else if (event.wheel.y < 0 && !finding) // scroll down
+                else if (event.wheel.y < 0) // scroll down
                     scale + 1 > 59 ? scale = 59 : scale++;
                 break;
             }
@@ -71,7 +72,7 @@ int main(int argc, char const *argv[])
                 if (event.key.keysym.sym == SDLK_LCTRL && !finding)
                     drawWall = !drawWall;
                 else if (event.key.keysym.sym == SDLK_r && !finding)
-                    testMaze->ClearMaze(), testMaze->RandomizeMaze();
+                    testMaze->ClearMaze(), testMaze->RandomizeMazePrim(scale);
                 else if (event.key.keysym.sym == SDLK_SPACE && !finding)
                     testMaze->ResetPath(), finding = true;
                 else if (event.key.keysym.sym == SDLK_t && !finding)
@@ -89,11 +90,18 @@ int main(int argc, char const *argv[])
 
                     for (int i = 0; i < 5; i++) // 5 pathfinding choices
                     {
+                        if (i == 2)
+                            continue;
+
                         SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
                         if (mouseX >= tmp.x && mouseX < tmp.x + tmp.w &&
                             mouseY >= tmp.y && mouseY < tmp.y + tmp.h)
                         {
-                            pathMode = i;
+                            if (i > 2)
+                                mazeChoice = i % 3, testMaze->RandomizeMaze(mazeChoice, scale);
+                            else
+                                pathMode = i;
+
                             break;
                         }
                     }
@@ -145,10 +153,7 @@ int main(int argc, char const *argv[])
                 y *= 59;
 
                 if (testMaze->GetMazeNode(x + y)->m_Type < 2)
-                {
                     testMaze->GetMazeNode(x + y)->m_Type = (drawWall ? 0 : 1);
-                    std::cout << x + y << std::endl;
-                }
             }
         }
 
@@ -157,7 +162,7 @@ int main(int argc, char const *argv[])
 
         testMaze->DrawMaze(rend, scale);
 
-        DrawPathChoices(pathMode);
+        DrawPathChoices(pathMode, mazeChoice);
 
         SDL_RenderPresent(rend);
 
@@ -227,13 +232,13 @@ bool Init()
     tmp_Surface = TTF_RenderText_Blended(font, "BFS Alg.", white);
     ButtonTexts[1] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Dijkstra", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "-------", white);
     ButtonTexts[2] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "A* Alg.", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "Prim Maze", white);
     ButtonTexts[3] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Custom", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "Kruskal Maze", white);
     ButtonTexts[4] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
     SDL_FreeSurface(tmp_Surface);
@@ -251,16 +256,28 @@ void Close()
     SDL_Quit();
 }
 
-void DrawPathChoices(uint32_t choice)
+void DrawPathChoices(uint32_t path, uint32_t maze)
 {
 
     for (int i = 0; i < 5; i++) // 5 pathfinding choices
     {
-        SDL_SetRenderDrawColor(rend, 30 + i * 30, i * 50, 10 + i * 10, 0);
-        SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
-        SDL_RenderFillRect(rend, &tmp);
+        if (i == path || i == maze + 3)
+        {
+            SDL_SetRenderDrawColor(rend, 97, 43, 0, 0);
+            SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
+            SDL_RenderFillRect(rend, &tmp);
 
-        tmp = {670, 90 + i * 110, 80, 30};
-        SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
+            tmp = {670, 90 + i * 110, 80, 30};
+            SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
+        }
+        else
+        {
+            SDL_SetRenderDrawColor(rend, 230, 103, 0, 0);
+            SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
+            SDL_RenderFillRect(rend, &tmp);
+
+            tmp = {670, 90 + i * 110, 80, 30};
+            SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
+        }
     }
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <queue>
 #include <vector>
 #include <random>
 #include <iostream>
@@ -23,6 +24,7 @@ private:
 
         uint32_t m_ID;
         uint32_t m_Type = 0; // Wall, free space, start, end ---- 0, 1, 2, 3 respectively
+        uint32_t m_SetID = 0;
 
         Node(uint32_t id)
         {
@@ -39,24 +41,26 @@ private:
     uint32_t m_StartID = 60; // X and Y start for the patfindiong algorithm
     uint32_t m_EndID = 3420; // X and Y end for the patfinding algorithm
 
-    Node *m_MazeNodes[3481];
     Node *m_Current;
+    Node *m_MazeNodes[3481];
+    std::queue<Node *> m_Neighbours;
     std::vector<Node *> m_Intersections;
 
 public:
     Maze();
 
-    void DrawMaze(SDL_Renderer *rend, float scale);
-    void RandomizeMaze();
     void ClearMaze();
     void ResetPath();
+    void RandomizeMazePrim(float scale);
+    void RandomizeMazeKruskal(float scale);
+    void DrawMaze(SDL_Renderer *rend, float scale);
+
+    void RandomizeMaze(uint32_t choice, float scale);
 
     bool PathFind(uint32_t algId);
 
     bool PathFindDFS();
     bool PathFindBFS();
-    bool PathFindAStar();
-    bool PathFindDijkstra();
 
     Node *GetMazeNode(uint32_t id) { return m_MazeNodes[id]; }
 };
