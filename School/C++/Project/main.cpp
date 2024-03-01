@@ -1,6 +1,8 @@
 #include <memory>
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
 #include "Maze.h"
 #include "defines.h"
 
@@ -10,6 +12,9 @@
 
 SDL_Window *window = nullptr;
 SDL_Renderer *rend = nullptr;
+TTF_Font *font;
+
+SDL_Texture *ButtonTexts[5];
 
 bool Init();
 
@@ -22,12 +27,16 @@ int main(int argc, char const *argv[])
 
     Init();
 
+    int index = 0;
+
     Maze *testMaze = new Maze();
 
-    Uint32 frameStart, frameTime, pathMode = 0, lastState = 0;
-    float scale = 60;
+    testMaze->RandomizeMaze();
 
-    bool quit = false, rButtonPressed = false, drawWall = true;
+    Uint32 frameStart, frameTime, pathMode = 0, lastState = 0;
+    float scale = 59;
+
+    bool quit = false, rButtonPressed = false, drawWall = false, finding = false;
     SDL_Event event;
 
     while (!quit)
@@ -50,23 +59,30 @@ int main(int argc, char const *argv[])
 
             case SDL_MOUSEWHEEL:
             {
-                if (event.wheel.y > 0) // scroll up
+                if (event.wheel.y > 0 && !finding) // scroll up
                     scale - 1 < 15 ? scale = 15 : scale--;
-                else if (event.wheel.y < 0) // scroll down
-                    scale + 1 > 60 ? scale = 60 : scale++;
+                else if (event.wheel.y < 0 && !finding) // scroll down
+                    scale + 1 > 59 ? scale = 59 : scale++;
                 break;
             }
 
             case SDL_KEYDOWN:
             {
-                if (event.key.keysym.sym == SDLK_LCTRL)
+                if (event.key.keysym.sym == SDLK_LCTRL && !finding)
                     drawWall = !drawWall;
+                else if (event.key.keysym.sym == SDLK_r && !finding)
+                    testMaze->ClearMaze(), testMaze->RandomizeMaze();
+                else if (event.key.keysym.sym == SDLK_SPACE && !finding)
+                    testMaze->ResetPath(), finding = true;
+                else if (event.key.keysym.sym == SDLK_t && !finding)
+                    testMaze->ResetPath();
+
                 break;
             }
 
             case SDL_MOUSEBUTTONDOWN:
             {
-                if (event.button.button == SDL_BUTTON_LEFT)
+                if (event.button.button == SDL_BUTTON_LEFT && !finding)
                 {
                     int mouseX, mouseY;
                     SDL_GetMouseState(&mouseX, &mouseY);
@@ -82,9 +98,9 @@ int main(int argc, char const *argv[])
                         }
                     }
                 }
-                else if (event.button.button == SDL_BUTTON_RIGHT)
+                else if (event.button.button == SDL_BUTTON_RIGHT && !finding)
                     rButtonPressed = true;
-                else if (event.button.button == SDL_BUTTON_MIDDLE)
+                else if (event.button.button == SDL_BUTTON_MIDDLE && !finding)
                     testMaze->ClearMaze();
 
                 break;
@@ -93,9 +109,9 @@ int main(int argc, char const *argv[])
             case SDL_MOUSEBUTTONUP:
             {
 
-                if (event.button.button == SDL_BUTTON_RIGHT)
+                if (event.button.button == SDL_BUTTON_RIGHT && !finding)
                     rButtonPressed = false;
-                else if (event.button.button == SDL_BUTTON_MIDDLE)
+                else if (event.button.button == SDL_BUTTON_MIDDLE && !finding)
                     testMaze->ClearMaze();
 
                 break;
@@ -126,11 +142,18 @@ int main(int argc, char const *argv[])
                 else
                     y = (event.button.y - 20) / factor;
 
-                y *= 60;
+                y *= 59;
 
-                testMaze->GetMazeNode(x + y)->m_Type = (drawWall ? 0 : 1);
+                if (testMaze->GetMazeNode(x + y)->m_Type < 2)
+                {
+                    testMaze->GetMazeNode(x + y)->m_Type = (drawWall ? 0 : 1);
+                    std::cout << x + y << std::endl;
+                }
             }
         }
+
+        if (finding)
+            finding = !testMaze->PathFind(pathMode);
 
         testMaze->DrawMaze(rend, scale);
 
@@ -173,9 +196,47 @@ bool Init()
         return false;
     }
 
+    if (TTF_Init() != 0)
+    {
+        std::cerr << "TTF_Init Error: " << TTF_GetError() << std::endl;
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+    font = TTF_OpenFont("src/Aller_Rg.ttf", 30);
+    if (font == nullptr)
+    {
+        std::cerr << "TTF_OpenFont Error: " << TTF_GetError() << std::endl;
+        TTF_Quit();
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
     SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_NONE);
     SDL_SetWindowResizable(window, SDL_FALSE);
 
+    SDL_Color white = {255, 255, 255, 255};
+
+    SDL_Surface *tmp_Surface = TTF_RenderText_Blended(font, "DFS Alg.", white);
+    ButtonTexts[0] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    tmp_Surface = TTF_RenderText_Blended(font, "Dijkstra", white);
+    ButtonTexts[1] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    tmp_Surface = TTF_RenderText_Blended(font, "A* Alg.", white);
+    ButtonTexts[2] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    tmp_Surface = TTF_RenderText_Blended(font, "Custom", white);
+    ButtonTexts[3] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    tmp_Surface = TTF_RenderText_Blended(font, "Custom", white);
+    ButtonTexts[4] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    SDL_FreeSurface(tmp_Surface);
     return true;
 }
 
@@ -183,6 +244,9 @@ void Close()
 {
     SDL_DestroyRenderer(rend);
     SDL_DestroyWindow(window);
+
+    for (SDL_Texture *text : ButtonTexts)
+        SDL_DestroyTexture(text);
 
     SDL_Quit();
 }
@@ -195,5 +259,8 @@ void DrawPathChoices(uint32_t choice)
         SDL_SetRenderDrawColor(rend, 30 + i * 30, i * 50, 10 + i * 10, 0);
         SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
         SDL_RenderFillRect(rend, &tmp);
+
+        tmp = {670, 90 + i * 110, 80, 30};
+        SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
     }
 }
