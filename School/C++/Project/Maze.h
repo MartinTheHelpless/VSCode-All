@@ -20,6 +20,8 @@ private:
         Node *m_RightNeighbour;
         Node *m_LeftNeighbour;
 
+        Node *m_PrevNode;
+
         bool m_Visited = false;
 
         uint32_t m_ID;
@@ -34,33 +36,33 @@ private:
             m_BottomNeighbour = nullptr;
             m_RightNeighbour = nullptr;
             m_LeftNeighbour = nullptr;
+            m_PrevNode = nullptr;
         }
     };
 
-    uint32_t m_Dimension;    // Width and height of the grid
-    uint32_t m_StartID = 60; // X and Y start for the patfindiong algorithm
-    uint32_t m_EndID = 3420; // X and Y end for the patfinding algorithm
-
     Node *m_Current;
     Node *m_MazeNodes[3481];
+
     std::queue<Node *> m_Neighbours;
     std::vector<Node *> m_Intersections;
 
-public:
-    Maze();
+    uint32_t m_MazeMaxDim = 59;
 
-    void ClearMaze();
-    void ResetPath();
+public:
+    Maze(float scale);
+
+    void ClearMaze(float mazeScale);
+    void ResetPath(float mazeScale);
     void RandomizeMazePrim(float scale);
     void RandomizeMazeKruskal(float scale);
-    void DrawMaze(SDL_Renderer *rend, float scale);
+    void DrawMaze(SDL_Renderer *rend, float mazeScale);
 
     void RandomizeMaze(uint32_t choice, float scale);
 
-    bool PathFind(uint32_t algId);
+    bool PathFind(uint32_t algId, float mazeScale);
 
-    bool PathFindDFS();
-    bool PathFindBFS();
+    bool PathFindDFS(float mazeScale);
+    bool PathFindBFS(float mazeScale);
 
     Node *GetMazeNode(uint32_t id) { return m_MazeNodes[id]; }
 };

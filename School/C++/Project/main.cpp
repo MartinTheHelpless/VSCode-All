@@ -29,11 +29,11 @@ int main(int argc, char const *argv[])
 
     int index = 0;
 
-    Maze *testMaze = new Maze();
+    float mazeScale = 59;
 
-    float scale = 59;
+    Maze *testMaze = new Maze(mazeScale);
 
-    testMaze->RandomizeMaze(0, scale);
+    testMaze->RandomizeMaze(0, mazeScale);
 
     Uint32 frameStart, frameTime, mazeChoice = 0, pathMode = 0, lastState = 0;
 
@@ -60,10 +60,12 @@ int main(int argc, char const *argv[])
 
             case SDL_MOUSEWHEEL:
             {
-                if (event.wheel.y > 0) // scroll up
-                    scale - 1 < 15 ? scale = 15 : scale--;
-                else if (event.wheel.y < 0) // scroll down
-                    scale + 1 > 59 ? scale = 59 : scale++;
+                if (event.wheel.y > 0 && !finding) // scroll up
+                    mazeScale - 2 < 15 ? mazeScale = 15 : mazeScale -= 2, testMaze->ClearMaze(mazeScale), testMaze->RandomizeMaze(mazeChoice, mazeScale);
+
+                else if (event.wheel.y < 0 && !finding) // scroll down
+                    mazeScale + 2 > 59 ? mazeScale = 59 : mazeScale += 2, testMaze->ClearMaze(mazeScale), testMaze->RandomizeMaze(mazeChoice, mazeScale);
+
                 break;
             }
 
@@ -72,11 +74,11 @@ int main(int argc, char const *argv[])
                 if (event.key.keysym.sym == SDLK_LCTRL && !finding)
                     drawWall = !drawWall;
                 else if (event.key.keysym.sym == SDLK_r && !finding)
-                    testMaze->ClearMaze(), testMaze->RandomizeMazePrim(scale);
+                    testMaze->ClearMaze(mazeScale), testMaze->RandomizeMaze(mazeChoice, mazeScale);
                 else if (event.key.keysym.sym == SDLK_SPACE && !finding)
-                    testMaze->ResetPath(), finding = true;
+                    testMaze->ResetPath(mazeScale), finding = true;
                 else if (event.key.keysym.sym == SDLK_t && !finding)
-                    testMaze->ResetPath();
+                    testMaze->ResetPath(mazeScale);
 
                 break;
             }
@@ -98,7 +100,7 @@ int main(int argc, char const *argv[])
                             mouseY >= tmp.y && mouseY < tmp.y + tmp.h)
                         {
                             if (i > 2)
-                                mazeChoice = i % 3, testMaze->RandomizeMaze(mazeChoice, scale);
+                                mazeChoice = i % 3, testMaze->RandomizeMaze(mazeChoice, mazeScale);
                             else
                                 pathMode = i;
 
@@ -109,7 +111,7 @@ int main(int argc, char const *argv[])
                 else if (event.button.button == SDL_BUTTON_RIGHT && !finding)
                     rButtonPressed = true;
                 else if (event.button.button == SDL_BUTTON_MIDDLE && !finding)
-                    testMaze->ClearMaze();
+                    testMaze->ClearMaze(mazeScale);
 
                 break;
             }
@@ -120,7 +122,7 @@ int main(int argc, char const *argv[])
                 if (event.button.button == SDL_BUTTON_RIGHT && !finding)
                     rButtonPressed = false;
                 else if (event.button.button == SDL_BUTTON_MIDDLE && !finding)
-                    testMaze->ClearMaze();
+                    testMaze->ClearMaze(mazeScale);
 
                 break;
             }
@@ -132,7 +134,7 @@ int main(int argc, char const *argv[])
             if (rButtonPressed)
             {
 
-                float factor = 600.0f / scale;
+                float factor = 600.0f / mazeScale;
 
                 uint32_t x, y;
 
@@ -158,9 +160,9 @@ int main(int argc, char const *argv[])
         }
 
         if (finding)
-            finding = !testMaze->PathFind(pathMode);
+            finding = !testMaze->PathFind(pathMode, mazeScale);
 
-        testMaze->DrawMaze(rend, scale);
+        testMaze->DrawMaze(rend, mazeScale);
 
         DrawPathChoices(pathMode, mazeChoice);
 
