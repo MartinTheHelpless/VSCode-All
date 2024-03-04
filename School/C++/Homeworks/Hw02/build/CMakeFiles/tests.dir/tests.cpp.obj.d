@@ -388,12 +388,5 @@ CMakeFiles/tests.dir/tests.cpp.obj: \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/imm.h \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/io.h \
  C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw02/tasks.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/functional \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/std_function.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/unordered_map \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/hashtable.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/hashtable_policy.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/enable_special_members.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/unordered_map.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/array \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/compare
+ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/optional \
+ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/enable_special_members.h

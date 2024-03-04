@@ -1,37 +1,49 @@
-#pragma once
-
-#include <string>
-#include <cstdint>
-#include <functional>
+#include <optional>
 #include <iostream>
-#include <utility>
+#include <vector>
+#include <string>
 #include <cstring>
 
 using CodePoint = uint32_t;
 
 class UTF8String
 {
+private:
     size_t size = 0;
     size_t reserved = 0;
     uint8_t *buffer = nullptr;
+
+    void SaveUTF8Bytes(CodePoint cdp);
+    void SaveUTF8Bytes(char c);
 
 public:
     ~UTF8String();
     UTF8String() = default;
 
     UTF8String(const char *ptr);
-    UTF8String(const UTF8String &str);
     UTF8String(UTF8String &&str);
+    UTF8String(const UTF8String &str);
+    UTF8String(const std::string &str);
+    UTF8String(std::vector<CodePoint> CodePoints);
 
-    UTF8String &operator=(const UTF8String &str);
+    std::optional<uint8_t> operator[](size_t idx) const;
+
+    operator std::string() const;
+    bool operator!=(UTF8String &str) const;
+    bool operator==(UTF8String &str) const;
+    UTF8String &operator+(UTF8String &str);
     UTF8String &operator=(UTF8String &&str);
+    UTF8String &operator+=(UTF8String &str);
+    bool operator!=(const UTF8String &str) const;
+    bool operator==(const UTF8String &str) const;
+    UTF8String &operator=(const UTF8String &str);
     UTF8String &operator+=(const UTF8String &str);
+    UTF8String &operator+(const UTF8String &str) const;
 
-    operator bool();
+    std::optional<uint32_t> nth_code_point(size_t idx) const;
 
-    uint32_t get_byte_count() { return size; };
-    uint32_t get_point_count() { return size; };
-    uint8_t &operator[](const size_t idx) { return buffer[idx]; };
+    void append(CodePoint codePoint);
 
-    friend std::ostream &operator<<(std::ostream &os, const UTF8String &str);
+    uint32_t get_byte_count() const { return size; };
+    uint32_t get_point_count() const;
 };

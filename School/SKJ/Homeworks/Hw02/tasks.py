@@ -1,59 +1,59 @@
-def is_palindrome(data):
-    """
-    Returns True if `data` is a palindrome and False otherwise.
-    Hint:
-        slicing is your friend, use it
-    Example:
-        is_palindrome('aba') == True
-        is_palindrome('abc') == False
-    """
+def is_palindrome(data): 
+
+    for i in range(len(data)):
+        if(data[i] != data[len(data) - 1 - i]):
+            return False
+    return True
 
 
-def lex_compare(a, b):
-    """
-    Lexicographically compare `a` with `b` and return the smaller string.
-    Implement the comparison yourself, do not use the `<` operator for comparing strings :)
 
-    Example:
-        lex_compare('a', 'b') == 'a'
-        lex_compare('ahoj', 'buvol') == 'ahoj'
-        lex_compare('ahoj', 'ahojky') == 'ahoj'
-        lex_compare('dum', 'automobil') == 'automobil'
-    """
+def lex_compare(a, b): 
 
-
-def count_successive(string):
-    """
-    Go through the string and for each character, count how many times it appears in succession.
-    Store the character and the count in a tuple and return a list of such tuples.
-
-    Example:
-          count_successive("aaabbcccc") == [("a", 3), ("b", 2), ("c", 4)]
-          count_successive("aba") == [("a", 1), ("b", 1), ("a", 1)]
-    """
+    if(len(a) > len(b)):
+        return b;
+    elif(len(b) > len(a)):
+        return a;
+    else:
+        if(ord(a) > ord(b)):
+            return b;
+    return a;
 
 
-def find_positions(items):
-    """
-    Go through the input list of items and collect indices of each individual item.
-    Return a dictionary where the key will be an item and its value will be a list of indices
-    where the item was found.
+def count_successive(string): 
+    
+    data
+    char 
+    count = 0
 
-    Example:
-        find_positions(["hello", 1, 1, 2, "hello", 2]) == {
-            2: [3, 5],
-            "hello": [0, 4],
-            1: [1, 2]
-        }
-    """
+    for i in string:
+        if(char == i):
+            count+=1
+        else:
+            data += (char, count)
+            char = i
+            count = 0
+
+    return data
 
 
-def invert_dictionary(dictionary):
-    """
-    Invert the input dictionary. Turn keys into values and vice-versa.
-    If more values would belong to the same key, return None.
+def find_positions(items): 
+    data 
 
-    Example:
-        invert_dictionary({1: 2, 3: 4}) == {2: 1, 4: 3}
-        invert_dictionary({1: 2, 3: 2}) is None
-    """
+    for i in range(len(items)):
+        if(data[items[i]]):
+            data[items[i]].append(i)
+        else:
+            data += {items[i]: i}
+    return data
+
+
+def invert_dictionary(dictionary): 
+    data = {}
+
+    values = dictionary.values()
+    keys = dictionary.keys()
+
+    for i in range(len(dictionary)):
+        data += {values[i] : keys[i]}
+
+    return data

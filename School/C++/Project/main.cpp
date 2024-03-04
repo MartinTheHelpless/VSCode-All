@@ -167,10 +167,6 @@ int main(int argc, char const *argv[])
         DrawPathChoices(pathMode, mazeChoice);
 
         SDL_RenderPresent(rend);
-
-        frameTime = SDL_GetTicks() - frameStart;
-        if (frameTime < FRAME_DELAY)
-            SDL_Delay(FRAME_DELAY - frameTime);
     }
 
     Close();
