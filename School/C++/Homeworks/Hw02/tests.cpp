@@ -320,9 +320,7 @@ TEST_SUITE("UTF8String")
         UTF8String str{"Hello"};
         UTF8String str2{" world"};
 
-        std::cout << "before" << std::endl;
         REQUIRE((str + str2) == UTF8String{"Hello world"});
-        std::cout << "after" << std::endl;
         REQUIRE(str == UTF8String{"Hello"});
         REQUIRE(str2 == UTF8String{" world"});
     }

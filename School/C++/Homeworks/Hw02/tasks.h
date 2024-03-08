@@ -29,16 +29,16 @@ public:
     std::optional<uint8_t> operator[](size_t idx) const;
 
     operator std::string() const;
-    bool operator!=(UTF8String &str) const;
+    UTF8String operator+(UTF8String &str);
     bool operator==(UTF8String &str) const;
-    UTF8String &operator+(UTF8String &str);
+    bool operator!=(UTF8String &str) const;
     UTF8String &operator=(UTF8String &&str);
     UTF8String &operator+=(UTF8String &str);
     bool operator!=(const UTF8String &str) const;
     bool operator==(const UTF8String &str) const;
     UTF8String &operator=(const UTF8String &str);
     UTF8String &operator+=(const UTF8String &str);
-    UTF8String &operator+(const UTF8String &str) const;
+    UTF8String operator+(const UTF8String &str) const;
 
     std::optional<uint32_t> nth_code_point(size_t idx) const;
 

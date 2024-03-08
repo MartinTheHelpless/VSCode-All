@@ -1,59 +1,61 @@
 def is_palindrome(data): 
-
-    for i in range(len(data)):
-        if(data[i] != data[len(data) - 1 - i]):
+    for i in range(len(data) // 2):
+        if data[i] != data[len(data) - 1 - i]:
             return False
     return True
 
-
-
 def lex_compare(a, b): 
-
-    if(len(a) > len(b)):
-        return b;
-    elif(len(b) > len(a)):
-        return a;
-    else:
-        if(ord(a) > ord(b)):
-            return b;
-    return a;
-
-
-def count_successive(string): 
+     
+    min_length = min(len(a), len(b))
     
-    data
-    char 
+    for i in range(min_length):
+        if ord(a[i]) < ord(b[i]):
+            return a
+        elif ord(b[i]) < ord(a[i]):
+            return b
+     
+    return a if len(a) < len(b) else b
+            
+    
+def count_successive(string): 
+    data = []
+    char = ''
     count = 0
 
     for i in string:
-        if(char == i):
-            count+=1
+        if char == i:
+            count += 1
         else:
-            data += (char, count)
+            if char:
+                data.append((char, count))
             char = i
-            count = 0
+            count = 1
+
+    if char:
+        data.append((char, count))
 
     return data
-
 
 def find_positions(items): 
-    data 
-
-    for i in range(len(items)):
-        if(data[items[i]]):
-            data[items[i]].append(i)
-        else:
-            data += {items[i]: i}
-    return data
-
-
-def invert_dictionary(dictionary): 
     data = {}
 
-    values = dictionary.values()
-    keys = dictionary.keys()
-
-    for i in range(len(dictionary)):
-        data += {values[i] : keys[i]}
+    for i in range(len(items)):
+        if items[i] in data:
+            data[items[i]].append(i)
+        else:
+            data[items[i]] = [i]
 
     return data
+
+def invert_dictionary(dictionary):  
+    inverted_dict = {}
+    seen_values = set()
+
+    for key, value in dictionary.items():
+        if value in inverted_dict or value in seen_values: 
+            return None
+        else:
+            inverted_dict[value] = key
+            seen_values.add(value)
+
+    return inverted_dict

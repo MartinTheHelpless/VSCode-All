@@ -10,7 +10,7 @@ void UTF8String::SaveUTF8Bytes(CodePoint cdp)
         {
             reserved = size + 5;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -23,7 +23,7 @@ void UTF8String::SaveUTF8Bytes(CodePoint cdp)
         {
             reserved = size + 6;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -37,7 +37,7 @@ void UTF8String::SaveUTF8Bytes(CodePoint cdp)
         {
             reserved = size + 7;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -52,7 +52,7 @@ void UTF8String::SaveUTF8Bytes(CodePoint cdp)
         {
             reserved = size + 8;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -68,8 +68,6 @@ void UTF8String::SaveUTF8Bytes(char c)
 {
     CodePoint cdp = static_cast<CodePoint>(c);
 
-    uint32_t index = 0;
-
     if (cdp <= 0x7F)
     {
 
@@ -77,7 +75,7 @@ void UTF8String::SaveUTF8Bytes(char c)
         {
             reserved = size + 5;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -92,7 +90,7 @@ void UTF8String::SaveUTF8Bytes(char c)
 
             reserved = size + 6;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -106,7 +104,7 @@ void UTF8String::SaveUTF8Bytes(char c)
         {
             reserved = size + 7;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -121,7 +119,7 @@ void UTF8String::SaveUTF8Bytes(char c)
         {
             reserved = size + 8;
             uint8_t *newData = new uint8_t[reserved];
-            for (int i = 0; i < size; ++i)
+            for (size_t i = 0; i < size; ++i)
                 newData[i] = buffer[i];
             delete[] buffer;
             buffer = newData;
@@ -139,7 +137,7 @@ UTF8String::~UTF8String()
 
 UTF8String::UTF8String(const char *ptr)
 {
-    for (int i = 0; i < strlen(ptr); i++)
+    for (size_t i = 0; i < strlen(ptr); i++)
         SaveUTF8Bytes(ptr[i]);
 }
 
@@ -166,7 +164,7 @@ UTF8String::UTF8String(const std::string &str)
 
 UTF8String::UTF8String(std::vector<CodePoint> CodePoints)
 {
-    for (int i = 0; i < CodePoints.size(); i++)
+    for (size_t i = 0; i < CodePoints.size(); i++)
         SaveUTF8Bytes(CodePoints[i]);
 }
 
@@ -196,17 +194,17 @@ UTF8String &UTF8String::operator=(UTF8String &&str)
     return *this;
 }
 
-UTF8String &UTF8String::operator+(UTF8String &str)
+UTF8String UTF8String::operator+(UTF8String &str)
 {
     UTF8String data;
     data.size = size + str.size;
     data.reserved = size + str.size + 2;
     data.buffer = new uint8_t[data.reserved];
 
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
         data.buffer[i] = buffer[i];
 
-    for (int i = 0; i < str.size; i++)
+    for (size_t i = 0; i < str.size; i++)
         data.buffer[size + i] = str.buffer[i];
 
     return data;
@@ -218,11 +216,13 @@ UTF8String &UTF8String::operator+=(UTF8String &str)
     {
         reserved = size + str.size + 4;
         uint8_t *newData = new uint8_t[reserved];
-        std::copy(buffer, buffer + size, newData);
+        std::copy(buffer, buffer + size, newData); // Copy contents of *this
         delete[] buffer;
         buffer = newData;
     }
-    std::copy(str.buffer, str.buffer + str.size, buffer);
+
+    // Append contents of str to the end of buffer
+    std::copy(str.buffer, str.buffer + str.size, buffer + size);
 
     size += str.size;
     return *this;
@@ -265,13 +265,13 @@ UTF8String &UTF8String::operator=(const UTF8String &str)
     size = str.size;
     reserved = str.reserved;
     buffer = new uint8_t[reserved];
-    for (int i = 0; i < size; ++i)
+    for (size_t i = 0; i < size; ++i)
         buffer[i] = str.buffer[i];
 
     return *this;
 }
 
-UTF8String &UTF8String::operator+(const UTF8String &str) const
+UTF8String UTF8String::operator+(const UTF8String &str) const
 {
 
     UTF8String data;
@@ -279,10 +279,10 @@ UTF8String &UTF8String::operator+(const UTF8String &str) const
     data.reserved = size + str.size + 2;
     data.buffer = new uint8_t[data.reserved];
 
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
         data.buffer[i] = buffer[i];
 
-    for (int i = 0; i < str.size; i++)
+    for (size_t i = 0; i < str.size; i++)
         data.buffer[size + i] = str.buffer[i];
 
     return data;
@@ -290,6 +290,58 @@ UTF8String &UTF8String::operator+(const UTF8String &str) const
 
 std::optional<uint32_t> UTF8String::nth_code_point(size_t idx) const
 {
+
+    uint32_t count = 0, trailByteCount = 0;
+
+    for (size_t i = 0; i < size; i++)
+    {
+
+        if ((buffer[i] & 0x80) == 0x00)
+            trailByteCount = 0, count++;
+        else if ((buffer[i] & 0xE0) == 0xC0)
+            trailByteCount = 1, count++;
+        else if ((buffer[i] & 0xF0) == 0xE0)
+            trailByteCount = 2, count++;
+        else if ((buffer[i] & 0xF8) == 0xF0)
+            trailByteCount = 3, count++;
+
+        if (count - 1 == idx)
+        {
+            CodePoint res = 0;
+
+            switch (trailByteCount)
+            {
+            case 0:
+                res = buffer[i];
+                break;
+
+            case 1:
+                res |= (buffer[i++] & 0x1F) << 6;
+                res |= (buffer[i++] & 0x3F);
+                break;
+
+            case 2:
+                res |= (buffer[i++] & 0x0F) << 12;
+                res |= (buffer[i++] & 0x3F) << 6;
+                res |= (buffer[i++] & 0x3F);
+                break;
+
+            case 3:
+                res |= (buffer[i++] & 0x07) << 18;
+                res |= (buffer[i++] & 0x3F) << 12;
+                res |= (buffer[i++] & 0x3F) << 6;
+                res |= (buffer[i++] & 0x3F);
+                break;
+
+            default:
+                break;
+            }
+            return res;
+        }
+        i += trailByteCount;
+    }
+
+    return std::nullopt;
 }
 
 UTF8String &UTF8String::operator+=(const UTF8String &str)
@@ -299,12 +351,12 @@ UTF8String &UTF8String::operator+=(const UTF8String &str)
     {
         reserved = size + str.size + 4;
         uint8_t *newData = new uint8_t[reserved];
-        for (int i = 0; i < size; ++i)
-            newData[i] = buffer[i];
+        std::copy(buffer, buffer + size, newData);
         delete[] buffer;
         buffer = newData;
     }
-    std::copy(str.buffer, str.buffer + str.size, buffer);
+
+    std::copy(str.buffer, str.buffer + str.size, buffer + size);
 
     size += str.size;
     return *this;
@@ -318,7 +370,7 @@ void UTF8String::append(CodePoint codePoint)
 uint32_t UTF8String::get_point_count() const
 {
     uint32_t count = 0;
-    for (int i = 0; i < size;)
+    for (size_t i = 0; i < size;)
         if ((buffer[i] & 0xC0) != 0x80)
             i++, count++;
         else
@@ -343,31 +395,3 @@ bool UTF8String::operator==(const UTF8String &str) const
 
     return true;
 }
-
-/*
-int main()
-{
-
-    UTF8String string;
-    string.append('A');
-    string.append('h');
-    string.append('o');
-    string.append('j');
-    string.append(' ');
-    string.append(static_cast<CodePoint>(0x1F601));
-    string.append('.');
-
-    std::cout << string.get_byte_count() << std::endl;
-    std::cout << string.get_point_count() << std::endl;
-
-    const UTF8String &str = string;
-    std::cout << str.nth_code_point(0).value() << std::endl;
-    std::cout << str.nth_code_point(1).value() << std::endl;
-    std::cout << str.nth_code_point(2).value() << std::endl;
-    std::cout << str.nth_code_point(3).value() << std::endl;
-    std::cout << str.nth_code_point(4).value() << std::endl;
-    std::cout << str.nth_code_point(5).value() << std::endl;
-    std::cout << str.nth_code_point(6).value() << std::endl;
-
-    return 0;
-}*/
