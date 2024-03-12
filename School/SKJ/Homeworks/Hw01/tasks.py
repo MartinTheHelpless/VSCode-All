@@ -1,26 +1,26 @@
 def fizzbuzz(num):
-    """
-    Return 'Fizz' if `num` is divisible by 3, 'Buzz' if `num` is divisible by 5, 'FizzBuzz' if `num` is divisible both by 3 and 5.
-    If `num` isn't divisible neither by 3 nor by 5, return `num`.
-    Example:
-        fizzbuzz(3) # Fizz
-        fizzbuzz(5) # Buzz
-        fizzbuzz(15) # FizzBuzz
-        fizzbuzz(8) # 8
-    """
-    pass
+
+    if(num % 5 == 0 and num % 3 == 0):
+        return "FizzBuzz" 
+    elif(num % 3 == 0):
+        return "Fizz"
+    elif(num % 5 == 0):
+        return "Buzz"
+
+    return num
 
 
 def fibonacci(n):
-    """
-    Return the `n`-th Fibonacci number (counting from 0).
-    Example:
-        fibonacci(0) == 0
-        fibonacci(1) == 1
-        fibonacci(2) == 1
-        fibonacci(3) == 2
-        fibonacci(4) == 3
-    """
+     
+    a = 0;
+    b = 1;
+
+    for i in range(1, n):
+        tmp = a + b
+        a = b
+        b = tmp
+
+    return a;
     pass
 
 
