@@ -1,11 +1,11 @@
 #pragma once
-#include <queue>
-#include <vector>
-#include <random>
-#include <iostream>
-#include <algorithm>
 #include <SDL2/SDL.h>
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include <random>
 #include <unordered_map>
+#include <vector>
 
 #include "defines.h"
 
@@ -63,6 +63,7 @@ public:
 
     bool PathFindDFS(float mazeScale);
     bool PathFindBFS(float mazeScale);
+    bool PathFindRandom(float MazeScale);
 
     Node *GetMazeNode(uint32_t id) { return m_MazeNodes[id]; }
 };

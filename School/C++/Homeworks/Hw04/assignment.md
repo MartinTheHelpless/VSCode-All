@@ -97,3 +97,4 @@ them to be printed e.g. to `stdout`.
 Would you need the Visitor design pattern in that case?
 
 See tests for usage examples of all described APIs.
+ 

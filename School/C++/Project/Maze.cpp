@@ -42,7 +42,6 @@ Maze::Maze(float scale)
 
 void Maze::DrawMaze(SDL_Renderer *rend, float mazeScale)
 {
-
     if (static_cast<int>(mazeScale) % 2 == 0)
         mazeScale--;
 
@@ -74,22 +73,28 @@ void Maze::DrawMaze(SDL_Renderer *rend, float mazeScale)
                 break;
             }
 
-            SDL_Rect tmp = {static_cast<int>(WINDOW_MARGIN + j * (600.0f / mazeScale)), static_cast<int>(WINDOW_MARGIN + i * (600.0f / mazeScale)),
-                            static_cast<int>((600.0f / mazeScale) * 0.9f), static_cast<int>((600.0f / mazeScale) * 0.9f)};
+            SDL_Rect tmp = {
+                static_cast<int>(WINDOW_MARGIN + j * (600.0f / mazeScale)),
+                static_cast<int>(WINDOW_MARGIN + i * (600.0f / mazeScale)),
+                static_cast<int>((600.0f / mazeScale) * 0.9f),
+                static_cast<int>((600.0f / mazeScale) * 0.9f)};
             SDL_RenderFillRect(rend, &tmp);
         }
 }
 
 void Maze::RandomizeMaze(uint32_t choice, float scale)
 {
-
     switch (choice)
     {
     case 0:
-        RandomizeMazePrim(scale);
+
         break;
 
     case 1:
+        RandomizeMazePrim(scale);
+        break;
+
+    case 2:
         RandomizeMazeKruskal(scale);
         break;
 
@@ -100,32 +105,41 @@ void Maze::RandomizeMaze(uint32_t choice, float scale)
 
 void Maze::RandomizeMazePrim(float scale)
 {
-
     if (static_cast<int>(scale) % 2 == 0)
         scale--;
 
-    auto AddWallsToVector = [scale](Node *current, std::vector<std::pair<Node *, uint32_t>> &walls) -> void
+    auto AddWallsToVector =
+        [scale](Node *current,
+                std::vector<std::pair<Node *, uint32_t>> &walls) -> void
     {
-        if (current->m_TopNeighbour != nullptr && current->m_TopNeighbour->m_Type == 0 && current->m_TopNeighbour->m_ID > 59)
+        if (current->m_TopNeighbour != nullptr &&
+            current->m_TopNeighbour->m_Type == 0 &&
+            current->m_TopNeighbour->m_ID > 59)
             walls.push_back({current->m_TopNeighbour, 0});
 
-        if (current->m_RightNeighbour != nullptr && current->m_RightNeighbour->m_Type == 0 && current->m_RightNeighbour->m_ID + 1 % 59 != 0)
+        if (current->m_RightNeighbour != nullptr &&
+            current->m_RightNeighbour->m_Type == 0 &&
+            current->m_RightNeighbour->m_ID + 1 % 59 != 0)
             walls.push_back({current->m_RightNeighbour, 1});
 
-        if (current->m_BottomNeighbour != nullptr && current->m_BottomNeighbour->m_Type == 0 && current->m_BottomNeighbour->m_ID < 3421)
+        if (current->m_BottomNeighbour != nullptr &&
+            current->m_BottomNeighbour->m_Type == 0 &&
+            current->m_BottomNeighbour->m_ID < 3421)
             walls.push_back({current->m_BottomNeighbour, 2});
 
-        if (current->m_LeftNeighbour != nullptr && current->m_LeftNeighbour->m_Type == 0 && current->m_LeftNeighbour->m_ID % 59 != 0)
+        if (current->m_LeftNeighbour != nullptr &&
+            current->m_LeftNeighbour->m_Type == 0 &&
+            current->m_LeftNeighbour->m_ID % 59 != 0)
             walls.push_back({current->m_LeftNeighbour, 3});
     };
 
     for (Node *node : m_MazeNodes)
-        if ((node->m_ID / static_cast<int>(59) - 1) % 2 + (node->m_ID % static_cast<int>(59) - 1) % 2 == 0)
-            node->m_Type = 1,
-            node->m_Visited = false;
+        if ((node->m_ID / static_cast<int>(59) - 1) % 2 +
+                (node->m_ID % static_cast<int>(59) - 1) % 2 ==
+            0)
+            node->m_Type = 1, node->m_Visited = false;
         else
-            node->m_Type = 0,
-            node->m_Visited = false;
+            node->m_Type = 0, node->m_Visited = false;
 
     std::vector<std::pair<Node *, uint32_t>> walls;
 
@@ -147,9 +161,11 @@ void Maze::RandomizeMazePrim(float scale)
         uint32_t direction = walls.back().second;
         walls.pop_back();
 
-        if (wall->m_TopNeighbour != nullptr && wall->m_BottomNeighbour != nullptr && wall->m_TopNeighbour->m_Type == 1)
+        if (wall->m_TopNeighbour != nullptr && wall->m_BottomNeighbour != nullptr &&
+            wall->m_TopNeighbour->m_Type == 1)
         {
-            if (!wall->m_TopNeighbour->m_Visited || !wall->m_BottomNeighbour->m_Visited)
+            if (!wall->m_TopNeighbour->m_Visited ||
+                !wall->m_BottomNeighbour->m_Visited)
             {
                 wall->m_Type = 1;
                 wall->m_TopNeighbour->m_Visited = true;
@@ -163,9 +179,12 @@ void Maze::RandomizeMazePrim(float scale)
                 AddWallsToVector(m_Current, walls);
             }
         }
-        else if (wall->m_RightNeighbour != nullptr && wall->m_LeftNeighbour != nullptr && wall->m_RightNeighbour->m_Type == 1)
+        else if (wall->m_RightNeighbour != nullptr &&
+                 wall->m_LeftNeighbour != nullptr &&
+                 wall->m_RightNeighbour->m_Type == 1)
         {
-            if (!wall->m_RightNeighbour->m_Visited || !wall->m_LeftNeighbour->m_Visited)
+            if (!wall->m_RightNeighbour->m_Visited ||
+                !wall->m_LeftNeighbour->m_Visited)
             {
                 wall->m_Type = 1;
                 wall->m_RightNeighbour->m_Visited = true;
@@ -195,20 +214,18 @@ void Maze::RandomizeMazePrim(float scale)
 
 void Maze::RandomizeMazeKruskal(float scale)
 {
-
     if (static_cast<int>(scale) % 2 == 0)
         scale--;
 
     uint32_t index = 0;
 
     for (Node *node : m_MazeNodes)
-        if ((node->m_ID / static_cast<int>(59) - 1) % 2 + (node->m_ID % static_cast<int>(59) - 1) % 2 == 0)
-            node->m_Type = 1,
-            node->m_Visited = false,
-            node->m_SetID = index++;
+        if ((node->m_ID / static_cast<int>(59) - 1) % 2 +
+                (node->m_ID % static_cast<int>(59) - 1) % 2 ==
+            0)
+            node->m_Type = 1, node->m_Visited = false, node->m_SetID = index++;
         else
-            node->m_Type = 0,
-            node->m_Visited = false;
+            node->m_Type = 0, node->m_Visited = false;
 
     m_MazeNodes[static_cast<int>(59) + 1]->m_Type = 2;
     m_MazeNodes[static_cast<int>((scale - 2) * 59 + scale) - 2]->m_Type = 3;
@@ -229,9 +246,12 @@ void Maze::RandomizeMazeKruskal(float scale)
         m_Current = walls.back();
         walls.pop_back();
 
-        if (m_Current->m_TopNeighbour != nullptr && m_Current->m_BottomNeighbour != nullptr && m_Current->m_TopNeighbour->m_Type == 1)
+        if (m_Current->m_TopNeighbour != nullptr &&
+            m_Current->m_BottomNeighbour != nullptr &&
+            m_Current->m_TopNeighbour->m_Type == 1)
         {
-            if (m_Current->m_TopNeighbour->m_SetID != m_Current->m_BottomNeighbour->m_SetID)
+            if (m_Current->m_TopNeighbour->m_SetID !=
+                m_Current->m_BottomNeighbour->m_SetID)
             {
                 m_Current->m_Type = 1;
 
@@ -242,9 +262,12 @@ void Maze::RandomizeMazeKruskal(float scale)
                         node->m_SetID = m_Current->m_TopNeighbour->m_SetID;
             }
         }
-        else if (m_Current->m_RightNeighbour != nullptr && m_Current->m_LeftNeighbour != nullptr && m_Current->m_RightNeighbour->m_Type == 1)
+        else if (m_Current->m_RightNeighbour != nullptr &&
+                 m_Current->m_LeftNeighbour != nullptr &&
+                 m_Current->m_RightNeighbour->m_Type == 1)
         {
-            if (m_Current->m_RightNeighbour->m_SetID != m_Current->m_LeftNeighbour->m_SetID)
+            if (m_Current->m_RightNeighbour->m_SetID !=
+                m_Current->m_LeftNeighbour->m_SetID)
             {
                 m_Current->m_Type = 1;
 
@@ -263,11 +286,12 @@ void Maze::RandomizeMazeKruskal(float scale)
 void Maze::ClearMaze(float mazeScale)
 {
     for (int i = 0; i < 3481; i++)
-        m_MazeNodes[i]->m_Type = 0,
-        m_MazeNodes[i]->m_Visited = false;
+        m_MazeNodes[i]->m_Type = 0, m_MazeNodes[i]->m_Visited = false;
 
     m_MazeNodes[static_cast<int>(mazeScale) + 1]->m_Type = 2;
-    m_MazeNodes[static_cast<int>(mazeScale) * static_cast<int>(mazeScale) - static_cast<int>(mazeScale) - 2]->m_Type = 3;
+    m_MazeNodes[static_cast<int>(mazeScale) * static_cast<int>(mazeScale) -
+                static_cast<int>(mazeScale) - 2]
+        ->m_Type = 3;
 
     m_Current = m_MazeNodes[static_cast<int>(mazeScale) + 1];
     m_Current->m_Visited = true;
@@ -294,7 +318,6 @@ void Maze::ResetPath(float mazeScale)
 
 bool Maze::PathFind(uint32_t algId, float mazeScale)
 {
-
     switch (algId)
     {
     case 0:
@@ -303,6 +326,10 @@ bool Maze::PathFind(uint32_t algId, float mazeScale)
 
     case 1:
         return PathFindBFS(mazeScale);
+        break;
+
+    case 2:
+        return PathFindRandom(mazeScale);
         break;
     default:
         break;
@@ -399,27 +426,36 @@ bool Maze::PathFindDFS(float mazeScale)
 
 bool Maze::PathFindBFS(float mazeScale)
 {
-    auto AddNeighboursToVector = [](Node *current, std::queue<Node *> &neighbours) -> void
+    auto AddNeighboursToVector = [](Node *current,
+                                    std::queue<Node *> &neighbours) -> void
     {
-        if (current->m_TopNeighbour != nullptr && current->m_TopNeighbour->m_Type != 0 && !current->m_TopNeighbour->m_Visited)
+        if (current->m_TopNeighbour != nullptr &&
+            current->m_TopNeighbour->m_Type != 0 &&
+            !current->m_TopNeighbour->m_Visited)
         {
             current->m_TopNeighbour->m_PrevNode = current;
             neighbours.push(current->m_TopNeighbour);
         }
 
-        if (current->m_RightNeighbour != nullptr && current->m_RightNeighbour->m_Type != 0 && !current->m_RightNeighbour->m_Visited)
+        if (current->m_RightNeighbour != nullptr &&
+            current->m_RightNeighbour->m_Type != 0 &&
+            !current->m_RightNeighbour->m_Visited)
         {
             current->m_RightNeighbour->m_PrevNode = current;
             neighbours.push(current->m_RightNeighbour);
         }
 
-        if (current->m_BottomNeighbour != nullptr && current->m_BottomNeighbour->m_Type != 0 && !current->m_BottomNeighbour->m_Visited)
+        if (current->m_BottomNeighbour != nullptr &&
+            current->m_BottomNeighbour->m_Type != 0 &&
+            !current->m_BottomNeighbour->m_Visited)
         {
             current->m_BottomNeighbour->m_PrevNode = current;
             neighbours.push(current->m_BottomNeighbour);
         }
 
-        if (current->m_LeftNeighbour != nullptr && current->m_LeftNeighbour->m_Type != 0 && !current->m_LeftNeighbour->m_Visited)
+        if (current->m_LeftNeighbour != nullptr &&
+            current->m_LeftNeighbour->m_Type != 0 &&
+            !current->m_LeftNeighbour->m_Visited)
         {
             current->m_LeftNeighbour->m_PrevNode = current;
             neighbours.push(current->m_LeftNeighbour);
@@ -433,6 +469,72 @@ bool Maze::PathFindBFS(float mazeScale)
         m_Current = m_Neighbours.front();
         m_Current->m_Visited = true;
         m_Neighbours.pop();
+        return false;
+    }
+    else
+    {
+        Node *tmp = m_Current;
+        m_Current = m_Current->m_PrevNode;
+        tmp->m_PrevNode = nullptr;
+
+        while (m_Current->m_PrevNode != nullptr && m_Current->m_Type != 2)
+        {
+            m_Current->m_Type = 2;
+            m_Current = m_Current->m_PrevNode;
+        }
+
+        return true;
+    }
+}
+
+bool Maze::PathFindRandom(float MazeScale)
+{
+    auto AddNeighboursToVector = [](Node *current, std::vector<Node *> &neighbours) -> void
+    {
+        if (current->m_TopNeighbour != nullptr &&
+            current->m_TopNeighbour->m_Type != 0 &&
+            !current->m_TopNeighbour->m_Visited)
+        {
+            current->m_TopNeighbour->m_PrevNode = current;
+            neighbours.push_back(current->m_TopNeighbour);
+        }
+
+        if (current->m_RightNeighbour != nullptr &&
+            current->m_RightNeighbour->m_Type != 0 &&
+            !current->m_RightNeighbour->m_Visited)
+        {
+            current->m_RightNeighbour->m_PrevNode = current;
+            neighbours.push_back(current->m_RightNeighbour);
+        }
+
+        if (current->m_BottomNeighbour != nullptr &&
+            current->m_BottomNeighbour->m_Type != 0 &&
+            !current->m_BottomNeighbour->m_Visited)
+        {
+            current->m_BottomNeighbour->m_PrevNode = current;
+            neighbours.push_back(current->m_BottomNeighbour);
+        }
+
+        if (current->m_LeftNeighbour != nullptr &&
+            current->m_LeftNeighbour->m_Type != 0 &&
+            !current->m_LeftNeighbour->m_Visited)
+        {
+            current->m_LeftNeighbour->m_PrevNode = current;
+            neighbours.push_back(current->m_LeftNeighbour);
+        }
+    };
+
+    AddNeighboursToVector(m_Current, m_Intersections);
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(m_Intersections.begin(), m_Intersections.end(), g);
+
+    if (m_Current->m_Type != 3)
+    {
+        m_Current = m_Intersections.back();
+        m_Current->m_Visited = true;
+        m_Intersections.pop_back();
         return false;
     }
     else

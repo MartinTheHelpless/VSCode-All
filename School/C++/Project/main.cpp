@@ -90,12 +90,9 @@ int main(int argc, char const *argv[])
                     int mouseX, mouseY;
                     SDL_GetMouseState(&mouseX, &mouseY);
 
-                    for (int i = 0; i < 5; i++) // 5 pathfinding choices
+                    for (int i = 0; i < 6; i++)
                     {
-                        if (i == 2)
-                            continue;
-
-                        SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
+                        SDL_Rect tmp = {660, 60 + i * 100, 90, 40};
                         if (mouseX >= tmp.x && mouseX < tmp.x + tmp.w &&
                             mouseY >= tmp.y && mouseY < tmp.y + tmp.h)
                         {
@@ -230,14 +227,17 @@ bool Init()
     tmp_Surface = TTF_RenderText_Blended(font, "BFS Alg.", white);
     ButtonTexts[1] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "-------", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "Random", white);
     ButtonTexts[2] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Prim Maze", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "  TBD  ", white);
     ButtonTexts[3] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
-    tmp_Surface = TTF_RenderText_Blended(font, "Kruskal Maze", white);
+    tmp_Surface = TTF_RenderText_Blended(font, "Prim Maze", white);
     ButtonTexts[4] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
+
+    tmp_Surface = TTF_RenderText_Blended(font, "Kruskal Maze", white);
+    ButtonTexts[5] = SDL_CreateTextureFromSurface(rend, tmp_Surface);
 
     SDL_FreeSurface(tmp_Surface);
     return true;
@@ -257,24 +257,24 @@ void Close()
 void DrawPathChoices(uint32_t path, uint32_t maze)
 {
 
-    for (int i = 0; i < 5; i++) // 5 pathfinding choices
+    for (int i = 0; i < 6; i++) // 3 maze generation and 3 pathfinding
     {
         if (i == path || i == maze + 3)
         {
             SDL_SetRenderDrawColor(rend, 97, 43, 0, 0);
-            SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
+            SDL_Rect tmp = {660, 60 + i * 100, 90, 40};
             SDL_RenderFillRect(rend, &tmp);
 
-            tmp = {670, 90 + i * 110, 80, 30};
+            tmp = {665, 67 + i * 100, 80, 25};
             SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
         }
         else
         {
             SDL_SetRenderDrawColor(rend, 230, 103, 0, 0);
-            SDL_Rect tmp = {660, 80 + i * 110, 100, 50};
+            SDL_Rect tmp = {660, 60 + i * 100, 90, 40};
             SDL_RenderFillRect(rend, &tmp);
 
-            tmp = {670, 90 + i * 110, 80, 30};
+            tmp = {665, 67 + i * 100, 80, 25};
             SDL_RenderCopy(rend, ButtonTexts[i], nullptr, &tmp);
         }
     }
