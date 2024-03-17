@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include <sstream>
+#include <cstdint>
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
@@ -49,7 +50,7 @@ protected:
 
 public:
     Value() {}
-    virtual ~Value() = default;
+    virtual ~Value() {}
 
     virtual Value *clone() const = 0;
 
@@ -69,7 +70,7 @@ private:
 
 public:
     Integer(uint32_t value);
-    virtual ~Integer();
+    ~Integer() {}
 
     virtual Integer *clone() const override;
 
@@ -105,7 +106,7 @@ class Null : public Value
 private:
 public:
     Null() { m_ClassID = 4; }
-    virtual ~Null() = default;
+    ~Null() {}
     virtual Value *clone() const override { return new Null(); }
 };
 
@@ -123,10 +124,17 @@ public:
     void append(Value *value) { m_Values.push_back(value); }
     void remove(uint32_t index) { m_Values.erase(m_Values.begin() + index); }
 
-    void SetValueVector(std::vector<Value *> &values) { m_Values = values; }
+    void SetValueVector(std::vector<Value *> &values)
+    {
+
+        for (auto val : m_Values)
+            delete val;
+
+        m_Values = values;
+    }
 
     std::vector<Value *> &GetValues() { return m_Values; }
-    std::vector<Value *> GetValues() const { return m_Values; }
+    const std::vector<Value *> &GetValues() const { return m_Values; }
 
     virtual Array *clone() const override;
 };
@@ -153,7 +161,7 @@ public:
                 if (vals[i]->GetClassID() == 2 || vals[i]->GetClassID() == 3)
                     vals[i]->accept(*this), newVals.push_back(vals[i]);
                 else if (vals[i]->GetClassID() == 1 || vals[i]->GetClassID() == 0)
-                    newVals.push_back(vals[i]);
+                    newVals.push_back(vals[i]->clone());
 
             val->SetValueVector(newVals);
 
@@ -164,7 +172,7 @@ public:
         {
             Object *val = static_cast<Object *>(value);
 
-            auto map = val->GetMap();
+            std::unordered_map<std::string, Value *> map = val->GetMap();
 
             for (std::string key : val->keys())
                 if (map.at(key)->GetClassID() == 4)
@@ -211,7 +219,7 @@ public:
 
             for (size_t i = 0; i < vec.size(); i++)
             {
-                (*vec[i]).accept(*this);
+                vec[i]->accept(*this);
                 i < vec.size() - 1 ? ss << ", " : ss;
             }
 
@@ -231,7 +239,7 @@ public:
             for (size_t i = 0; i < keys.size(); i++)
             {
                 ss << keys[i] << ": ";
-                (*map.at(keys[i])).accept(*this);
+                map.at(keys[i])->accept(*this);
                 i < keys.size() - 1 ? ss << ", " : ss;
             }
 
@@ -242,8 +250,9 @@ public:
         case 4:
         {
             ss << "null";
+
+            break;
         }
-        break;
 
         default:
             break;
