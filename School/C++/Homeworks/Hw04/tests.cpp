@@ -18,8 +18,6 @@ static std::string print(const Value &value)
   return ss.str();
 }
 
-int index = 0;
-
 TEST_SUITE("Integer")
 {
   TEST_CASE("Create integer")
@@ -332,9 +330,7 @@ TEST_SUITE("Remove null")
     }};
 
     RemoveNullVisitor v;
-    std::cout << print(*object) << std::endl;
     object->accept(v);
-    std::cout << print(*object) << std::endl;
 
     REQUIRE(object->keys() == std::vector<std::string>{"a", "c", "d"});
 

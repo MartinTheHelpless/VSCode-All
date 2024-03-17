@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -fsanitize=address CMakeFiles/tests.dir/tests.cpp.o CMakeFiles/tests.dir/tasks.cpp.o -o tests 
