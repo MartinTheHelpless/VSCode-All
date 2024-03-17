@@ -17,10 +17,7 @@ class Integer;
 class IndexException : public std::exception
 {
 public:
-    const char *what() const noexcept override
-    {
-        return "Tried to index an unindexable object!";
-    }
+    const char *what() const noexcept override { return "Tried to index an unindexable object!"; }
 };
 
 class Visitor
