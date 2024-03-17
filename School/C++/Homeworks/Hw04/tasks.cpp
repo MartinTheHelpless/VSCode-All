@@ -49,8 +49,6 @@ Integer::Integer(uint32_t value)
     m_ClassID = 1;
 }
 
-Integer::~Integer() {}
-
 Integer *Integer::clone() const
 {
     return new Integer{m_Value};
@@ -79,7 +77,11 @@ Object::Object(std::vector<std::pair<std::string, Value *>> &values)
         m_MapValues.insert(value), m_Keys.push_back(value.first);
 }
 
-Object::~Object() {}
+Object::~Object()
+{
+    for (auto &pair : m_MapValues)
+        delete pair.second;
+}
 
 void Object::insert(const char *key, Value *value)
 {
@@ -107,6 +109,7 @@ void Object::remove(std::string key)
 {
     if (m_MapValues.find(key) != m_MapValues.end())
     {
+        delete m_MapValues.at(key);
         m_MapValues.erase(key);
 
         for (size_t i = 0; i < m_Keys.size(); i++)
@@ -124,6 +127,7 @@ void Object::remove(const char *key)
 
     if (m_MapValues.find(str) != m_MapValues.end())
     {
+        delete m_MapValues.at(key);
         m_MapValues.erase(str);
 
         for (size_t i = 0; i < m_Keys.size(); i++)
@@ -178,6 +182,8 @@ Array::Array(std::vector<Value *> values)
 
 Array::~Array()
 {
+    for (Value *val : m_Values)
+        delete val;
 }
 
 Array *Array::clone() const
