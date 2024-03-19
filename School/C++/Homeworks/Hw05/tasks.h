@@ -1,20 +1,16 @@
-#pragma once
-
-#include <memory>
-
 #include <optional>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <cstdint>
 #include <cstring>
-#include <vector>
 
 using CodePoint = uint32_t;
 
 class UTF8String
 {
 private:
+    size_t m_Size = 0;
     std::vector<uint8_t> m_Buffer;
 
     void SaveUTF8Bytes(CodePoint cdp);
@@ -28,7 +24,6 @@ public:
     UTF8String(UTF8String &&str);
     UTF8String(const UTF8String &str);
     UTF8String(const std::string &str);
-    UTF8String(std::vector<uint8_t> bytePoints);
     UTF8String(std::vector<CodePoint> CodePoints);
 
     std::optional<uint8_t> operator[](size_t idx) const;
@@ -49,23 +44,6 @@ public:
 
     void append(CodePoint codePoint);
 
-    uint32_t get_byte_count() const
-    {
-        return m_Buffer.size();
-    };
+    uint32_t get_byte_count() const { return m_Size; };
     uint32_t get_point_count() const;
 };
-
-/// Binary tree
-// Big data that we cannot afford to copy
-struct BigData
-{
-    explicit BigData(int value) : value(value) {}
-
-    BigData(const BigData &) = delete;
-    BigData &operator=(const BigData &) = delete;
-
-    int value;
-};
-
-class Tree;

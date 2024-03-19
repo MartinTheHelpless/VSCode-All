@@ -14,7 +14,7 @@ class LeftFrame(ttk.Frame):
         self.subframe.grid_columnconfigure(0, weight=1)
 
         for i in range(6):
-            ttk.Button(self.subframe, text=f"Button {i+1}").grid(row=i+1, column=0, padx=padding, pady=padding)
+            ttk.Button(self.subframe, text=f"Button {i+1}").pack(fill="both", padx=padding, pady=padding)
 
 class TopRightFrame(ttk.Frame):
     def __init__(self, master):
@@ -54,8 +54,8 @@ class BottomRightFrame(ttk.Frame):
             self.treeview.column(i, width=width)
 
 def main():
-    root = tk.Tk()
-    root.geometry("600x280")
+    root = tk.Tk() 
+    root.geometry("600x280") 
 
     root.style = ttk.Style()
     root.style.configure("Red.TFrame", background="red")
