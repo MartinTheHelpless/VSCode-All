@@ -63,10 +63,10 @@ public:
 class Integer : public Value
 {
 private:
-    uint32_t m_Value;
+    int m_Value;
 
 public:
-    Integer(uint32_t value);
+    Integer(int value);
     ~Integer() {}
 
     virtual Integer *clone() const override;

@@ -10,11 +10,12 @@ class UTF8String;
 
 /// Binary tree
 // Big data that we cannot afford to copy
-struct BigData {
-    explicit BigData(int value): value(value) {}
+struct BigData
+{
+    explicit BigData(int value) : value(value) {}
 
-    BigData(const BigData&) = delete;
-    BigData& operator=(const BigData&) = delete;
+    BigData(const BigData &) = delete;
+    BigData &operator=(const BigData &) = delete;
 
     int value;
 };

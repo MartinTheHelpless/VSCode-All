@@ -43,9 +43,8 @@ Value *Value::operator[](std::string index) const
 
 // ----------------------------------------- Integer Class -----------------------------------------------
 
-Integer::Integer(uint32_t value)
+Integer::Integer(int value) : m_Value(value)
 {
-    m_Value = value;
     m_ClassID = 1;
 }
 
