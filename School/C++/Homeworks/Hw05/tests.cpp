@@ -409,9 +409,7 @@ void check_vectors(std::vector<T> a, std::vector<T> b)
 {
     REQUIRE_EQ(a.size(), b.size());
     for (size_t i = 0; i < a.size(); i++)
-    {
         REQUIRE_EQ(a[i], b[i]);
-    }
 }
 
 // New string tests with move semantics and iterator

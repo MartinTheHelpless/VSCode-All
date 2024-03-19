@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdint>
 #include <cstring>
 
 using CodePoint = uint32_t;
