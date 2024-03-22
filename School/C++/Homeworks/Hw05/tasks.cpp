@@ -75,6 +75,7 @@ UTF8String::UTF8String(UTF8String &&str)
     m_Size = str.m_Size;
     m_Buffer = str.m_Buffer;
     str.m_Buffer.clear();
+    str.m_Size = 0;
 }
 
 UTF8String::UTF8String(const UTF8String &str)
@@ -87,6 +88,14 @@ UTF8String::UTF8String(const std::string &str)
 {
     for (char c : str)
         SaveUTF8Bytes(c);
+}
+
+UTF8String::UTF8String(std::vector<uint8_t> uint8Points)
+{
+    for (uint8_t point : uint8Points)
+        m_Buffer.push_back(point);
+
+    m_Size = uint8Points.size();
 }
 
 UTF8String::UTF8String(std::vector<CodePoint> CodePoints)
@@ -135,6 +144,10 @@ UTF8String UTF8String::operator+(UTF8String &str)
 
 UTF8String &UTF8String::operator+=(UTF8String &str)
 {
+
+    for (uint8_t point : str.m_Buffer)
+        m_Buffer.push_back(point);
+
     m_Size += str.m_Size;
     return *this;
 }
@@ -250,8 +263,6 @@ UTF8String &UTF8String::operator+=(const UTF8String &str)
 
     for (uint8_t point : str.m_Buffer)
         m_Buffer.push_back(point);
-
-    m_Size += str.m_Size;
 
     return *this;
 }
