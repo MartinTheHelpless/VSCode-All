@@ -28,20 +28,43 @@ public:
         ByteIterator(const std::vector<uint8_t> &bytes)
             : m_Size(bytes.size()), m_Ptr(&bytes[0]) {}
 
-        ByteIterator(const uint8_t *pointer, uint32_t size)
+        ByteIterator(const uint8_t *pointer, size_t size)
             : m_Size(size), m_Ptr(pointer) {}
 
         ~ByteIterator() = default;
 
-        const uint8_t *begin() { return m_Ptr; }
-        const uint8_t *end() { return m_Ptr + m_Size; }
+        ByteIterator begin() const { return ByteIterator(m_Ptr, m_Size); }
+        ByteIterator end() const
+        {
+            ByteIterator tmp = ByteIterator(m_Ptr, m_Size);
+            tmp.m_Index = m_Size;
+            return tmp;
+        }
 
-        uint8_t operator*() { return *(m_Ptr + m_Index); }
+        bool operator==(const ByteIterator it) const { return (it.m_Ptr == m_Ptr && it.m_Index == m_Index && it.m_Size == m_Size); }
+
+        bool operator!=(const ByteIterator it) const { return !(*this == it); }
+
+        uint8_t operator*() const { return *(m_Ptr + m_Index); }
 
         ByteIterator operator++()
         {
             m_Index++;
             return *this;
+        }
+
+        ByteIterator operator+(int32_t i) const
+        {
+            ByteIterator tmp = ByteIterator(m_Ptr, m_Size);
+            tmp.m_Index = m_Index + i;
+            return tmp;
+        }
+
+        ByteIterator operator-(int32_t i) const
+        {
+            ByteIterator tmp = ByteIterator(m_Ptr, m_Size);
+            tmp.m_Index = m_Index - i;
+            return tmp;
         }
 
         ByteIterator operator--()
@@ -52,16 +75,16 @@ public:
 
         ByteIterator operator++(int)
         {
-            ByteIterator *tmp = new ByteIterator(m_Ptr, m_Size);
+            ByteIterator tmp = *this;
             m_Index++;
-            return *tmp;
+            return tmp;
         }
 
         ByteIterator operator--(int)
         {
-            ByteIterator *tmp = new ByteIterator(m_Ptr, m_Size);
+            ByteIterator tmp = *this;
             m_Index--;
-            return *tmp;
+            return tmp;
         }
 
         ByteIterator operator+=(uint32_t i)
@@ -80,118 +103,144 @@ public:
     class CdpIterator
     {
     private:
-        size_t m_Index = 0;
         size_t m_Size;
-        const uint32_t *m_Ptr;
-        std::vector<uint32_t> m_Points;
+        size_t m_Index = 0;
+        const uint8_t *m_Ptr;
 
-    public:
-        CdpIterator(const UTF8String &str) : m_Size(str.get_point_count())
+        uint32_t IsLeadingByte(uint8_t byte) const
         {
+            if ((byte & 0x80) == 0x00)
+                return 1;
+            else if ((byte & 0xE0) == 0xC0)
+                return 2;
+            else if ((byte & 0xF0) == 0xE0)
+                return 3;
+            else if ((byte & 0xF8) == 0xF0)
+                return 4;
 
-            for (size_t j = 0; j < m_Size; j++)
-            {
-
-                uint32_t count = 0, trailByteCount = 0;
-
-                for (size_t i = 0; i < str.m_Size; i++)
-                {
-                    if ((str.m_Buffer[i] & 0x80) == 0x00)
-                        trailByteCount = 0, count++;
-                    else if ((str.m_Buffer[i] & 0xE0) == 0xC0)
-                        trailByteCount = 1, count++;
-                    else if ((str.m_Buffer[i] & 0xF0) == 0xE0)
-                        trailByteCount = 2, count++;
-                    else if ((str.m_Buffer[i] & 0xF8) == 0xF0)
-                        trailByteCount = 3, count++;
-
-                    if (count - 1 == j)
-                    {
-                        CodePoint res = 0;
-
-                        switch (trailByteCount)
-                        {
-                        case 0:
-                            res = str.m_Buffer[i];
-                            break;
-
-                        case 1:
-                            res |= (str.m_Buffer[i++] & 0x1F) << 6;
-                            res |= (str.m_Buffer[i] & 0x3F);
-                            break;
-
-                        case 2:
-                            res |= (str.m_Buffer[i++] & 0x0F) << 12;
-                            res |= (str.m_Buffer[i++] & 0x3F) << 6;
-                            res |= (str.m_Buffer[i] & 0x3F);
-                            break;
-
-                        case 3:
-                            res |= (str.m_Buffer[i++] & 0x07) << 18;
-                            res |= (str.m_Buffer[i++] & 0x3F) << 12;
-                            res |= (str.m_Buffer[i++] & 0x3F) << 6;
-                            res |= (str.m_Buffer[i] & 0x3F);
-                            break;
-
-                        default:
-                            break;
-                        }
-                        m_Points.push_back(res);
-                        j++;
-                    }
-                    else
-                        i += trailByteCount;
-                }
-            }
-
-            m_Ptr = &m_Points[0];
+            return 0;
         }
 
-        CdpIterator(const std::vector<uint32_t> &points, uint32_t size) : m_Size(size), m_Points(points) {}
+        void IncrementToNextCdp(uint32_t k)
+        {
+            for (size_t i = 0; i < k; i++)
+                do
+                    m_Index++;
+                while (m_Index < m_Size && IsLeadingByte(*(m_Ptr + m_Index)) == 0);
+        }
+        void DecrementToPrevCdp(uint32_t k)
+        {
+            for (size_t i = 0; i < k; i++)
+                do
+                    m_Index--;
+                while (m_Index > 0 && IsLeadingByte(*(m_Ptr + m_Index)) == 0);
+        }
+
+    public:
+        CdpIterator(const UTF8String &str) : m_Size(str.m_Size), m_Ptr(&str.m_Buffer[0]) {}
+
+        CdpIterator(const uint8_t *pointer, size_t size)
+            : m_Size(size), m_Ptr(pointer) {}
 
         ~CdpIterator() = default;
 
-        const uint32_t *begin() { return m_Ptr; }
-        const uint32_t *end() { return m_Ptr + m_Size; }
-
-        uint32_t operator*() { return *(m_Ptr + m_Index); }
-
-        CdpIterator *operator++()
+        CdpIterator begin() const { return CdpIterator(m_Ptr, m_Size); }
+        CdpIterator end() const
         {
-            m_Index++;
-            return this;
-        }
-
-        CdpIterator *operator--()
-        {
-            m_Index--;
-            return this;
-        }
-
-        CdpIterator *operator++(int)
-        {
-            CdpIterator *tmp = new CdpIterator(m_Points, m_Size);
-            m_Index++;
+            CdpIterator tmp = CdpIterator(m_Ptr, m_Size);
+            tmp.m_Index = m_Size;
             return tmp;
         }
 
-        CdpIterator *operator--(int)
+        bool operator==(const CdpIterator it) const { return (it.m_Ptr == m_Ptr && it.m_Index == m_Index && it.m_Size == m_Size); }
+
+        bool operator!=(const CdpIterator it) const { return !(*this == it); }
+
+        uint32_t operator*() const
         {
-            CdpIterator *tmp = new CdpIterator(m_Points, m_Size);
-            m_Index--;
+
+            CodePoint res = 0;
+
+            switch (IsLeadingByte(*(m_Ptr + m_Index)))
+            {
+            case 1:
+                res = *(m_Ptr + m_Index);
+                break;
+
+            case 2:
+                res |= (*(m_Ptr + m_Index) & 0x1F) << 6;
+                res |= (*(m_Ptr + m_Index + 1) & 0x3F);
+                break;
+
+            case 3:
+                res |= (*(m_Ptr + m_Index) & 0x0F) << 12;
+                res |= (*(m_Ptr + m_Index + 1) & 0x3F) << 6;
+                res |= (*(m_Ptr + m_Index + 2) & 0x3F);
+                break;
+
+            case 4:
+                res |= (*(m_Ptr + m_Index) & 0x07) << 18;
+                res |= (*(m_Ptr + m_Index + 1) & 0x3F) << 12;
+                res |= (*(m_Ptr + m_Index + 2) & 0x3F) << 6;
+                res |= (*(m_Ptr + m_Index + 3) & 0x3F);
+                break;
+
+            default:
+                break;
+            }
+            return res;
+        }
+
+        CdpIterator operator+(int32_t i) const
+        {
+            CdpIterator tmp = CdpIterator(m_Ptr, m_Size);
+            tmp.IncrementToNextCdp(i);
             return tmp;
         }
 
-        CdpIterator *operator+=(uint32_t i)
+        CdpIterator operator-(int32_t i) const
         {
-            m_Index += i;
-            return this;
+            CdpIterator tmp = CdpIterator(m_Ptr, m_Size);
+            tmp.DecrementToPrevCdp(i);
+            return tmp;
         }
 
-        CdpIterator *operator-=(int16_t i)
+        CdpIterator operator++()
         {
-            m_Index -= i;
-            return this;
+            IncrementToNextCdp(1);
+            return *this;
+        }
+
+        CdpIterator operator--()
+        {
+            DecrementToPrevCdp(1);
+            return *this;
+        }
+
+        CdpIterator operator++(int)
+        {
+            CdpIterator tmp = *this;
+            IncrementToNextCdp(1);
+            return tmp;
+        }
+
+        CdpIterator operator--(int)
+        {
+            CdpIterator tmp = *this;
+            DecrementToPrevCdp(1);
+            return tmp;
+        }
+
+        CdpIterator operator+=(uint32_t i)
+        {
+            IncrementToNextCdp(i);
+            return *this;
+        }
+
+        CdpIterator operator-=(int16_t i)
+        {
+            DecrementToPrevCdp(i);
+            return *this;
         }
     };
 
