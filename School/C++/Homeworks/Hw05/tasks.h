@@ -340,17 +340,23 @@ public:
 
     std::unique_ptr<Tree> take_left_child()
     {
+        if (m_LeftChild)
+            m_LeftChild->resetParent();
         return std::move(m_LeftChild);
     }
 
     std::unique_ptr<Tree> take_right_child()
     {
+        if (m_RightChild)
+            m_RightChild->resetParent();
         return std::move(m_RightChild);
     }
 
     std::unique_ptr<Tree> set_left_child(std::unique_ptr<Tree> child)
     {
         std::unique_ptr<Tree> oldChild = std::move(m_LeftChild);
+        if (oldChild)
+            oldChild->resetParent();
         m_LeftChild = std::move(child);
         if (m_LeftChild)
             m_LeftChild->m_Parent = this;
@@ -361,6 +367,8 @@ public:
     std::unique_ptr<Tree> set_right_child(std::unique_ptr<Tree> child)
     {
         std::unique_ptr<Tree> oldChild = std::move(m_RightChild);
+        if (oldChild)
+            oldChild->resetParent();
         m_RightChild = std::move(child);
         if (m_RightChild)
             m_RightChild->m_Parent = this;
