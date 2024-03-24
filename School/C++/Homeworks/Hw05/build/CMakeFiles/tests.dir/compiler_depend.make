@@ -4,9 +4,15 @@
 CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tasks.cpp \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include-fixed/limits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include-fixed/syslimits.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/auto_ptr.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/binders.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bit \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/align.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/alloc_traits.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocated_ptr.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocator.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_base.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_lockfree_defines.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_ios.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_ios.tcc \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_string.h \
@@ -43,6 +49,9 @@ CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/ptr_traits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/range_access.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/refwrap.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_atomic.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_base.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/std_abs.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_algobase.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_bvector.h \
@@ -52,12 +61,16 @@ CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_iterator_base_funcs.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_iterator_base_types.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_pair.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_raw_storage_iter.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_tempbuf.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_uninitialized.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_vector.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/streambuf.tcc \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/streambuf_iterator.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/string_view.tcc \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stringfwd.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/unique_ptr.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uses_allocator.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/utility.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/vector.tcc \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cctype \
@@ -72,8 +85,10 @@ CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/debug/assertions.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/debug/debug.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/exception \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/aligned_buffer.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/alloc_traits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/atomicity.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/concurrence.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/numeric_traits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/string_conversions.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/type_traits.h \
@@ -82,9 +97,12 @@ CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/iosfwd \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/iostream \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/istream \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/memory \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/new \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/optional \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ostream \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/execution_defs.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_memory_defs.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/pstl_config.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/stdexcept \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/stdlib.h \
@@ -92,6 +110,7 @@ CMakeFiles/tests.dir/tasks.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/string \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/string_view \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/system_error \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tuple \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/type_traits \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/typeinfo \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/vector \
@@ -195,9 +214,13 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/bmiintrin.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/algorithm \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/atomic \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/auto_ptr.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/binders.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bit \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/algorithmfwd.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/align.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/alloc_traits.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocated_ptr.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocator.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_base.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_lockfree_defines.h \
@@ -247,6 +270,9 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/quoted_string.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/range_access.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/refwrap.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_atomic.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_base.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/specfun.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/sstream.tcc \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/std_abs.h \
@@ -264,6 +290,7 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_multimap.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_multiset.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_pair.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_raw_storage_iter.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_relops.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_set.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_tempbuf.h \
@@ -276,6 +303,7 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stringfwd.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uniform_int_dist.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/unique_lock.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/unique_ptr.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uses_allocator.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/utility.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/vector.tcc \
@@ -299,6 +327,7 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/aligned_buffer.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/alloc_traits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/atomicity.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/concurrence.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/numeric_traits.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/string_conversions.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/type_traits.h \
@@ -312,12 +341,14 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/limits \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/locale \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/map \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/memory \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/mutex \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/new \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/optional \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ostream \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/execution_defs.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_algorithm_defs.h \
+  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_memory_defs.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/pstl_config.h \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ratio \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/set \
@@ -541,11 +572,7 @@ CMakeFiles/tests.dir/tests.cpp.obj: C:/Users/marti/Documents/VSCode/School/C++/H
   C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tasks.h
 
 
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/fileapi.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/vector.tcc:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocator.h:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/align.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/move.h:
 
@@ -561,15 +588,19 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include-fixed/limits
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include-fixed/syslimits.h:
 
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pshpack1.h:
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/processtopologyapi.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/utility.h:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/x86_64-w64-mingw32/bits/gthr-default.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/vaesintrin.h:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/string_view.tcc:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/execution_defs.h:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/auto_ptr.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_ios.h:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/string_view:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/invoke.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bit:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/binders.h:
 
@@ -578,6 +609,38 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/popcntintrin
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cwchar:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/alloc_traits.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_iterator_base_funcs.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/threadpoollegacyapiset.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocated_ptr.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/memoryfwd.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_string.tcc:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/allocator.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/threadpoolapiset.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/bemapiset.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_base.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_lockfree_defines.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/wmmintrin.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vlintrin.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/vaesintrin.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/execution_defs.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_ios.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_ios.tcc:
 
@@ -588,14 +651,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ios:
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cstdlib:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_string.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_iterator_base_funcs.h:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/threadpoollegacyapiset.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/memoryfwd.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/basic_string.tcc:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/char_traits.h:
 
@@ -633,10 +688,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/cxx
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/cxxabi_init_exception.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/ell_integral.tcc:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cctype:
-
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/ostream_insert.h:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/winnt.h:
@@ -667,10 +718,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx2intrin.h
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/hash_bytes.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/string_view:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/invoke.h:
-
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/istream.tcc:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/winreg.h:
@@ -699,21 +746,21 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/type_tra
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/localefwd.h:
 
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_raw_storage_iter.h:
+
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/map:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/nested_exception.h:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/string.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cstdint:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/clzerointrin.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/new_allocator.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/predefined_ops.h:
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/handleapi.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cerrno:
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_tempbuf.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/predefined_ops.h:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/winnetwk.h:
 
@@ -721,13 +768,21 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/exceptio
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/ptr_traits.h:
 
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/mutex:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_atomic.h:
+
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/range_access.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_algobase.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pthread_signal.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_base.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_function.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/std_abs.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_algobase.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_iterator.h:
 
@@ -747,21 +802,39 @@ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/stringapiset.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/streambuf_iterator.h:
 
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/processtopologyapi.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/x86_64-w64-mingw32/bits/gthr-default.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/string_view.tcc:
-
 C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tests.cpp:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stringfwd.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/unique_ptr.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/riemann_zeta.tcc:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uses_allocator.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pshpack1.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/utility.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/fileapi.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/vector.tcc:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/ell_integral.tcc:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cctype:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cerrno:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/legendre_function.tcc:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/x86_64-w64-mingw32/bits/error_constants.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/clocale:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/string.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cstdint:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cstdio:
 
@@ -777,11 +850,17 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/debug/as
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/debug/debug.h:
 
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/aligned_buffer.h:
+
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/alloc_traits.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_tree.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/atomicity.h:
+
+C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/concurrence.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/numeric_traits.h:
 
@@ -801,6 +880,10 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/iostream
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/istream:
 
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/fxsrintrin.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/memory:
+
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/gfniintrin.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vpopcntdqintrin.h:
@@ -815,6 +898,8 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/tbmintrin.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ostream:
 
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_memory_defs.h:
+
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/pstl_config.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h:
@@ -828,6 +913,10 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/streambu
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/string:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/system_error:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/pmmintrin.h:
+
+C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tuple:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/typeinfo:
 
@@ -922,8 +1011,6 @@ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/process.h:
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pthread.h:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pthread_compat.h:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pthread_signal.h:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pthread_time.h:
 
@@ -1031,10 +1118,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vbmivl
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vldqintrin.h:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/wmmintrin.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vlintrin.h:
-
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/basetsd.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/avx512vp2intersectintrin.h:
@@ -1052,14 +1135,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/bmiintrin.h:
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/algorithm:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/atomic:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/threadpoolapiset.h:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/bemapiset.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_base.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/atomic_lockfree_defines.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/chrono.h:
 
@@ -1101,15 +1176,7 @@ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/namedpipeapi.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_set.h:
 
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/handleapi.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_tempbuf.h:
-
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uniform_int_dist.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/riemann_zeta.tcc:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/uses_allocator.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/cmath:
 
@@ -1119,8 +1186,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/poly
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ctime:
 
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/aligned_buffer.h:
-
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/fstream:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/iomanip:
@@ -1128,8 +1193,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/iomanip:
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/limits:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/locale:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/mutex:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/set:
 
@@ -1148,10 +1211,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/hype
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/mm3dnow.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tr1/special_function_util.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/pmmintrin.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/tuple:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/float.h:
 
@@ -1176,8 +1235,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/emmintrin.h:
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pshpack8.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/f16cintrin.h:
-
-C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/fxsrintrin.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/ia32intrin.h:
 
@@ -1228,8 +1285,6 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/xsaveoptintr
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/xsavesintrin.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/xtestintrin.h:
-
-C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h:
 
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/_mingw_unicode.h:
 

@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdint>
 #include <cstring>
+#include <memory>
+#include <stdexcept>
 
 using CodePoint = uint32_t;
 
@@ -280,6 +282,8 @@ public:
     uint32_t get_point_count() const;
 };
 
+class Tree;
+
 struct BigData
 {
     explicit BigData(int value) : value(value) {}
@@ -293,27 +297,96 @@ struct BigData
 class Tree
 {
 private:
-    BigData &m_Data;
+    Tree *m_Parent;
+    std::shared_ptr<BigData> m_Value;
+    std::unique_ptr<Tree> m_LeftChild;
+    std::unique_ptr<Tree> m_RightChild;
+
+    void resetParent() { m_Parent = nullptr; }
 
 public:
-    Tree(BigData &value) : m_Data(value) {}
-    ~Tree() {}
+    Tree(int dataValue)
+        : m_Parent(nullptr), m_Value(std::make_shared<BigData>(dataValue)), m_LeftChild(nullptr), m_RightChild(nullptr) {}
 
-    BigData get_value() { return; }
+    Tree(std::shared_ptr<BigData> &data)
+        : m_Parent(nullptr), m_Value(data), m_LeftChild(nullptr), m_RightChild(nullptr) {}
 
-    bool has_parent();
-    bool is_same_tree_as(Tree *tree);
+    BigData &get_value() const { return *m_Value; }
 
-    void swap_children();
-    void replace_value();
+    Tree *get_root()
+    {
+        Tree *current = this;
+        while (current->has_parent())
+            current = current->get_parent();
 
-    Tree *set_left_child(std::unique_ptr<Tree, std::default_delete<Tree>> child);
-    Tree *set_right_child(std::unique_ptr<Tree, std::default_delete<Tree>> child);
-    Tree *get_left_child();
-    Tree *get_parent();
-    Tree *get_right_child();
-    Tree *take_child(Tree child);
-    Tree *take_left_child();
-    Tree *take_right_child();
-    Tree *get_root();
+        return current;
+    }
+
+    Tree *get_parent() const { return m_Parent; }
+
+    Tree *get_left_child() const { return m_LeftChild.get(); }
+
+    Tree *get_right_child() const { return m_RightChild.get(); }
+
+    std::unique_ptr<Tree> take_child(Tree &child)
+    {
+        if (m_LeftChild.get() == &child)
+            return take_left_child();
+        else if (m_RightChild.get() == &child)
+            return take_right_child();
+        else
+            throw std::invalid_argument("Given tree is not a child of this node.");
+    }
+
+    std::unique_ptr<Tree> take_left_child()
+    {
+        return std::move(m_LeftChild);
+    }
+
+    std::unique_ptr<Tree> take_right_child()
+    {
+        return std::move(m_RightChild);
+    }
+
+    std::unique_ptr<Tree> set_left_child(std::unique_ptr<Tree> child)
+    {
+        std::unique_ptr<Tree> oldChild = std::move(m_LeftChild);
+        m_LeftChild = std::move(child);
+        if (m_LeftChild)
+            m_LeftChild->m_Parent = this;
+
+        return oldChild;
+    }
+
+    std::unique_ptr<Tree> set_right_child(std::unique_ptr<Tree> child)
+    {
+        std::unique_ptr<Tree> oldChild = std::move(m_RightChild);
+        m_RightChild = std::move(child);
+        if (m_RightChild)
+            m_RightChild->m_Parent = this;
+
+        return oldChild;
+    }
+
+    bool has_parent() const { return m_Parent != nullptr; }
+    bool is_same_tree_as(Tree *other) { return get_root() == other->get_root(); }
+
+    void replace_value(std::shared_ptr<BigData> newValue)
+    {
+        m_Value = newValue;
+        if (m_LeftChild != nullptr)
+            m_LeftChild->replace_value(newValue);
+
+        if (m_RightChild != nullptr)
+            m_RightChild->replace_value(newValue);
+    }
+
+    void swap_children()
+    {
+        std::swap(m_LeftChild, m_RightChild);
+        if (m_LeftChild)
+            m_LeftChild->m_Parent = this;
+        if (m_RightChild)
+            m_RightChild->m_Parent = this;
+    }
 };
