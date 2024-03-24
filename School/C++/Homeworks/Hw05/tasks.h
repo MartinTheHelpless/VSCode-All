@@ -279,3 +279,41 @@ public:
     uint32_t get_byte_count() const { return m_Size; };
     uint32_t get_point_count() const;
 };
+
+struct BigData
+{
+    explicit BigData(int value) : value(value) {}
+
+    BigData(const BigData &) = delete;
+    BigData &operator=(const BigData &) = delete;
+
+    int value;
+};
+
+class Tree
+{
+private:
+    BigData &m_Data;
+
+public:
+    Tree(BigData &value) : m_Data(value) {}
+    ~Tree() {}
+
+    BigData get_value() { return; }
+
+    bool has_parent();
+    bool is_same_tree_as(Tree *tree);
+
+    void swap_children();
+    void replace_value();
+
+    Tree *set_left_child(std::unique_ptr<Tree, std::default_delete<Tree>> child);
+    Tree *set_right_child(std::unique_ptr<Tree, std::default_delete<Tree>> child);
+    Tree *get_left_child();
+    Tree *get_parent();
+    Tree *get_right_child();
+    Tree *take_child(Tree child);
+    Tree *take_left_child();
+    Tree *take_right_child();
+    Tree *get_root();
+};

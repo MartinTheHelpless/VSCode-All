@@ -603,3 +603,309 @@ TEST_SUITE("UTF8String new")
         REQUIRE(*it2 == static_cast<CodePoint>('0'));
     }
 }
+
+// Tree tests
+TEST_SUITE("Tree")
+{
+    TEST_CASE("Create tree")
+    {
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   1   2
+         */
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_right_child(std::make_unique<Tree>(2));
+
+        REQUIRE(tree->get_value().value == 0);
+        REQUIRE(tree->get_left_child()->get_value().value == 1);
+        REQUIRE(tree->get_right_child()->get_value().value == 2);
+    }
+
+    TEST_CASE("Reassign child")
+    {
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   1   2
+         */
+        auto tree = std::make_unique<Tree>(0);
+        auto previous = tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_right_child(std::make_unique<Tree>(2));
+
+        REQUIRE(previous.get() == nullptr);
+
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   3   2
+         *
+         * previous:
+         *     1
+         */
+        previous = tree->set_left_child(std::make_unique<Tree>(3));
+        REQUIRE(previous->get_value().value == 1);
+        REQUIRE(!previous->has_parent());
+
+        REQUIRE(tree->get_left_child()->get_value().value == 3);
+        REQUIRE(tree->get_left_child()->get_parent() == tree.get());
+    }
+
+    TEST_CASE("Parent links")
+    {
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   1   2
+         */
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_right_child(std::make_unique<Tree>(2));
+
+        REQUIRE(!tree->has_parent());
+        REQUIRE(tree->get_left_child()->get_parent() == tree.get());
+        REQUIRE(tree->get_right_child()->get_parent() == tree.get());
+    }
+
+    TEST_CASE("Set empty child")
+    {
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_left_child(std::unique_ptr<Tree>{});
+        REQUIRE(tree->get_left_child() == nullptr);
+    }
+
+    TEST_CASE("Take children")
+    {
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   1   2
+         */
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_right_child(std::make_unique<Tree>(2));
+
+        /**
+         * tree:
+         *     0
+         *      \
+         *       2
+         *
+         * left:
+         *     1
+         */
+        auto left = tree->take_left_child();
+        REQUIRE(!left->has_parent());
+
+        REQUIRE(tree->get_left_child() == nullptr);
+    }
+
+    TEST_CASE("Take children with take_child")
+    {
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        auto child = tree->take_child(*tree->get_left_child());
+
+        REQUIRE(!child->has_parent());
+        REQUIRE(child->get_value().value == 1);
+        REQUIRE(tree->get_left_child() == nullptr);
+    }
+
+    TEST_CASE("Take empty children")
+    {
+        auto tree = std::make_unique<Tree>(0);
+        REQUIRE(!tree->take_left_child());
+        REQUIRE(!tree->take_right_child());
+    }
+
+    TEST_CASE("Take invalid children")
+    {
+        auto tree = std::make_unique<Tree>(0);
+        auto tree2 = std::make_unique<Tree>(0);
+
+        REQUIRE_THROWS(tree->take_child(*tree2));
+    }
+
+    TEST_CASE("Swap children")
+    {
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   1   2
+         */
+        auto tree = std::make_unique<Tree>(0);
+        tree->set_left_child(std::make_unique<Tree>(1));
+        tree->set_right_child(std::make_unique<Tree>(2));
+
+        /**
+         * tree:
+         *     0
+         *    / \
+         *   2   1
+         */
+        tree->swap_children();
+
+        REQUIRE(tree->get_left_child()->get_value().value == 2);
+        REQUIRE(tree->get_right_child()->get_value().value == 1);
+    }
+
+    TEST_CASE("Rebalance tree")
+    {
+        /*
+         * tree:
+         *       0
+         *      /
+         *     1  <- parent
+         *    /
+         *   2
+         *  /
+         * 3   <- last
+         */
+        auto tree = std::make_unique<Tree>(0);
+        Tree *last = tree.get();
+        for (int i = 1; i < 4; i++)
+        {
+            last->set_left_child(std::make_unique<Tree>(i));
+            last = last->get_left_child();
+        }
+        // `last` now holds the last added child
+        auto parent = last->get_parent()->get_parent();
+
+        /*
+         * tree:
+         *      0
+         *     / \
+         *    1   2
+         *       /
+         *      3
+         */
+        auto subtree = parent->take_left_child();
+        tree->set_right_child(std::move(subtree));
+    }
+
+    std::unique_ptr<Tree> christmas_tree()
+    {
+        /*
+         * tree:
+         *               1
+         *              / \
+         *             /   \
+         *            /     \
+         *           2       5
+         *          / \     / \
+         *         3   4   6   7
+         *        /             \
+         *       8               9
+         */
+        auto tree = std::make_unique<Tree>(1);
+        tree->set_left_child(std::make_unique<Tree>(2));
+        tree->get_left_child()->set_left_child(std::make_unique<Tree>(3));
+        tree->get_left_child()->set_right_child(std::make_unique<Tree>(4));
+        tree->get_left_child()->get_left_child()->set_left_child(std::make_unique<Tree>(8));
+
+        tree->set_right_child(std::make_unique<Tree>(5));
+        tree->get_right_child()->set_left_child(std::make_unique<Tree>(6));
+        tree->get_right_child()->set_right_child(std::make_unique<Tree>(7));
+        tree->get_right_child()->get_right_child()->set_right_child(std::make_unique<Tree>(9));
+        return tree;
+    }
+
+    TEST_CASE("Get root")
+    {
+        auto tree = christmas_tree();
+
+        REQUIRE(tree->get_root() == tree.get());
+        REQUIRE(tree->get_left_child()->get_right_child()->get_root() == tree.get());
+        REQUIRE(tree->get_left_child()->get_right_child()->get_root() == tree.get());
+        REQUIRE(tree->get_right_child()->get_right_child()->get_right_child()->get_root() == tree.get());
+    }
+
+    TEST_CASE("Is same tree")
+    {
+        auto t1 = christmas_tree();
+        auto t2 = christmas_tree();
+
+        REQUIRE(t1->is_same_tree_as(t1.get()));
+        REQUIRE(t1->get_right_child()->is_same_tree_as(t1.get()));
+        REQUIRE(t1->get_right_child()->get_left_child()->is_same_tree_as(t1.get()));
+        REQUIRE(t1->is_same_tree_as(t1->get_right_child()->get_left_child()));
+
+        REQUIRE(!t1->is_same_tree_as(t2.get()));
+        REQUIRE(!t1->get_left_child()->get_right_child()->is_same_tree_as(t2.get()));
+        REQUIRE(!t2->is_same_tree_as(t1->get_left_child()->get_right_child()));
+        REQUIRE(!t2->get_right_child()->get_left_child()->is_same_tree_as(t1->get_left_child()->get_right_child()));
+    }
+
+    TEST_CASE("Shared values")
+    {
+        /**
+         * tree:
+         *        0 (V0)
+         *      /   \
+         *   1 (V0)   2 (V1)
+         */
+
+        auto value = std::make_shared<BigData>(0);
+        auto tree = std::make_unique<Tree>(value);
+        tree->set_left_child(std::make_unique<Tree>(value));
+        tree->set_right_child(std::make_unique<Tree>(1));
+
+        tree->get_left_child()->get_value().value = 5;
+        REQUIRE(tree->get_value().value == 5);
+        REQUIRE(tree->get_right_child()->get_value().value == 1);
+    }
+
+    TEST_CASE("Replace shared values")
+    {
+        /*
+         * tree:
+         *               1
+         *              / \
+         *             /   \
+         *            /     \
+         *           2       5
+         *          / \     / \
+         *         3   4   6   7
+         *        /             \
+         *       8               9
+         */
+        auto tree = christmas_tree();
+        auto n2 = tree->get_left_child();
+
+        // Set shared value of left subtree to 50
+        n2->replace_value(std::make_shared<BigData>(50));
+        REQUIRE(n2->get_value().value == 50);
+        REQUIRE(n2->get_left_child()->get_value().value == 50);
+        REQUIRE(n2->get_left_child()->get_left_child()->get_value().value == 50);
+        REQUIRE(n2->get_right_child()->get_value().value == 50);
+
+        n2->get_value().value = 51;
+        REQUIRE(n2->get_value().value == 51);
+        REQUIRE(n2->get_left_child()->get_value().value == 51);
+        REQUIRE(n2->get_left_child()->get_left_child()->get_value().value == 51);
+        REQUIRE(n2->get_right_child()->get_value().value == 51);
+
+        REQUIRE(tree->get_value().value == 1);
+    }
+
+    /*TEST_CASE("Inorder traversal (bonus)")
+    {
+        auto tree = christmas_tree();
+
+        std::vector<int> values;
+        for (const auto &node : *tree)
+        {
+            values.push_back(node.get_value().value);
+        }
+
+        REQUIRE(values == std::vector<int>{8, 3, 2, 4, 1, 6, 5, 7, 9});
+    }*/
+}
