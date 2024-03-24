@@ -1,9 +1,11 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/tasks.dir/main.cpp.o"
-  "CMakeFiles/tasks.dir/main.cpp.o.d"
-  "CMakeFiles/tasks.dir/tasks.cpp.o"
-  "CMakeFiles/tasks.dir/tasks.cpp.o.d"
-  "tasks"
+  "CMakeFiles/tasks.dir/main.cpp.obj"
+  "CMakeFiles/tasks.dir/main.cpp.obj.d"
+  "CMakeFiles/tasks.dir/tasks.cpp.obj"
+  "CMakeFiles/tasks.dir/tasks.cpp.obj.d"
+  "libtasks.dll.a"
+  "tasks.exe"
+  "tasks.exe.manifest"
   "tasks.pdb"
 )
 

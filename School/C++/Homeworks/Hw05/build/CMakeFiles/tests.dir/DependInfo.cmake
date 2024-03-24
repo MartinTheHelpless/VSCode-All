@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/buri/Documents/Programming/VSCode-All/School/C++/Homeworks/Hw05/tasks.cpp" "CMakeFiles/tests.dir/tasks.cpp.o" "gcc" "CMakeFiles/tests.dir/tasks.cpp.o.d"
-  "/home/buri/Documents/Programming/VSCode-All/School/C++/Homeworks/Hw05/tests.cpp" "CMakeFiles/tests.dir/tests.cpp.o" "gcc" "CMakeFiles/tests.dir/tests.cpp.o.d"
+  "C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tasks.cpp" "CMakeFiles/tests.dir/tasks.cpp.obj" "gcc" "CMakeFiles/tests.dir/tasks.cpp.obj.d"
+  "C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tests.cpp" "CMakeFiles/tests.dir/tests.cpp.obj" "gcc" "CMakeFiles/tests.dir/tests.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

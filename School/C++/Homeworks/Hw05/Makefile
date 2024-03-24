@@ -1,2 +1,2 @@
 all:
-	cd build && make && ./tests && cd ..
+	cd build && make && tests.exe  
