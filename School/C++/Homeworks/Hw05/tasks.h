@@ -1,13 +1,15 @@
-#include <optional>
-#include <iostream>
 #include <vector>
+#include <memory>
 #include <string>
 #include <cstdint>
 #include <cstring>
-#include <memory>
+#include <iostream>
+#include <optional>
 #include <stdexcept>
 
 using CodePoint = uint32_t;
+
+class UTF8String;
 
 class UTF8String
 {
@@ -101,7 +103,6 @@ public:
             return *this;
         }
     };
-
     class CdpIterator
     {
     private:
@@ -357,6 +358,7 @@ public:
         std::unique_ptr<Tree> oldChild = std::move(m_LeftChild);
         if (oldChild)
             oldChild->resetParent();
+
         m_LeftChild = std::move(child);
         if (m_LeftChild)
             m_LeftChild->m_Parent = this;

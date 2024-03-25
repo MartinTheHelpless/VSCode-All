@@ -286,7 +286,7 @@ void Maze::RandomizeMazeKruskal(float scale)
 void Maze::ClearMaze(float mazeScale)
 {
     for (int i = 0; i < 3481; i++)
-        m_MazeNodes[i]->m_Type = 0, m_MazeNodes[i]->m_Visited = false;
+        m_MazeNodes[i]->Reset();
 
     m_MazeNodes[static_cast<int>(mazeScale) + 1]->m_Type = 2;
     m_MazeNodes[static_cast<int>(mazeScale) * static_cast<int>(mazeScale) -

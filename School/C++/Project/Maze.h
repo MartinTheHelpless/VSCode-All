@@ -38,6 +38,14 @@ private:
             m_LeftNeighbour = nullptr;
             m_PrevNode = nullptr;
         }
+
+        void Reset()
+        {
+            m_Type = 0;
+            m_SetID = 0;
+            m_Visited = false;
+            m_PrevNode = nullptr;
+        }
     };
 
     Node *m_Current;
