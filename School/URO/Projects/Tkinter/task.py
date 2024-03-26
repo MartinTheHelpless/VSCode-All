@@ -143,7 +143,7 @@ class BottomRightFrame(ttk.Frame):
 def main():
     root = ThemedTk(theme="arc")
     root.geometry("700x310")
-
+     
     left_frame = LeftFrame(root)
     top_right_frame = TopRightFrame(root)
     bottom_right_frame = BottomRightFrame(root)

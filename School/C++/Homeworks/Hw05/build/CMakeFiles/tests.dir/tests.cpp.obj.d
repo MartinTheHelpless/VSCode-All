@@ -388,8 +388,6 @@ CMakeFiles/tests.dir/tests.cpp.obj: \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/imm.h \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/io.h \
  C:/Users/marti/Documents/VSCode/School/C++/Homeworks/Hw05/tasks.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/optional \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/enable_special_members.h \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/memory \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/stl_raw_storage_iter.h \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/align.h \
@@ -401,4 +399,6 @@ CMakeFiles/tests.dir/tests.cpp.obj: \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/ext/concurrence.h \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/shared_ptr_atomic.h \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/backward/auto_ptr.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_memory_defs.h
+ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/pstl/glue_memory_defs.h \
+ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/optional \
+ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/12.2.0/include/c++/bits/enable_special_members.h
